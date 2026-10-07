@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "total_trades": 1,
+    "winning_trades": 0,
+    "losing_trades": 1,
+    "win_rate_pct": 0.0,
+    "total_net_pnl": -119.22,
+    "total_gross_pnl": -112.5,
+    "total_fees_paid": 6.72,
+    "profit_factor": 0.0,
+    "expectancy_dollars": -119.22,
+    "expectancy_r": -1.014,
+    "median_r": -1.014,
+    "skewness_r": 0.0,
+    "avg_win_dollars": 0.0,
+    "avg_loss_dollars": -119.22,
+    "win_loss_payoff_ratio": 0.0,
+    "max_drawdown_dollars": 0.0,
+    "sharpe_ratio": -2676.48,
+    "sortino_ratio": 0.0
+  },
+  "excursion": {
+    "median_mfe_r": 0.284,
+    "median_mae_r": 1.108,
+    "mean_mfe_r": 0.284,
+    "mean_mae_r": 1.108,
+    "drift_ratio": 0.256,
+    "median_time_to_peak_mfe": 1,
+    "mean_time_to_peak_mfe": 1.0,
+    "excursion_efficiency": -3.571,
+    "is_alpha_disqualified": true
+  },
+  "loss_taxonomy": {
+    "total_losses": 1,
+    "breakdown": {
+      "Immediate Flush": {
+        "count": 0,
+        "percentage": 0.0,
+        "total_loss_dollars": 0.0,
+        "avg_loss_dollars": 0.0
+      },
+      "Trapped Trade": {
+        "count": 0,
+        "percentage": 0.0,
+        "total_loss_dollars": 0.0,
+        "avg_loss_dollars": 0.0
+      },
+      "Friction Drain": {
+        "count": 0,
+        "percentage": 0.0,
+        "total_loss_dollars": 0.0,
+        "avg_loss_dollars": 0.0
+      },
+      "Structural Invalidation": {
+        "count": 1,
+        "percentage": 100.0,
+        "total_loss_dollars": 119.22,
+        "avg_loss_dollars": 119.22
+      }
+    }
+  },
+  "friction_frontier": {
+    "frontier_table": [
+      {
+        "slippage_ticks": 0.0,
+        "slippage_pts": 0.0,
+        "total_net_pnl": -116.22,
+        "expectancy_dollars": -116.22,
+        "expectancy_r": -1.047,
+        "win_rate_pct": 0.0
+      },
+      {
+        "slippage_ticks": 0.5,
+        "slippage_pts": 0.125,
+        "total_net_pnl": -117.72,
+        "expectancy_dollars": -117.72,
+        "expectancy_r": -1.061,
+        "win_rate_pct": 0.0
+      },
+      {
+        "slippage_ticks": 1.0,
+        "slippage_pts": 0.25,
+        "total_net_pnl": -119.22,
+        "expectancy_dollars": -119.22,
+        "expectancy_r": -1.074,
+        "win_rate_pct": 0.0
+      },
+      {
+        "slippage_ticks": 1.5,
+        "slippage_pts": 0.375,
+        "total_net_pnl": -120.72,
+        "expectancy_dollars": -120.72,
+        "expectancy_r": -1.088,
+        "win_rate_pct": 0.0
+      },
+      {
+        "slippage_ticks": 2.0,
+        "slippage_pts": 0.5,
+        "total_net_pnl": -122.22,
+        "expectancy_dollars": -122.22,
+        "expectancy_r": -1.101,
+        "win_rate_pct": 0.0
+      },
+      {
+        "slippage_ticks": 3.0,
+        "slippage_pts": 0.75,
+        "total_net_pnl": -125.22,
+        "expectancy_dollars": -125.22,
+        "expectancy_r": -1.128,
+        "win_rate_pct": 0.0
+      }
+    ],
+    "critical_slippage_s_star": 0.0,
+    "is_viable": false
+  },
+  "regimes": {
+    "by_session_window": {
+      "09:30-10:00 (Open Auction)": {
+        "trade_count": 1,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": -119.22,
+        "avg_net_pnl": -119.22,
+        "expectancy_r": -1.014
+      }
+    },
+    "by_day_of_week": {
+      "Monday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Tuesday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Wednesday": {
+        "trade_count": 1,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": -119.22,
+        "avg_net_pnl": -119.22,
+        "expectancy_r": -1.014
+      },
+      "Thursday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Friday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      }
+    },
+    "by_atr_quintile": {
+      "Q1": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q2": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q3": {
+        "trade_count": 1,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": -119.22,
+        "avg_net_pnl": -119.22,
+        "expectancy_r": -1.014
+      },
+      "Q4": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q5": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      }
+    }
+  },
+  "prop_firm": {
+    "initial_balance": 50000.0,
+    "current_balance": 49880.78,
+    "high_water_mark": 50031.5,
+    "trailing_floor": 47531.5,
+    "remaining_cushion": 2349.28,
+    "status": "ACTIVE",
+    "breach_reason": null,
+    "passed_evaluation": false,
+    "profit_target": 3000.0,
+    "target_balance": 53000.0
+  },
+  "bars_processed": 2340,
+  "strategy_name": "open_drive_continuation",
+  "monte_carlo": {
+    "iterations": 10000,
+    "prob_pass_pct": 0.0,
+    "prob_breach_pct": 0.0,
+    "prob_inconclusive_pct": 100.0,
+    "median_trades_to_pass": null,
+    "percentile_curves": {}
+  }
+}

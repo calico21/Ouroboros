@@ -1,0 +1,10 @@
+name: "MyFundedFutures 50k Static"
+initial_balance: 50000.0
+profit_target: 3000.0
+trailing_max_drawdown: 2000.0
+drawdown_type: "static"              # Static floor at $48,000 never ratchets up
+floor_lock_threshold: null
+lock_floor_offset: null
+daily_loss_limit: 1000.0
+max_contracts: 5
+liquidation_on_breach: true

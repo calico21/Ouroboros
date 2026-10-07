@@ -1,0 +1,199 @@
+{
+  "summary": {
+    "total_trades": 1,
+    "winning_trades": 1,
+    "losing_trades": 0,
+    "win_rate_pct": 100.0,
+    "total_net_pnl": 186.76,
+    "total_gross_pnl": 198.94,
+    "total_fees_paid": 12.18,
+    "profit_factor": 999.0,
+    "expectancy_dollars": 186.76,
+    "expectancy_r": 1.672,
+    "median_r": 1.672,
+    "skewness_r": 0.0,
+    "avg_win_dollars": 186.76,
+    "avg_loss_dollars": 0.0,
+    "win_loss_payoff_ratio": 0.0,
+    "max_drawdown_dollars": 0.0,
+    "sharpe_ratio": 4192.75,
+    "sortino_ratio": 4192.75
+  },
+  "excursion": {
+    "median_mfe_r": 1.676,
+    "median_mae_r": 0.529,
+    "mean_mfe_r": 1.676,
+    "mean_mae_r": 0.529,
+    "drift_ratio": 3.167,
+    "median_time_to_peak_mfe": 24,
+    "mean_time_to_peak_mfe": 24.0,
+    "excursion_efficiency": 0.997,
+    "is_alpha_disqualified": false
+  },
+  "loss_taxonomy": {
+    "total_losses": 0,
+    "breakdown": {},
+    "summary": "Zero losing trades recorded."
+  },
+  "friction_frontier": {
+    "frontier_table": [
+      {
+        "slippage_ticks": 0.0,
+        "slippage_pts": 0.0,
+        "total_net_pnl": 190.26,
+        "expectancy_dollars": 190.26,
+        "expectancy_r": 1.599,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 0.5,
+        "slippage_pts": 0.125,
+        "total_net_pnl": 188.51,
+        "expectancy_dollars": 188.51,
+        "expectancy_r": 1.584,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 1.0,
+        "slippage_pts": 0.25,
+        "total_net_pnl": 186.76,
+        "expectancy_dollars": 186.76,
+        "expectancy_r": 1.569,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 1.5,
+        "slippage_pts": 0.375,
+        "total_net_pnl": 185.01,
+        "expectancy_dollars": 185.01,
+        "expectancy_r": 1.555,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 2.0,
+        "slippage_pts": 0.5,
+        "total_net_pnl": 183.26,
+        "expectancy_dollars": 183.26,
+        "expectancy_r": 1.54,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 3.0,
+        "slippage_pts": 0.75,
+        "total_net_pnl": 179.76,
+        "expectancy_dollars": 179.76,
+        "expectancy_r": 1.511,
+        "win_rate_pct": 100.0
+      }
+    ],
+    "critical_slippage_s_star": "> 3.0",
+    "is_viable": true
+  },
+  "regimes": {
+    "by_session_window": {
+      "10:00-11:30 (Morning Trend)": {
+        "trade_count": 1,
+        "win_rate_pct": 100.0,
+        "total_net_pnl": 186.76,
+        "avg_net_pnl": 186.76,
+        "expectancy_r": 1.672
+      }
+    },
+    "by_day_of_week": {
+      "Monday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Tuesday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Wednesday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Thursday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Friday": {
+        "trade_count": 1,
+        "win_rate_pct": 100.0,
+        "total_net_pnl": 186.76,
+        "avg_net_pnl": 186.76,
+        "expectancy_r": 1.672
+      }
+    },
+    "by_atr_quintile": {
+      "Q1": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q2": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q3": {
+        "trade_count": 1,
+        "win_rate_pct": 100.0,
+        "total_net_pnl": 186.76,
+        "avg_net_pnl": 186.76,
+        "expectancy_r": 1.672
+      },
+      "Q4": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q5": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      }
+    }
+  },
+  "prop_firm": {
+    "initial_balance": 50000.0,
+    "current_balance": 50186.76,
+    "high_water_mark": 50199.5,
+    "trailing_floor": 47699.5,
+    "remaining_cushion": 2487.26,
+    "status": "ACTIVE",
+    "breach_reason": null,
+    "passed_evaluation": false,
+    "profit_target": 3000.0,
+    "target_balance": 53000.0
+  },
+  "bars_processed": 2340,
+  "strategy_name": "vwap_mean_reversion_10am",
+  "monte_carlo": {
+    "iterations": 10000,
+    "prob_pass_pct": 0.0,
+    "prob_breach_pct": 0.0,
+    "prob_inconclusive_pct": 100.0,
+    "median_trades_to_pass": null,
+    "percentile_curves": {}
+  }
+}

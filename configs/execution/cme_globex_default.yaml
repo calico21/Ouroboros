@@ -1,0 +1,10 @@
+name: "CME Globex Default Execution"
+slippage_ticks: 1.0                  # 1 tick per side realistic slippage
+limit_trade_through_ticks: 1.0       # Passive fill requires market to trade through by >= 1 tick
+fill_on_touch: false                 # Strict CME Globex FIFO queue rule: mere touch is NOT filled
+execution_delay_bars: 0              # Market order fills on next bar open (or current bar close + slippage)
+single_lot_quantization: true        # Whole contract integer positions
+rounding_tolerance_threshold: 0.75   # If risk budget funds >= 75% of 1-lot risk and buffer risk <= 10%, round up to 1
+buffer_risk_limit: 0.10              # Risk <= 10% of remaining buffer to trailing floor
+default_contracts: 1                 # Base contract lot
+max_slippage_ticks: 5.0

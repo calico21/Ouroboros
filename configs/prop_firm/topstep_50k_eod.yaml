@@ -1,0 +1,10 @@
+name: "Topstep 50k EOD"
+initial_balance: 50000.0
+profit_target: 3000.0
+trailing_max_drawdown: 2000.0
+drawdown_type: "end_of_day"          # Trailing calculated at end of day closing equity
+floor_lock_threshold: 2000.0         # Locks floor at initial balance once reached
+lock_floor_offset: 0.0               # Floor locks at $50,000
+daily_loss_limit: 1000.0             # Topstep daily loss limit
+max_contracts: 5
+liquidation_on_breach: true

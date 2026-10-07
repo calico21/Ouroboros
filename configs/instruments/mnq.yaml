@@ -1,0 +1,14 @@
+symbol: "MNQ"
+name: "Micro E-mini Nasdaq-100"
+exchange: "CME Globex"
+tick_size: 0.25
+tick_value: 0.50             # $0.50 per 0.25 tick ($2.00 per full point)
+point_value: 2.00
+commission_per_side: 0.62    # $0.62 per contract side ($1.24 round-turn)
+exchange_fee_per_side: 0.20
+nfa_regulatory_fee_per_side: 0.02
+total_fee_per_side: 0.62     # All-in commission per side
+rth_open: "09:30"
+rth_close: "16:00"
+session_timezone: "America/New_York"
+currency: "USD"

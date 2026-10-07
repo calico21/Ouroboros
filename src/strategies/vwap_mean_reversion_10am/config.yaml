@@ -1,0 +1,13 @@
+strategy_name: "vwap_mean_reversion_10am"
+display_name: "VWAP Mean Reversion 10 AM"
+version: "1.0.0"
+timeframe: "5m"
+start_time: "10:00"
+end_time: "14:00"
+band_std_threshold: 2.0
+stop_buffer_ticks: 4
+min_risk_points: 8.0
+max_risk_points: 35.0
+max_trades_per_session: 2
+ttl_bars: 8
+tag: "VWAP_FADE"

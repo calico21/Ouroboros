@@ -1,0 +1,10 @@
+[
+  "tests/test_accounting.py::test_immediate_liquidation_on_floor_breach",
+  "tests/test_accounting.py::test_mtm_trailing_ratchet",
+  "tests/test_accounting.py::test_permanent_floor_lock",
+  "tests/test_execution.py::test_position_sizer_rounding_clamp",
+  "tests/test_execution.py::test_strict_limit_trade_through_validation",
+  "tests/test_metrics.py::test_directional_drift_ratio_disqualification",
+  "tests/test_metrics.py::test_loss_taxonomy_death_tree_classification",
+  "tests/test_strategies.py::test_strategy_discovery"
+]

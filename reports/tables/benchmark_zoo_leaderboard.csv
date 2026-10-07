@@ -1,0 +1,4 @@
+Strategy,Trades,Win Rate %,Net PnL ($),Profit Factor,Expectancy (R),Drift Ratio (x),P(Pass) %,P(Breach) %,Crit Slip (S*),Status
+vwap_mean_reversion_10am,1,100.0,186.76,999.0,1.672,3.167,0.0,0.0,> 3.0,VIABLE
+orb_5m_binary,13,15.38,-809.72,0.23,-0.575,0.281,0.0,100.0,0.0,DISQUALIFIED
+open_drive_continuation,1,0.0,-119.22,0.0,-1.014,0.256,0.0,0.0,0.0,DISQUALIFIED

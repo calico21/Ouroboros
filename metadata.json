@@ -1,0 +1,6 @@
+{
+  "name": "AlphaForge - CME Futures & Prop Firm Quant Diagnostics Rig",
+  "description": "Institutional-grade backtesting, execution simulation, and forensic diagnostics testing rig for intraday CME futures (MNQ/NQ) and prop-firm MTM trailing drawdown evaluation mechanics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

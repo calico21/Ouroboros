@@ -1,0 +1,10 @@
+name: "Apex 50k Trailing MTM"
+initial_balance: 50000.0
+profit_target: 3000.0
+trailing_max_drawdown: 2500.0
+drawdown_type: "intra_trade_peak_mtm" # Options: intra_trade_peak_mtm, end_of_day, static
+floor_lock_threshold: 2600.0         # When HWM >= initial_balance + 2600 ($52,600), floor locks
+lock_floor_offset: 100.0             # Floor locks permanently at initial_balance + 100 ($50,100)
+daily_loss_limit: null               # Apex has no daily loss limit
+max_contracts: 10                    # 10 MNQ or 2 NQ
+liquidation_on_breach: true

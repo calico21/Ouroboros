@@ -1,0 +1,14 @@
+strategy_name: "orb_5m_binary"
+display_name: "Opening Range Breakout 5M Binary"
+version: "1.0.0"
+timeframe: "5m"
+or_start_time: "09:30"
+or_duration_minutes: 5
+trading_window_end: "11:30"
+target_r_multiple: 2.0
+stop_type: "midpoint"      # Options: "midpoint" or "opposite_boundary"
+max_trades_per_session: 1
+min_range_pts: 10.0
+max_range_pts: 120.0
+ttl_bars: 6
+tag: "ORB_5M"

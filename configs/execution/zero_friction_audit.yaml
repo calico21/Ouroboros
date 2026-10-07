@@ -1,0 +1,10 @@
+name: "Zero Friction Audit"
+slippage_ticks: 0.0
+limit_trade_through_ticks: 0.0
+fill_on_touch: true
+execution_delay_bars: 0
+single_lot_quantization: true
+rounding_tolerance_threshold: 0.0
+buffer_risk_limit: 1.0
+default_contracts: 1
+max_slippage_ticks: 0.0

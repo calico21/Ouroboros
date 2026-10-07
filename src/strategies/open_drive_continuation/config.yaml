@@ -1,0 +1,12 @@
+strategy_name: "open_drive_continuation"
+display_name: "Open Drive Continuation"
+version: "1.0.0"
+timeframe: "5m"
+drive_bar_time: "09:30"
+conviction_threshold: 0.65
+min_drive_points: 15.0
+max_drive_points: 80.0
+entry_timeout_bars: 6
+target_r_multiple: 2.2
+stop_type: "drive_extreme" # "drive_extreme" or "half_drive"
+tag: "OPEN_DRIVE"
