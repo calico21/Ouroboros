@@ -1,0 +1,43 @@
+# AlphaForge Institutional Broker & Execution Configuration
+active_broker: "paper"  # "paper" or "tradovate"
+symbol: "MNQ"
+point_value: 2.0
+tick_size: 0.25
+
+# Paper Execution Gateway Parameters
+paper:
+  starting_balance: 50000.0
+  simulated_network_latency_ms: 14.5
+  simulated_execution_latency_ms: 8.2
+  default_slippage_ticks: 1.0
+  commission_per_contract: 0.62
+
+# Tradovate CME Globex Broker Parameters
+tradovate:
+  is_demo: true
+  demo_url: "https://demo.tradovateapi.com/v1"
+  live_url: "https://live.tradovateapi.com/v1"
+  demo_ws_url: "wss://demo.tradovateapi.com/v1/websocket"
+  live_ws_url: "wss://live.tradovateapi.com/v1/websocket"
+  request_timeout_sec: 10
+  order_timeout_sec: 5
+
+# Institutional Risk & Apex Compliance Sentinel
+risk:
+  starting_capital: 50000.0
+  trailing_drawdown_limit: 2500.0
+  daily_loss_limit: 1000.0
+  profit_target: 3000.0
+  lock_floor_at_plus_100: true
+  pending_cancel_time_est: "15:50"
+  hard_flatten_time_est: "15:55"
+
+# Real-Time Execution Discrepancy & Slippage Audit
+discrepancy_auditor:
+  friction_threshold_ticks: 1.5
+  rolling_window: 10
+  log_path: "reports/telemetry/execution_discrepancies.jsonl"
+
+# Webhook Alerting
+notifications:
+  webhook_url: ""  # Set via TRADOVATE_WEBHOOK_URL or CLI

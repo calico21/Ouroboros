@@ -55,6 +55,8 @@ class TradeSetup:
     take_profit: float             # Absolute price
     limit_price: Optional[float] = None
     ttl_bars: int = 12             # Cancellation horizon for pending limit orders
+    time_stop_bars: Optional[int] = None  # Max holding duration before inertia/time exit
+    protect_at_1r: bool = False    # Tighten SL to BE once MFE reaches >= +0.85R
     tag: str = "default"           # Sub-setup identifier for forensic attribution
     metadata: Dict[str, Any] = field(default_factory=dict)
 
@@ -79,8 +81,11 @@ class OrderEvent:
     take_profit: float
     limit_price: Optional[float] = None
     ttl_bars: int = 12
+    time_stop_bars: Optional[int] = None
+    protect_at_1r: bool = False
     bars_active: int = 0
     tag: str = "default"
+    metadata: Dict[str, Any] = field(default_factory=dict)
     status: OrderStatus = OrderStatus.PENDING
 
 

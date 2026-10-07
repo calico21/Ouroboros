@@ -2,6 +2,7 @@
 Vectorized Monte Carlo Bootstrap Simulation for Prop-Firm Path-Dependent Drawdowns.
 Simulates 10,000 equity paths under dynamic peak MTM trailing floor ratchets.
 Vectorized across paths for lightning-fast execution (< 50ms for 10,000 paths).
+Enforces statistical sample-size gating: Suppresses curves when N < 15 empirical trades.
 """
 from typing import List, Dict, Any, Optional
 import numpy as np
@@ -11,8 +12,10 @@ from src.core.events import TradeRecord
 class PropFirmMonteCarloSimulator:
     """
     Simulates path-dependent prop-firm evaluation outcomes across thousands of bootstrap paths.
-    Vectorized step-by-step across all paths simultaneously.
+    Enforces minimum N=15 threshold to suppress misleading curves on tiny samples.
     """
+
+    MIN_TRADES_THRESHOLD = 15
 
     def __init__(
         self,
@@ -34,19 +37,27 @@ class PropFirmMonteCarloSimulator:
         self.iterations = iterations
 
     def run(self, trades: List[TradeRecord]) -> Dict[str, Any]:
-        if not trades or len(trades) < 5:
+        n_trades = len(trades) if trades else 0
+
+        # Sample size guardrail: Suppress Monte Carlo when N < 15
+        if n_trades < self.MIN_TRADES_THRESHOLD:
             return {
                 "iterations": self.iterations,
-                "prob_pass_pct": 0.0,
-                "prob_breach_pct": 0.0,
-                "prob_inconclusive_pct": 100.0,
+                "is_suppressed": True,
+                "status": f"SUPPRESSED_INSUFFICIENT_SAMPLE (N = {n_trades} / {self.MIN_TRADES_THRESHOLD} required)",
+                "warning": (
+                    f"Monte Carlo simulation suppressed: requires at least {self.MIN_TRADES_THRESHOLD} "
+                    f"empirical trades (observed N={n_trades}) to prevent deceptive probability estimates."
+                ),
+                "prob_pass_pct": None,
+                "prob_breach_pct": None,
+                "prob_inconclusive_pct": None,
                 "median_trades_to_pass": None,
                 "percentile_curves": {}
             }
 
         # Extract empirical net PnLs
         net_pnls = np.array([t.net_pnl for t in trades], dtype=np.float64)
-        n_trades = len(net_pnls)
 
         rng = np.random.default_rng(seed=42)
         bootstrap_indices = rng.integers(0, n_trades, size=(self.iterations, self.max_sim_trades))
@@ -72,39 +83,29 @@ class PropFirmMonteCarloSimulator:
         for step in range(self.max_sim_trades):
             active = ~passed & ~breached
             if not np.any(active):
-                # Fill remaining steps for sampled paths
                 equity_paths[:, step + 1:] = balances[:sample_subset_size, None]
                 break
 
-            # Update balances of active paths
             pnl_step = sample_pnls[:, step]
             balances[active] += pnl_step[active]
-
-            # Update HWM
             hwms[active] = np.maximum(hwms[active], balances[active])
 
-            # Trailing floor calculation
             new_floors = hwms - self.trailing_max_dd
 
-            # Floor lock logic
             if self.floor_lock_threshold is not None and locked_floor_level is not None:
                 newly_locked = active & ~locked_flags & (hwms >= (self.initial_balance + self.floor_lock_threshold))
                 locked_flags[newly_locked] = True
                 new_floors[locked_flags] = np.maximum(new_floors[locked_flags], locked_floor_level)
 
-            # Floors only ratchet upwards
             floors[active] = np.maximum(floors[active], new_floors[active])
 
-            # Check breach conditions
             just_breached = active & (balances <= floors)
             breached[just_breached] = True
 
-            # Check pass conditions
             just_passed = active & ~just_breached & (balances >= self.target_balance)
             passed[just_passed] = True
             trades_to_pass[just_passed] = step + 1
 
-            # Record sampled path balances
             equity_paths[:, step + 1] = balances[:sample_subset_size]
 
         pass_count = int(np.sum(passed))
@@ -129,6 +130,8 @@ class PropFirmMonteCarloSimulator:
 
         return {
             "iterations": self.iterations,
+            "is_suppressed": False,
+            "status": "VALID_SIMULATION",
             "prob_pass_pct": round(prob_pass, 2),
             "prob_breach_pct": round(prob_breach, 2),
             "prob_inconclusive_pct": round(prob_inconclusive, 2),

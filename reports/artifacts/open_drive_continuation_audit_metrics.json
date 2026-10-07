@@ -1,49 +1,63 @@
 {
   "summary": {
-    "total_trades": 1,
-    "winning_trades": 0,
-    "losing_trades": 1,
-    "win_rate_pct": 0.0,
-    "total_net_pnl": -119.22,
-    "total_gross_pnl": -112.5,
-    "total_fees_paid": 6.72,
-    "profit_factor": 0.0,
-    "expectancy_dollars": -119.22,
-    "expectancy_r": -1.014,
-    "median_r": -1.014,
-    "skewness_r": 0.0,
-    "avg_win_dollars": 0.0,
-    "avg_loss_dollars": -119.22,
-    "win_loss_payoff_ratio": 0.0,
-    "max_drawdown_dollars": 0.0,
-    "sharpe_ratio": -2676.48,
-    "sortino_ratio": 0.0
+    "total_trades": 14,
+    "winning_trades": 4,
+    "losing_trades": 10,
+    "win_rate_pct": 28.57,
+    "win_rate_wilson_ci95": [
+      11.72,
+      54.65
+    ],
+    "win_rate_wilson_ci_str": "28.6% (95% CI: [11.7%, 54.6%])",
+    "total_net_pnl": -192.86,
+    "total_gross_pnl": -81.4,
+    "total_fees_paid": 111.46,
+    "profit_factor": 0.8,
+    "expectancy_dollars": -13.78,
+    "expectancy_r": -0.122,
+    "expectancy_r_stderr": 0.386,
+    "expectancy_r_ci95": [
+      -0.878,
+      0.635
+    ],
+    "expectancy_r_ci_str": "-0.122R \u00b1 0.386 (95% CI: [-0.878R, +0.635R])",
+    "median_r": -1.016,
+    "skewness_r": 0.949,
+    "avg_win_dollars": 198.64,
+    "avg_loss_dollars": -98.74,
+    "win_loss_payoff_ratio": 2.01,
+    "max_drawdown_dollars": 729.94,
+    "sharpe_ratio": -2.28,
+    "sortino_ratio": -24.2,
+    "is_sufficient_sample": false,
+    "sample_significance_status": "INSUFFICIENT_SAMPLE (N = 14 / 30 minimum)",
+    "sample_warning": "STATUS: INSUFFICIENT_SAMPLE (N = 14 / 30 minimum). Statistical estimates, Sharpe/Sortino, and win rate are prone to small-sample bias."
   },
   "excursion": {
-    "median_mfe_r": 0.284,
-    "median_mae_r": 1.108,
-    "mean_mfe_r": 0.284,
-    "mean_mae_r": 1.108,
-    "drift_ratio": 0.256,
-    "median_time_to_peak_mfe": 1,
-    "mean_time_to_peak_mfe": 1.0,
-    "excursion_efficiency": -3.571,
+    "median_mfe_r": 0.794,
+    "median_mae_r": 1.051,
+    "mean_mfe_r": 1.052,
+    "mean_mae_r": 1.034,
+    "drift_ratio": 0.755,
+    "median_time_to_peak_mfe": 3,
+    "mean_time_to_peak_mfe": 9.43,
+    "excursion_efficiency": -2.066,
     "is_alpha_disqualified": true
   },
   "loss_taxonomy": {
-    "total_losses": 1,
+    "total_losses": 10,
     "breakdown": {
       "Immediate Flush": {
-        "count": 0,
-        "percentage": 0.0,
-        "total_loss_dollars": 0.0,
-        "avg_loss_dollars": 0.0
+        "count": 2,
+        "percentage": 20.0,
+        "total_loss_dollars": 220.42,
+        "avg_loss_dollars": 110.21
       },
       "Trapped Trade": {
-        "count": 0,
-        "percentage": 0.0,
-        "total_loss_dollars": 0.0,
-        "avg_loss_dollars": 0.0
+        "count": 2,
+        "percentage": 20.0,
+        "total_loss_dollars": 172.2,
+        "avg_loss_dollars": 86.1
       },
       "Friction Drain": {
         "count": 0,
@@ -52,10 +66,10 @@
         "avg_loss_dollars": 0.0
       },
       "Structural Invalidation": {
-        "count": 1,
-        "percentage": 100.0,
-        "total_loss_dollars": 119.22,
-        "avg_loss_dollars": 119.22
+        "count": 6,
+        "percentage": 60.0,
+        "total_loss_dollars": 594.78,
+        "avg_loss_dollars": 99.13
       }
     }
   },
@@ -64,50 +78,50 @@
       {
         "slippage_ticks": 0.0,
         "slippage_pts": 0.0,
-        "total_net_pnl": -116.22,
-        "expectancy_dollars": -116.22,
-        "expectancy_r": -1.047,
-        "win_rate_pct": 0.0
+        "total_net_pnl": -148.36,
+        "expectancy_dollars": -10.6,
+        "expectancy_r": -0.173,
+        "win_rate_pct": 28.6
       },
       {
         "slippage_ticks": 0.5,
         "slippage_pts": 0.125,
-        "total_net_pnl": -117.72,
-        "expectancy_dollars": -117.72,
-        "expectancy_r": -1.061,
-        "win_rate_pct": 0.0
+        "total_net_pnl": -170.61,
+        "expectancy_dollars": -12.19,
+        "expectancy_r": -0.191,
+        "win_rate_pct": 28.6
       },
       {
         "slippage_ticks": 1.0,
         "slippage_pts": 0.25,
-        "total_net_pnl": -119.22,
-        "expectancy_dollars": -119.22,
-        "expectancy_r": -1.074,
-        "win_rate_pct": 0.0
+        "total_net_pnl": -192.86,
+        "expectancy_dollars": -13.78,
+        "expectancy_r": -0.208,
+        "win_rate_pct": 28.6
       },
       {
         "slippage_ticks": 1.5,
         "slippage_pts": 0.375,
-        "total_net_pnl": -120.72,
-        "expectancy_dollars": -120.72,
-        "expectancy_r": -1.088,
-        "win_rate_pct": 0.0
+        "total_net_pnl": -215.11,
+        "expectancy_dollars": -15.36,
+        "expectancy_r": -0.226,
+        "win_rate_pct": 28.6
       },
       {
         "slippage_ticks": 2.0,
         "slippage_pts": 0.5,
-        "total_net_pnl": -122.22,
-        "expectancy_dollars": -122.22,
-        "expectancy_r": -1.101,
-        "win_rate_pct": 0.0
+        "total_net_pnl": -237.36,
+        "expectancy_dollars": -16.95,
+        "expectancy_r": -0.243,
+        "win_rate_pct": 28.6
       },
       {
         "slippage_ticks": 3.0,
         "slippage_pts": 0.75,
-        "total_net_pnl": -125.22,
-        "expectancy_dollars": -125.22,
-        "expectancy_r": -1.128,
-        "win_rate_pct": 0.0
+        "total_net_pnl": -281.86,
+        "expectancy_dollars": -20.13,
+        "expectancy_r": -0.278,
+        "win_rate_pct": 28.6
       }
     ],
     "critical_slippage_s_star": 0.0,
@@ -116,48 +130,55 @@
   "regimes": {
     "by_session_window": {
       "09:30-10:00 (Open Auction)": {
+        "trade_count": 13,
+        "win_rate_pct": 30.8,
+        "total_net_pnl": -79.16,
+        "avg_net_pnl": -6.09,
+        "expectancy_r": -0.052
+      },
+      "10:00-11:30 (Morning Trend)": {
         "trade_count": 1,
         "win_rate_pct": 0.0,
-        "total_net_pnl": -119.22,
-        "avg_net_pnl": -119.22,
-        "expectancy_r": -1.014
+        "total_net_pnl": -113.7,
+        "avg_net_pnl": -113.7,
+        "expectancy_r": -1.025
       }
     },
     "by_day_of_week": {
       "Monday": {
-        "trade_count": 0,
+        "trade_count": 2,
         "win_rate_pct": 0.0,
-        "total_net_pnl": 0.0,
-        "avg_net_pnl": 0.0,
-        "expectancy_r": 0.0
+        "total_net_pnl": -190.2,
+        "avg_net_pnl": -95.1,
+        "expectancy_r": -1.015
       },
       "Tuesday": {
-        "trade_count": 0,
-        "win_rate_pct": 0.0,
-        "total_net_pnl": 0.0,
-        "avg_net_pnl": 0.0,
-        "expectancy_r": 0.0
+        "trade_count": 5,
+        "win_rate_pct": 40.0,
+        "total_net_pnl": 47.16,
+        "avg_net_pnl": 9.43,
+        "expectancy_r": 0.24
       },
       "Wednesday": {
-        "trade_count": 1,
+        "trade_count": 2,
         "win_rate_pct": 0.0,
-        "total_net_pnl": -119.22,
-        "avg_net_pnl": -119.22,
-        "expectancy_r": -1.014
+        "total_net_pnl": -164.44,
+        "avg_net_pnl": -82.22,
+        "expectancy_r": -1.02
       },
       "Thursday": {
-        "trade_count": 0,
-        "win_rate_pct": 0.0,
-        "total_net_pnl": 0.0,
-        "avg_net_pnl": 0.0,
-        "expectancy_r": 0.0
+        "trade_count": 2,
+        "win_rate_pct": 50.0,
+        "total_net_pnl": 91.4,
+        "avg_net_pnl": 45.7,
+        "expectancy_r": 0.543
       },
       "Friday": {
-        "trade_count": 0,
-        "win_rate_pct": 0.0,
-        "total_net_pnl": 0.0,
-        "avg_net_pnl": 0.0,
-        "expectancy_r": 0.0
+        "trade_count": 3,
+        "win_rate_pct": 33.3,
+        "total_net_pnl": 23.22,
+        "avg_net_pnl": 7.74,
+        "expectancy_r": 0.027
       }
     },
     "by_atr_quintile": {
@@ -176,11 +197,11 @@
         "expectancy_r": 0.0
       },
       "Q3": {
-        "trade_count": 1,
-        "win_rate_pct": 0.0,
-        "total_net_pnl": -119.22,
-        "avg_net_pnl": -119.22,
-        "expectancy_r": -1.014
+        "trade_count": 14,
+        "win_rate_pct": 28.6,
+        "total_net_pnl": -192.86,
+        "avg_net_pnl": -13.78,
+        "expectancy_r": -0.122
       },
       "Q4": {
         "trade_count": 0,
@@ -200,23 +221,27 @@
   },
   "prop_firm": {
     "initial_balance": 50000.0,
-    "current_balance": 49880.78,
-    "high_water_mark": 50031.5,
-    "trailing_floor": 47531.5,
-    "remaining_cushion": 2349.28,
+    "current_balance": 49807.14,
+    "high_water_mark": 50558.04,
+    "trailing_floor": 48058.04,
+    "remaining_cushion": 1749.1,
     "status": "ACTIVE",
     "breach_reason": null,
     "passed_evaluation": false,
     "profit_target": 3000.0,
-    "target_balance": 53000.0
+    "target_balance": 53000.0,
+    "sample_status": "INSUFFICIENT_SAMPLE (N = 14 / 30 minimum)"
   },
-  "bars_processed": 2340,
+  "bars_processed": 5925,
   "strategy_name": "open_drive_continuation",
   "monte_carlo": {
     "iterations": 10000,
-    "prob_pass_pct": 0.0,
-    "prob_breach_pct": 0.0,
-    "prob_inconclusive_pct": 100.0,
+    "is_suppressed": true,
+    "status": "SUPPRESSED_INSUFFICIENT_SAMPLE (N = 14 / 15 required)",
+    "warning": "Monte Carlo simulation suppressed: requires at least 15 empirical trades (observed N=14) to prevent deceptive probability estimates.",
+    "prob_pass_pct": null,
+    "prob_breach_pct": null,
+    "prob_inconclusive_pct": null,
     "median_trades_to_pass": null,
     "percentile_curves": {}
   }

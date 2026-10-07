@@ -35,8 +35,8 @@ class OpenDriveContinuationStrategy(BaseStrategy):
         self.check_session_boundary(bar)
 
         t = bar.timestamp.time()
-        # Bar 1 at 09:30 EST
-        if t == time(9, 30) or (t.hour == 9 and t.minute == 30):
+        # Bar 1 initial session open drive detection
+        if not self.detector.drive_detected and (t <= time(9, 35)):
             self.detector.evaluate_open_bar(bar.open, bar.high, bar.low, bar.close)
             self.bars_since_drive = 0
             return None

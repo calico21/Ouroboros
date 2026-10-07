@@ -1,4 +1,7 @@
-Strategy,Trades,Win Rate %,Net PnL ($),Profit Factor,Expectancy (R),Drift Ratio (x),P(Pass) %,P(Breach) %,Crit Slip (S*),Status
-vwap_mean_reversion_10am,1,100.0,186.76,999.0,1.672,3.167,0.0,0.0,> 3.0,VIABLE
-orb_5m_binary,13,15.38,-809.72,0.23,-0.575,0.281,0.0,100.0,0.0,DISQUALIFIED
-open_drive_continuation,1,0.0,-119.22,0.0,-1.014,0.256,0.0,0.0,0.0,DISQUALIFIED
+Strategy,Trades,Win Rate (95% CI),Net PnL ($),Profit Factor,Expectancy (R ± SE),Drift Ratio (x),P(Pass),P(Breach),Crit Slip (S*),Status
+afternoon_trend_continuation,61,70.5% [58.1-80.4%],2949.86,3.16,+0.569 ± 0.112,2.178,100.0%,0.0%,> 3.0,APPROVED_FOR_INCUBATION
+portfolio_blended,49,61.2% [47.2-73.6%],1526.98,2.57,+0.403 ± 0.120,1.662,96.6%,0.0%,> 3.0,APPROVED_FOR_INCUBATION
+orb_5m_binary,34,38.2% [23.9-55.0%],-592.18,0.46,-0.109 ± 0.104,1.047,0.0%,63.3%,0.0,DISQUALIFIED (DRIFT < 1.5x)
+trapped_liquidity_sweep,37,40.5% [26.4-56.5%],-1110.84,0.45,-0.242 ± 0.153,0.833,0.0%,98.9%,0.0,DISQUALIFIED (DRIFT < 1.5x)
+vwap_mean_reversion_10am,112,25.0% [17.9-33.8%],-2322.4,0.42,-0.325 ± 0.127,0.796,0.0%,85.2%,0.0,DISQUALIFIED (DRIFT < 1.5x)
+open_drive_continuation,14,28.6% [11.7-54.6%],-192.86,0.8,-0.122 ± 0.386,0.755,GATED (N<15),GATED (N<15),0.0,INSUFFICIENT_SAMPLE (N=14/30)

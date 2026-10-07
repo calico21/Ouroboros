@@ -26,7 +26,7 @@ def resample_bars(df: pd.DataFrame, timeframe: str = "5m") -> pd.DataFrame:
     }
     freq = rule_map.get(timeframe, timeframe)
 
-    resampled = df.resample(freq, label="left", closed="left").agg({
+    resampled = df.resample(freq, label="right", closed="right").agg({
         "open": "first",
         "high": "max",
         "low": "min",

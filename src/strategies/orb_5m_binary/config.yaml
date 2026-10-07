@@ -1,14 +1,25 @@
 strategy_name: "orb_5m_binary"
-display_name: "Opening Range Breakout 5M Binary"
-version: "1.0.0"
+display_name: "Opening Range Breakout 5M Binary (Evolved)"
+version: "2.0.0"
 timeframe: "5m"
 or_start_time: "09:30"
-or_duration_minutes: 5
-trading_window_end: "11:30"
-target_r_multiple: 2.0
-stop_type: "midpoint"      # Options: "midpoint" or "opposite_boundary"
+or_window_end: "09:45"        # OR formation window (09:30 - 09:45 EST)
+trading_window_end: "11:30"   # Expiration cutoff for new setups
+target_mode: "fixed_rr"       # Options: "fixed_rr" or "orb_range_multiple"
+risk_reward: 1.0              # Monetizes the median +1.15R impulse before exhaustion
+range_mult: 0.80              # Fraction of OR range pts when target_mode is orb_range_multiple
+time_stop_bars: 3             # Inertia time stop: liquidate if neither TP/SL hit within 3 bars (15 mins)
+protect_at_1r: false          # Optional soft profit protection: tighten SL to BE+0.25 when MFE >= 0.85R
+stop_type: "midpoint"         # Options: "midpoint" or "opposite_boundary"
+
+# Institutional Breakout Quality & Fakeout Sweep Gates
+min_breakout_rvol: 1.25       # Minimum Relative Volume vs 15-day median for exact time-of-day bucket
+rvol_lookback_days: 15        # Rolling trading day lookback for bucket baseline volume
+min_bar_body_pct: 0.55        # Minimum candle body fraction |C - O| / (H - L) to prevent wicks
+min_close_extremity_pct: 0.75 # Minimum close extremity: top 25% for Long, bottom 25% for Short
+
 max_trades_per_session: 1
-min_range_pts: 10.0
+min_range_pts: 4.0
 max_range_pts: 120.0
 ttl_bars: 6
 tag: "ORB_5M"

@@ -66,7 +66,10 @@ class ExecutionSimulator:
             take_profit=setup.take_profit,
             limit_price=setup.limit_price,
             ttl_bars=setup.ttl_bars,
+            time_stop_bars=setup.time_stop_bars,
+            protect_at_1r=setup.protect_at_1r,
             tag=setup.tag,
+            metadata=setup.metadata,
             status=OrderStatus.PENDING
         )
 
@@ -110,6 +113,9 @@ class ExecutionSimulator:
             "mae_price": fill_price,
             "time_to_peak_mfe": 0,
             "bars_held": 0,
+            "time_stop_bars": order.time_stop_bars,
+            "protect_at_1r": order.protect_at_1r,
+            "breakeven_tightened": False,
             "entry_hour_est": bar.timestamp.hour,
             "day_of_week": bar.timestamp.strftime("%A"),
             "atr_quintile": 3 if bar.atr_14 is None else 3,  # Will be mapped in analytics
@@ -172,8 +178,27 @@ class ExecutionSimulator:
             self._close_trade(bar, exit_price, "BREACH_LIQUIDATION", account)
             return
 
-        # 5. Check Stop Loss and Take Profit fills
+        # 5. Optional Soft Profit Protection Hook (protect_at_1r)
+        if trade.get("protect_at_1r") and not trade.get("breakeven_tightened", False):
+            mfe_pts = (trade["mfe_price"] - entry_price) if side == OrderSide.LONG else (entry_price - trade["mfe_price"])
+            mfe_r = mfe_pts / trade["risk_r_price"] if trade["risk_r_price"] > 0 else 0.0
+            if mfe_r >= 0.85:
+                if side == OrderSide.LONG:
+                    trade["stop_loss"] = max(trade["stop_loss"], entry_price + self.tick_size)
+                else:
+                    trade["stop_loss"] = min(trade["stop_loss"], entry_price - self.tick_size)
+                trade["breakeven_tightened"] = True
+
+        # 6. Check Stop Loss and Take Profit fills
         self._evaluate_bracket_exits(bar, account)
+
+        # 7. Check Inertia Time-Stop Invalidation
+        if self.active_trade is not None and trade.get("time_stop_bars") is not None:
+            if trade["bars_held"] >= trade["time_stop_bars"]:
+                slippage_pts = self.slippage_ticks * self.tick_size
+                exit_price = (bar.close - slippage_pts) if side == OrderSide.LONG else (bar.close + slippage_pts)
+                self._close_trade(bar, exit_price, "TIME_STOP", account)
+                return
 
     def _process_pending_limits(self, bar: BarEvent) -> None:
         """
@@ -232,6 +257,9 @@ class ExecutionSimulator:
                     "mae_price": fill_price,
                     "time_to_peak_mfe": 0,
                     "bars_held": 0,
+                    "time_stop_bars": order.time_stop_bars,
+                    "protect_at_1r": order.protect_at_1r,
+                    "breakeven_tightened": False,
                     "entry_hour_est": bar.timestamp.hour,
                     "day_of_week": bar.timestamp.strftime("%A"),
                     "atr_quintile": 3,

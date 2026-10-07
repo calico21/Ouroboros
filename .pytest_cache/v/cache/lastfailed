@@ -1,0 +1,4 @@
+{
+  "tests/test_multi_account_manager.py::test_multi_account_concurrent_fanout": true,
+  "tests/test_multi_account_manager.py::test_multi_account_dll_isolation_and_bypass": true
+}

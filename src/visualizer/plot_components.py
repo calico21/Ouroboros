@@ -23,6 +23,20 @@ class ComponentPlotter:
         apply_dark_theme()
         fig, ax = plt.subplots(figsize=(10, 5.5), dpi=200)
 
+        if mc_results.get("is_suppressed"):
+            ax.text(
+                0.5, 0.5,
+                f"MONTE CARLO SUPPRESSED\n\n{mc_results.get('status')}\n\nRequires N >= 15 trades to avoid false confidence",
+                ha="center", va="center", color=COLOR_LOSS, fontsize=12, fontweight="bold",
+                bbox=dict(boxstyle="round,pad=1.0", facecolor=BG_PANEL, edgecolor=COLOR_LOSS)
+            )
+            ax.set_title("Prop-Firm Monte Carlo Survival Simulation (Gated)", fontsize=12, fontweight="bold", pad=12)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            plt.tight_layout()
+            plt.savefig(output_path, facecolor=BG_MAIN)
+            plt.close(fig)
+            return output_path
+
         curves = mc_results.get("percentile_curves", {})
         if not curves:
             plt.close(fig)

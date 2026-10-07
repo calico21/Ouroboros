@@ -52,14 +52,17 @@ def print_terminal_summary(strategy_name: str, metrics: dict, mc_res: dict):
     print(f"  Target: CME Globex Intraday Futures // Strategy: {strategy_name.upper()}")
     print("=" * 80)
 
-    print("\n[1. EXECUTIVE PERFORMANCE SUMMARY]")
+    print("\n[1. EXECUTIVE PERFORMANCE SUMMARY & STATISTICAL GUARDRAILS]")
     print(f"  Total Trades Executed:   {s.get('total_trades', 0)}")
-    print(f"  Win Rate:                {s.get('win_rate_pct', 0.0)}% ({s.get('winning_trades', 0)}W / {s.get('losing_trades', 0)}L)")
+    print(f"  Sample Significance:     {s.get('sample_significance_status', 'N/A')}")
+    if s.get('sample_warning'):
+        print(f"  *** WARNING ***          {s.get('sample_warning')}")
+    print(f"  Win Rate (Wilson 95% CI):{s.get('win_rate_wilson_ci_str', str(s.get('win_rate_pct', 0)) + '%')}")
     print(f"  Total Realized Net PnL:  ${s.get('total_net_pnl', 0.0):,.2f}")
     print(f"  Gross Profit / Loss:     ${s.get('total_gross_pnl', 0.0):,.2f} / Fees Paid: ${s.get('total_fees_paid', 0.0):,.2f}")
     print(f"  Profit Factor:           {s.get('profit_factor', 0.0)}")
     print(f"  Net Expectancy ($):      ${s.get('expectancy_dollars', 0.0):,.2f} per trade")
-    print(f"  Net Expectancy (R):      {s.get('expectancy_r', 0.0):+.3f}R (Median: {s.get('median_r', 0.0):+.3f}R)")
+    print(f"  Net Expectancy (R Boot): {s.get('expectancy_r_ci_str', str(s.get('expectancy_r', 0)) + 'R')}")
     print(f"  Annualized Sharpe Ratio: {s.get('sharpe_ratio', 0.0)}")
     print(f"  Max Drawdown ($):        ${s.get('max_drawdown_dollars', 0.0):,.2f}")
 
@@ -88,9 +91,15 @@ def print_terminal_summary(strategy_name: str, metrics: dict, mc_res: dict):
     print("\n[5. PROP-FIRM EVALUATION & MONTE CARLO (10k PATHS)]")
     print(f"  Evaluation Status:       {pf.get('status', 'N/A')}")
     print(f"  Final Account Balance:   ${pf.get('current_balance', 0):,.2f} (Floor: ${pf.get('trailing_floor', 0):,.2f})")
-    print(f"  Monte Carlo P(Pass):     {mc_res.get('prob_pass_pct', 0.0)}% (Target: +$3,000)")
-    print(f"  Monte Carlo P(Breach):   {mc_res.get('prob_breach_pct', 0.0)}% (Trailing Floor Breach)")
-    print(f"  Median Trades to Pass:   {mc_res.get('median_trades_to_pass', 'N/A')}")
+    if mc_res.get("is_suppressed"):
+        print(f"  Monte Carlo Status:      {mc_res.get('status')}")
+        print(f"  *** MC GATED ***         {mc_res.get('warning')}")
+        print(f"  Monte Carlo P(Pass):     SUPPRESSED (N < 15)")
+        print(f"  Monte Carlo P(Breach):   SUPPRESSED (N < 15)")
+    else:
+        print(f"  Monte Carlo P(Pass):     {mc_res.get('prob_pass_pct', 0.0)}% (Target: +$3,000)")
+        print(f"  Monte Carlo P(Breach):   {mc_res.get('prob_breach_pct', 0.0)}% (Trailing Floor Breach)")
+        print(f"  Median Trades to Pass:   {mc_res.get('median_trades_to_pass', 'N/A')}")
     print("=" * 80 + "\n")
 
 

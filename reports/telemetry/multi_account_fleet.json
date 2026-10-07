@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-10-07T21:40:57.654995",
+  "total_accounts": 2,
+  "active_accounts": 2,
+  "healthy_accounts": 0,
+  "locked_accounts": 0,
+  "halted_accounts": 0,
+  "breached_accounts": 0,
+  "fleet_total_equity": 100200.0,
+  "fleet_realized_pnl": 0.0,
+  "fleet_unrealized_pnl": 200.0,
+  "fleet_total_pnl": 200.0,
+  "accounts": [
+    {
+      "account_id": "APEX-M1",
+      "is_master": false,
+      "is_active": true,
+      "balance": 50000.0,
+      "unrealized_pnl": 100.0,
+      "total_equity": 50100.0,
+      "peak_hwm": 50100.0,
+      "trailing_floor": 47600.0,
+      "target_equity": 53000.0,
+      "distance_to_floor": 2500.0,
+      "floor_locked": false,
+      "dll_remaining": 1000.0,
+      "dll_breached": false,
+      "floor_breached": false,
+      "is_halted": false,
+      "account_status": "SESSION_CLOSED",
+      "position": {
+        "side": "FLAT",
+        "contracts": 0,
+        "entry_price": 20000.0,
+        "current_price": 20050.0,
+        "unrealized_pnl": 0.0,
+        "realized_pnl": 0.0
+      },
+      "active_orders": 0
+    },
+    {
+      "account_id": "APEX-M2",
+      "is_master": false,
+      "is_active": true,
+      "balance": 50000.0,
+      "unrealized_pnl": 100.0,
+      "total_equity": 50100.0,
+      "peak_hwm": 50100.0,
+      "trailing_floor": 47600.0,
+      "target_equity": 53000.0,
+      "distance_to_floor": 2500.0,
+      "floor_locked": false,
+      "dll_remaining": 1000.0,
+      "dll_breached": false,
+      "floor_breached": false,
+      "is_halted": false,
+      "account_status": "SESSION_CLOSED",
+      "position": {
+        "side": "FLAT",
+        "contracts": 0,
+        "entry_price": 20000.0,
+        "current_price": 20050.0,
+        "unrealized_pnl": 0.0,
+        "realized_pnl": 0.0
+      },
+      "active_orders": 0
+    }
+  ],
+  "latest_dispersion": null
+}

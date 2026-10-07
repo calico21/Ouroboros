@@ -1,0 +1,15 @@
+strategy_name: "trapped_liquidity_sweep"
+symbol: "MNQ"
+orb_start_est: "09:30"
+orb_end_est: "09:45"
+sweep_window_end_est: "10:45"
+min_orb_range_pts: 10.0
+max_orb_range_pts: 90.0
+max_sweep_extension_pts: 25.0    # False breakout cannot exceed 25 pts (prevents fading real runaway trends)
+min_sweep_extension_pts: 2.0     # Must breach ORB by at least 2 pts to confirm sweep
+re_entry_timeout_bars: 3         # Must re-enter range within 3 bars of initial breach
+risk_reward: 1.25
+target_mode: "range_midpoint"    # "range_midpoint" or "fixed_rr"
+max_trades_per_day: 1
+buffer_ticks: 1
+time_stop_bars: 8                # Liquidation horizon if rotation stalls

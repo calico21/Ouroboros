@@ -1,0 +1,14 @@
+{
+  "total_orders": 1,
+  "mean_slippage_ticks": 1.0,
+  "median_slippage_ticks": 1.0,
+  "max_slippage_ticks": 1.0,
+  "total_dollar_friction": 0.5,
+  "mean_latency_ms": 22.7,
+  "p95_latency_ms": 22.7,
+  "adverse_count": 1,
+  "favorable_count": 0,
+  "neutral_count": 0,
+  "friction_drag_alert": false,
+  "alert_message": "Sample size too small for rolling friction check."
+}

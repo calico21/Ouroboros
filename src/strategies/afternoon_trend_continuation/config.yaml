@@ -1,0 +1,17 @@
+strategy_name: "afternoon_trend_continuation"
+display_name: "Afternoon Trend Continuation (13:30 - 15:30 EST)"
+version: "1.0.0"
+timeframe: "5m"
+consolidation_start_est: "11:30"
+consolidation_end_est: "13:30"
+trigger_start_est: "13:30"
+trigger_end_est: "15:15"
+eod_cutoff_est: "15:55"
+min_consolidation_pts: 10.0
+max_consolidation_pts: 80.0
+risk_reward: 1.50
+stop_mode: "midpoint" # "midpoint" or "extreme"
+max_trades_per_day: 1
+ttl_bars: 8
+time_stop_bars: 12
+tag: "PM_BREAKOUT"

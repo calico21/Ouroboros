@@ -1,0 +1,16 @@
+{
+  "status": "WARNING",
+  "trade_count": 15,
+  "rolling_win_rate_15": 0.533,
+  "wilson_lower_bound": 0.581,
+  "rolling_expectancy_15": 0.06,
+  "expectancy_hurdle": 0.15,
+  "cusum_statistic": 3.885,
+  "cusum_threshold": 50.0,
+  "peak_equity_pnl": 90.0,
+  "current_equity_pnl": 90.0,
+  "current_drawdown_dollars": 0.0,
+  "drawdown_limit_dollars": 5000.0,
+  "reason": "STATISTICAL ROLLING WARNING: 15-trade Win Rate=53.3% (Wilson lower bound=58.1%) or Expectancy=0.06R (< 0.15R hurdle).",
+  "last_update": "2026-10-07T21:36:19.307208"
+}
