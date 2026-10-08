@@ -1,6 +1,6 @@
 strategy_name: "afternoon_trend_continuation"
 display_name: "Afternoon Trend Continuation (13:30 - 15:30 EST)"
-version: "1.0.0"
+version: "1.1.0"
 timeframe: "5m"
 consolidation_start_est: "11:30"
 consolidation_end_est: "13:30"
@@ -10,8 +10,18 @@ eod_cutoff_est: "15:55"
 min_consolidation_pts: 10.0
 max_consolidation_pts: 80.0
 risk_reward: 1.50
+target_rr: 1.20
+breakeven_trigger_r: 0.85
 stop_mode: "midpoint" # "midpoint" or "extreme"
 max_trades_per_day: 1
 ttl_bars: 8
 time_stop_bars: 12
 tag: "PM_BREAKOUT"
+
+# Institutional Macro & Volatility Filters
+macro_blackout_enabled: true
+blackout_cpi: true
+blackout_announcement_window_mins: 30
+allowed_atr_quintiles: [1, 2, 3, 4]
+adx_threshold: 18.0
+trend_alignment_enabled: true

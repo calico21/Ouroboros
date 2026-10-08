@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  alphaforge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alphaforge_production
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - PYTHONPATH=/app/applet
+      - TRADOVATE_ENV=DEMO
+      - TRADOVATE_APP_ID=${TRADOVATE_APP_ID:-AlphaForgeProd}
+    volumes:
+      - ./reports:/app/applet/reports
+      - ./configs:/app/applet/configs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/live/status"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

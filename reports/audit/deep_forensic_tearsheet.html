@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AlphaForge - Deep Forensic Audit Tearsheet: afternoon_trend_continuation</title>
+  <style>
+    body { background: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 24px; }
+    h1, h2, h3 { margin-top: 0; font-weight: 700; letter-spacing: -0.02em; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .badge-green { background: #064e3b; color: #6ee7b7; border: 1px solid #059669; }
+    .badge-red { background: #7f1d1d; color: #fca5a5; border: 1px solid #dc2626; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .card { background: #131b2e; border: 1px solid #1e293b; border-radius: 8px; padding: 18px; }
+    .metric-val { font-size: 24px; font-weight: 700; color: #38bdf8; font-mono; }
+    .metric-label { font-size: 11px; text-transform: uppercase; color: #94a3b8; margin-bottom: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #1e293b; }
+    th { background: #0f172a; color: #94a3b8; text-transform: uppercase; font-size: 10px; }
+    .score-banner { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid #334155; border-radius: 8px; padding: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="score-banner">
+    <div>
+      <h1 style="margin:0 0 6px 0; font-size: 22px;">Institutional Forensic Audit Tearsheet</h1>
+      <div style="font-size: 13px; color: #94a3b8;">Asset: CME Micro E-mini Nasdaq-100 (MNQ) | Strategy: <strong style="color:#f8fafc">afternoon_trend_continuation</strong></div>
+    </div>
+    <div style="text-align: right;">
+      <div style="font-size: 32px; font-weight: 800; color: #10b981;">-2.4/100</div>
+      <span class="badge badge-red">
+        UNDER OBSERVATION
+      </span>
+    </div>
+  </div>
+
+  <h2>1. Continuous Calendar-Day Performance (252-Day Annualized)</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="metric-label">Calendar Sharpe Ratio</div>
+      <div class="metric-val">-0.261</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Zero-inflated trade-concatenation eliminated</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Calendar Sortino Ratio</div>
+      <div class="metric-val">-0.418</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Downside volatility penalization</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Calmar Ratio</div>
+      <div class="metric-val">-0.108</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Max DD: $2875.44 (5.75%)</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Gain-to-Pain Ratio</div>
+      <div class="metric-val">0.954</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Sum Positive / |Sum Negative|</div>
+    </div>
+  </div>
+
+  <h2>2. Deflated Sharpe & Multiple Testing Surveillance (Bailey & López de Prado)</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="metric-label">Deflated Sharpe Ratio (DSR)</div>
+      <div class="metric-val" style="color: #ef4444;">0.0037</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Hurdle: 0.9500 (Trials M=25)</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Probabilistic Sharpe (PSR)</div>
+      <div class="metric-val">0.2866</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Accounting for Skew=0.611, Kurt=-1.251</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">E[max SR] Null Benchmark</div>
+      <div class="metric-val">1.182</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Expected max under data snooping</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">FWER Adjusted p-value</div>
+      <div class="metric-val">1.0000</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Family-wise false positive probability</div>
+    </div>
+  </div>
+
+  <h2>3. Apex 50k MTM Trailing Ratchet Monte Carlo (50,000 Paths)</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="metric-label">P(Pass +$3,000 Target)</div>
+      <div class="metric-val" style="color:#10b981;">0.34%</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Median trades to pass: 140</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">P(Breach -$2,500 Floor)</div>
+      <div class="metric-val" style="color: #ef4444;">6.72%</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Critical limit: <= 5.0%</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Permanent Floor Lock Rate</div>
+      <div class="metric-val">0.34%</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Locked permanently at $50,100</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">95th Percentile Drawdown</div>
+      <div class="metric-val">$2509.43</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Buffer dilution: 100.4% of $2,500</div>
+    </div>
+  </div>
+
+  <h2>4. Walk-Forward Matrix (WFE) & Combinatorial Purged CV (CPCV)</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="metric-label">Mean Walk-Forward Efficiency (WFE)</div>
+      <div class="metric-val">33.3%</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Institutional target: >= 50.0%</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">WFO Consistency Score</div>
+      <div class="metric-val">33.3%</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Profitable OOS folds: 2/6</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">CPCV Overfitting Probability (PBO)</div>
+      <div class="metric-val" style="color: #ef4444;">60.0%</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">Purged & embargoed combinations</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">GARCH Stress Resilience</div>
+      <div class="metric-val">0.0/100</div>
+      <div style="font-size: 11px; color:#94a3b8; margin-top: 4px;">VULNERABLE: Synthetic shock sequences trigger trailing floor breach.</div>
+    </div>
+  </div>
+
+  <h2>5. Macro Catalyst Performance Attribution</h2>
+  <div class="card">
+    <div style="font-size: 13px; color:#94a3b8; margin-bottom: 8px;"><strong>Executive Note:</strong> NEUTRAL: Strategy shows balanced performance across macro event windows.</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Macro Catalyst</th>
+          <th>Trades</th>
+          <th>Net PnL</th>
+          <th>Win Rate</th>
+          <th>Profit Factor</th>
+          <th>Expectancy (R)</th>
+          <th>Max Loss</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>NON_EVENT</strong></td>
+          <td>743</td>
+          <td style="color: #ef4444; font-weight:600;">$-1041.88</td>
+          <td>27.9%</td>
+          <td>0.96</td>
+          <td>+-0.018R</td>
+          <td>$-84.16</td>
+        </tr><tr>
+          <td><strong>FOMC</strong></td>
+          <td>29</td>
+          <td style="color: #ef4444; font-weight:600;">$-611.64</td>
+          <td>17.2%</td>
+          <td>0.53</td>
+          <td>+-0.264R</td>
+          <td>$-84.16</td>
+        </tr><tr>
+          <td><strong>NFP</strong></td>
+          <td>45</td>
+          <td style="color: #10b981; font-weight:600;">$183.80</td>
+          <td>31.1%</td>
+          <td>1.11</td>
+          <td>+0.051R</td>
+          <td>$-84.16</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

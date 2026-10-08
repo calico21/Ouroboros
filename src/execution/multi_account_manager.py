@@ -284,15 +284,19 @@ class MultiAccountRouter:
             elapsed_ms = (t_end - t_start) * 1000.0
 
             # Fill parent order and open position in node
-            node.order_manager.handle_execution_report(ExecutionReport(
+            node.order_manager.process_execution_report(ExecutionReport(
+                exec_id=f"EXEC-{acct_id}-{signal_id}",
                 client_order_id=bracket.parent_order.client_order_id,
                 broker_order_id=f"BRK-{acct_id}-{signal_id}",
                 symbol=self.symbol,
                 direction=direction_str,
-                state=OrderState.FILLED,
-                fill_price=fill_px,
-                filled_quantity=node.config.contract_size,
-                remaining_quantity=0,
+                order_type="MARKET",
+                status=OrderState.FILLED,
+                last_qty=node.config.contract_size,
+                cum_qty=node.config.contract_size,
+                leaves_qty=0,
+                last_price=fill_px,
+                avg_price=fill_px,
                 timestamp=datetime.utcnow()
             ))
 

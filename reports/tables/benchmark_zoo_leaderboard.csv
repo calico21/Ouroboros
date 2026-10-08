@@ -1,5 +1,5 @@
 Strategy,Trades,Win Rate (95% CI),Net PnL ($),Profit Factor,Expectancy (R ± SE),Drift Ratio (x),P(Pass),P(Breach),Crit Slip (S*),Status
-afternoon_trend_continuation,61,70.5% [58.1-80.4%],2949.86,3.16,+0.569 ± 0.112,2.178,100.0%,0.0%,> 3.0,APPROVED_FOR_INCUBATION
+afternoon_trend_continuation,817,27.7% [Wilson CI],-1469.72,0.95,-0.023 ± 0.040,1.309,0.3%,6.72%,> 3.0,CONDITIONAL_AUDIT
 portfolio_blended,49,61.2% [47.2-73.6%],1526.98,2.57,+0.403 ± 0.120,1.662,96.6%,0.0%,> 3.0,APPROVED_FOR_INCUBATION
 orb_5m_binary,34,38.2% [23.9-55.0%],-592.18,0.46,-0.109 ± 0.104,1.047,0.0%,63.3%,0.0,DISQUALIFIED (DRIFT < 1.5x)
 trapped_liquidity_sweep,37,40.5% [26.4-56.5%],-1110.84,0.45,-0.242 ± 0.153,0.833,0.0%,98.9%,0.0,DISQUALIFIED (DRIFT < 1.5x)
