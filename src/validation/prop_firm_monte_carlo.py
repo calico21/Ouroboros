@@ -51,6 +51,24 @@ class PropFirmMonteCarloSimulator:
         self.hwm_trigger_for_lock = hwm_trigger_for_lock
         self.max_horizon_trades = max_horizon_trades
 
+    @classmethod
+    def from_yaml(cls, yaml_path: str = "configs/prop_firm/apex_50k_trailing_mtm.yaml") -> "PropFirmMonteCarloSimulator":
+        import yaml
+        with open(yaml_path, "r") as f:
+            cfg = yaml.safe_load(f)
+        init_bal = float(cfg.get("initial_balance", 50000.0))
+        target_p = float(cfg.get("profit_target", 3000.0))
+        trailing_buf = float(cfg.get("trailing_max_drawdown", 2500.0))
+        hwm_trigger = init_bal + float(cfg.get("floor_lock_threshold", 2600.0))
+        perm_lock = init_bal + float(cfg.get("lock_floor_offset", 100.0))
+        return cls(
+            starting_equity=init_bal,
+            trailing_buffer=trailing_buf,
+            target_profit=target_p,
+            permanent_lock_level=perm_lock,
+            hwm_trigger_for_lock=hwm_trigger
+        )
+
     def simulate(
         self,
         trades_df: pd.DataFrame,
@@ -78,13 +96,23 @@ class PropFirmMonteCarloSimulator:
         pnl_col = "net_pnl" if "net_pnl" in df.columns else "pnl"
         pnls = df[pnl_col].values.astype(float)
         
-        # Intra-trade MAE in dollars
-        mae_col = "mae" if "mae" in df.columns else None
+        # Intra-trade MAE in dollars (empirical only - no random synthetic generation)
+        mae_col = None
+        for cand in ["mae_dollars", "mae", "mae_pts"]:
+            if cand in df.columns:
+                mae_col = cand
+                break
+
         if mae_col:
-            maes = np.abs(df[mae_col].values.astype(float))
+            if mae_col == "mae_pts":
+                maes = np.abs(df[mae_col].values.astype(float)) * 2.0  # $2/pt for MNQ
+            else:
+                maes = np.abs(df[mae_col].values.astype(float))
+        elif "mae_ticks" in df.columns:
+            maes = np.abs(df["mae_ticks"].values.astype(float)) * 0.50  # $0.50/tick for MNQ
         else:
-            # Synthetic realistic intra-trade dip: half-stop or 4-12 ticks
-            maes = np.random.uniform(25.0, 75.0, size=len(pnls))
+            # Fallback to absolute net loss on losing trades or zero on flat/win if MAE unrecorded
+            maes = np.where(pnls < 0, np.abs(pnls), 0.0)
 
         n_samples = len(pnls)
 

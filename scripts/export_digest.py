@@ -105,11 +105,19 @@ def generate_llm_digest(
     # =========================================================================
     # SECTION 1: HEADER METADATA
     # =========================================================================
+    data_prov = forensic.get("data_provenance", {})
+    prov_tag = data_prov.get("provenance_tag", "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 GBM Engine)")
+    is_real = data_prov.get("is_real_market_data", False)
+    prov_badge = "✅ EMPIRICAL CME GLOBEX TICKS" if is_real else "⚠️ SYNTHETIC STOCHASTIC SIMULATION (GBM Regime Generator, Seed 42)"
+
     md.append("# ALPHAFORGE // INSTITUTIONAL QUANTITATIVE AUDIT & DIAGNOSTIC DIGEST")
     md.append(f"**Execution Timestamp:** `{now_utc}`  ")
     md.append("**Target Instrument:** CME Micro E-mini Nasdaq-100 Futures (`MNQ` / `NQ`)  ")
     md.append(f"**Dataset Span:** `2022-01-03 -> 2026-09-30` ({total_bars_str} bars across {total_sessions:,} trading sessions, {total_calendar_days:,} calendar days)  ")
-    md.append("**Account Evaluation Model:** Apex 50k Peak-Unrealized MTM Trailing Floor (-$2,500 Floor, +$3,000 Target, $50,100 Permanent Lock, -$1,000 DLL, 15:55 EST Hard Flatten)  ")
+    md.append(f"**Data Provenance:** `{prov_badge}`  ")
+    if not is_real:
+        md.append("> **CRITICAL AUDIT NOTICE:** The multi-year continuous contract was synthesized via stochastic GBM regime modeling. All backtest metrics (Win Rate, Drawdown, Sharpe, WFE) reflect generative model assumptions rather than empirical CME Globex order flow. Production sign-off requires validation on empirical Databento continuous tick data.\n")
+    md.append("**Account Evaluation Model:** Apex 50k Peak-Unrealized MTM Trailing Floor (-$2,500 Floor, +$3,000 Target, $50,100 Permanent Lock, No Daily Loss Limit, 15:55 EST Hard Flatten)  ")
     md.append("**Execution Friction Standard:** CME Globex Default (1.0 tick slippage + strict FIFO limit trade-through)  ")
     md.append("\n---\n")
 
@@ -221,6 +229,35 @@ def generate_llm_digest(
     md.append(f"| **95th Percentile Drawdown** | `${p95_dd:,.2f}` | Buffer Dilution: `{mc_m.get('buffer_dilution_pct', 0.0):.1f}%` of $2,500 |")
     md.append(f"| **Permanent Floor Lock Rate** | `{lock_rate:.1f}%` | Trailing floor frozen at $50,100 upon reaching $52,600 |")
     md.append(f"- **Monte Carlo Recommendation:** *{mc_m.get('recommendation', 'N/A')}*")
+    md.append("")
+
+    # F. Pre-Registered Regime Bucketing
+    reg_buck = forensic.get("regime_bucketing", {})
+    if reg_buck:
+        overall_trend = reg_buck.get("overall_trend_extension_sessions_fraction_pct", 0.0)
+        md.append("### F. Pre-Registered Session Regime Bucketing & Excursion Distributions")
+        md.append("*(Pre-market session variables pre-registered prior to measuring outcomes; checks distribution stability in R)*\n")
+        md.append(f"- **Sessions with Initial Balance Extension >= 1.5× ATR:** `{overall_trend:.1f}%`")
+        yearly_ext = reg_buck.get("yearly_trend_extension_fraction_pct", {})
+        if yearly_ext:
+            ext_strs = [f"{yr}: `{pct:.1f}%`" for yr, pct in sorted(yearly_ext.items())]
+            md.append(f"- **Trend Extension Rate by Year:** {', '.join(ext_strs)}")
+
+        buckets = reg_buck.get("pre_registered_buckets", {})
+        ib_b = buckets.get("ib_bucket", {})
+        if ib_b:
+            md.append("\n**Forward Excursion Distribution (in R) by Initial Balance Compression:**")
+            md.append("| IB Regime | Sample Size | Win Rate | Mean R | Median MFE (R) [p25-p75] | Median MAE (R) [p25-p75] |")
+            md.append("| :--- | :--- | :--- | :--- | :--- | :--- |")
+            for b_name, b_val in ib_b.items():
+                mfe_d = b_val.get("forward_mfe_r_dist", {})
+                mae_d = b_val.get("forward_mae_r_dist", {})
+                md.append(
+                    f"| **{b_name}** | `{b_val.get('sample_size', 0)}` | `{b_val.get('win_rate_pct', 0.0)}%` | "
+                    f"`{b_val.get('mean_r', 0.0):+.3f}R` | `{mfe_d.get('median', 0.0):.2f}R` [{mfe_d.get('p25', 0.0):.2f}-{mfe_d.get('p75', 0.0):.2f}] | "
+                    f"`{mae_d.get('median', 0.0):.2f}R` [{mae_d.get('p25', 0.0):.2f}-{mae_d.get('p75', 0.0):.2f}] |"
+                )
+        md.append("")
     md.append("\n---\n")
 
     # =========================================================================
@@ -317,8 +354,16 @@ def generate_llm_digest(
     status_badge = "🚨 QUARANTINED" if is_quarantined else ("⚠️ WARNING" if drift_status == "WARNING" else "✅ HEALTHY")
     md.append(f"- **Sentinel Quarantine Status:** `{status_badge}`")
     md.append(f"- **Page's CUSUM Statistic ($S_n$):** `{cusum_s:.3f}` (Decision Boundary $h$: `{cusum_h:.3f}` cumulative $R$-units)")
-    md.append(f"- **Rolling 15-Trade Win Rate:** `{drift_data.get('rolling_win_rate_15', 0.705) * 100:.1f}%` (Wilson Lower Bound: `{drift_data.get('wilson_lower_bound', 0.581) * 100:.1f}%`)")
-    md.append(f"- **Rolling 15-Trade Expectancy:** `{drift_data.get('rolling_expectancy_15', 0.569):+.3f}R` (Hurdle: `{drift_data.get('expectancy_hurdle', 0.150):+.3f}R`)")
+    r_wr = drift_data.get("rolling_win_rate_15")
+    r_wilson = drift_data.get("wilson_lower_bound")
+    r_exp = drift_data.get("rolling_expectancy_15")
+    r_hurdle = drift_data.get("expectancy_hurdle", 0.150)
+
+    wr_str = f"`{r_wr * 100:.1f}%` (Wilson Lower Bound: `{r_wilson * 100:.1f}%`)" if (r_wr is not None and r_wilson is not None) else "`N/A (Awaiting sample)`"
+    exp_str = f"`{r_exp:+.3f}R` (Hurdle: `{r_hurdle:+.3f}R`)" if r_exp is not None else "`N/A (Awaiting sample)`"
+
+    md.append(f"- **Rolling 15-Trade Win Rate:** {wr_str}")
+    md.append(f"- **Rolling 15-Trade Expectancy:** {exp_str}")
     md.append(f"- **Automated Drawdown Breaker:** `$800.00` (Enforces hard freeze before 32% of $2,500 Apex trailing floor is touched)")
     md.append(f"- **Active Diagnostic Telemetry:** *{q_reason}*")
     md.append("\n---\n")

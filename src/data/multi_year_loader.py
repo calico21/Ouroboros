@@ -23,6 +23,9 @@ from src.data.macro_calendar import MacroCalendar, CatalystType, MarketSessionTy
 class MultiYearLoader:
     """
     Loads, stitches, or realistically synthesizes 5-year continuous 5-minute MNQ data (2022-2026).
+    Maintains transparent data provenance:
+    - DATABENTO_REAL_GLOBEX_TICKS: When real tick data is present in data/databento/ or data/raw/
+    - SYNTHETIC_STOCHASTIC_SIMULATION: When synthesized via stochastic regime generator
     """
 
     def __init__(
@@ -32,6 +35,8 @@ class MultiYearLoader:
     ):
         self.cache_path = Path(cache_path)
         self.calendar = calendar or MacroCalendar()
+        self.provenance: str = "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 GBM)"
+        self.is_real_market_data: bool = False
 
     def get_or_create_dataset(
         self,
@@ -41,7 +46,34 @@ class MultiYearLoader:
     ) -> pd.DataFrame:
         """
         Loads cached multi-year dataset or synthesizes and caches it.
+        Checks for real Databento / Globex tick files first.
         """
+        # 1. Check for real Databento / external continuous historical feed
+        databento_candidates = [
+            Path("data/databento/mnq_continuous_5m.parquet"),
+            Path("data/databento/mnq_continuous_5m.csv"),
+            Path("data/raw/mnq_databento_continuous_5m.parquet"),
+            Path("data/raw/mnq_databento_continuous_5m.csv"),
+        ]
+        for db_path in databento_candidates:
+            if db_path.exists():
+                try:
+                    if db_path.suffix == ".parquet":
+                        df_real = pd.read_parquet(db_path)
+                    else:
+                        df_real = pd.read_csv(db_path, index_col=0, parse_dates=True)
+                    if len(df_real) > 1000:
+                        self.provenance = f"DATABENTO_REAL_GLOBEX_TICKS ({db_path})"
+                        self.is_real_market_data = True
+                        df_real["is_synthetic"] = False
+                        df_real["data_provenance"] = self.provenance
+                        df_real.attrs["provenance"] = self.provenance
+                        df_real.attrs["is_real_market_data"] = True
+                        df_real.attrs["provenance_disclaimer"] = "Verified empirical CME Globex L2/L3 market data."
+                        return df_real
+                except Exception:
+                    pass
+
         csv_path = self.cache_path.with_suffix(".csv")
         legacy_csv = Path("data/processed/mnq_5y_continuous_5m.csv")
         legacy_parquet = Path("data/processed/mnq_5y_continuous_5m.parquet")
@@ -55,11 +87,33 @@ class MultiYearLoader:
                         else:
                             df = pd.read_csv(p, index_col=0, parse_dates=True)
                         if len(df) > 50000:
+                            self.provenance = "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 Cached)"
+                            self.is_real_market_data = False
+                            if "is_synthetic" not in df.columns:
+                                df["is_synthetic"] = True
+                            if "data_provenance" not in df.columns:
+                                df["data_provenance"] = self.provenance
+                            df.attrs["provenance"] = self.provenance
+                            df.attrs["is_real_market_data"] = False
+                            df.attrs["provenance_disclaimer"] = (
+                                "SYNTHETIC NOTICE: Multi-year dataset generated via stochastic GBM with regime shifts. "
+                                "Metrics describe generative assumptions, NOT empirical CME Globex order flow."
+                            )
                             return df
                     except Exception:
                         pass  # Try next candidate or recompute
 
         df = self.generate_multi_year_dataset(start_date=start_date, end_date=end_date)
+        self.provenance = "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 Freshly Generated)"
+        self.is_real_market_data = False
+        df["is_synthetic"] = True
+        df["data_provenance"] = self.provenance
+        df.attrs["provenance"] = self.provenance
+        df.attrs["is_real_market_data"] = False
+        df.attrs["provenance_disclaimer"] = (
+            "SYNTHETIC NOTICE: Multi-year dataset generated via stochastic GBM with regime shifts. "
+            "Metrics describe generative assumptions, NOT empirical CME Globex order flow."
+        )
         
         # Save cache
         self.cache_path.parent.mkdir(parents=True, exist_ok=True)

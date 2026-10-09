@@ -680,6 +680,30 @@ export default function App() {
         </div>
       </header>
 
+      {/* Dataset Provenance & Empirical Reality Banner */}
+      <div className={`border-b px-6 py-2 flex flex-wrap items-center justify-between text-xs font-mono ${
+        forensicData?.data_provenance?.is_real_market_data
+          ? 'bg-emerald-950/30 border-emerald-800/80 text-emerald-300'
+          : 'bg-amber-950/30 border-amber-800/80 text-amber-300'
+      }`}>
+        <div className="flex items-center gap-2">
+          <span className="font-bold">
+            {forensicData?.data_provenance?.is_real_market_data ? '✅ REAL GLOBEX DATA' : '⚠️ DATA PROVENANCE NOTICE'}:
+          </span>
+          <span className="text-gray-300">
+            {forensicData?.data_provenance?.provenance_tag ?? 'SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 Cached)'}
+          </span>
+          <span className="text-gray-400 text-[11px] hidden md:inline">
+            — Metrics describe stochastic generator assumptions. Empirical Databento continuous tick audit required for production sign-off.
+          </span>
+        </div>
+        {forensicData?.regime_bucketing?.overall_trend_extension_sessions_fraction_pct != null && (
+          <div className="text-[11px] text-cyan-300 font-semibold mt-1 sm:mt-0">
+            Sessions with IB Ext &ge; 1.5&times; ATR: <span className="text-amber-400">{forensicData.regime_bucketing.overall_trend_extension_sessions_fraction_pct.toFixed(1)}%</span> (Trend Extension Frequency)
+          </div>
+        )}
+      </div>
+
       {/* Statistical Sample Significance Alert Banner (if N < 30) */}
       {!isSufficientSample && totalTrades > 0 && (
         <div className="bg-amber-950/40 border-b border-amber-800/80 px-6 py-2 flex items-center justify-between text-xs font-mono text-amber-300">
@@ -2027,7 +2051,9 @@ export default function App() {
                   <div className="bg-gray-950/60 p-3 rounded border border-gray-800/80">
                     <div className="text-[10px] text-gray-400 uppercase">Rolling 15-Trade Win Rate</div>
                     <div className="text-lg font-bold text-emerald-400 mt-0.5">
-                      {((driftData?.rolling_win_rate_15 ?? 0.705) * 100).toFixed(1)}%
+                      {driftData?.rolling_win_rate_15 != null
+                        ? `${(driftData.rolling_win_rate_15 * 100).toFixed(1)}%`
+                        : 'N/A (Pending Trades)'}
                     </div>
                     <div className="text-[9px] text-gray-500 mt-0.5">Wilson 95% floor: 58.1%</div>
                   </div>
@@ -2035,7 +2061,9 @@ export default function App() {
                   <div className="bg-gray-950/60 p-3 rounded border border-gray-800/80">
                     <div className="text-[10px] text-gray-400 uppercase">Rolling Expectancy (15)</div>
                     <div className="text-lg font-bold text-cyan-400 mt-0.5">
-                      +{driftData?.rolling_expectancy_15?.toFixed(3) ?? '0.569'}R
+                      {driftData?.rolling_expectancy_15 != null
+                        ? `${driftData.rolling_expectancy_15 >= 0 ? '+' : ''}${driftData.rolling_expectancy_15.toFixed(3)}R`
+                        : 'N/A (Pending Trades)'}
                     </div>
                     <div className="text-[9px] text-gray-500 mt-0.5">Hurdle: +0.150R</div>
                   </div>

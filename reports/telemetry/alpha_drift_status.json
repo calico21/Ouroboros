@@ -12,5 +12,5 @@
   "current_drawdown_dollars": 0.0,
   "drawdown_limit_dollars": 5000.0,
   "reason": "STATISTICAL ROLLING WARNING: 15-trade Win Rate=53.3% (Wilson lower bound=58.1%) or Expectancy=0.06R (< 0.15R hurdle).",
-  "last_update": "2026-10-08T20:16:08.336731"
+  "last_update": "2026-10-08T20:46:13.254427"
 }

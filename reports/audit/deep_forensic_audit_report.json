@@ -1,102 +1,567 @@
 {
   "strategy_name": "afternoon_trend_continuation",
   "audit_timestamp": "2026-10-08T12:00:00Z",
+  "data_provenance": {
+    "is_real_market_data": false,
+    "provenance_tag": "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 Cached)",
+    "disclaimer": "SYNTHETIC NOTICE: Multi-year dataset generated via stochastic GBM with regime shifts. Metrics describe generative assumptions, NOT empirical CME Globex order flow."
+  },
+  "regime_bucketing": {
+    "total_trades_analyzed": 1066,
+    "total_sessions_analyzed": 1191,
+    "overall_trend_extension_sessions_fraction_pct": 0.0,
+    "yearly_trend_extension_fraction_pct": {
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0,
+      "2026": 0.0
+    },
+    "pre_registered_buckets": {
+      "ib_bucket": {
+        "COMPRESSED (<0.35 ATR)": {
+          "sample_size": 972,
+          "win_rate_pct": 38.3,
+          "mean_r": 0.027,
+          "forward_mfe_r_dist": {
+            "p10": 0.108,
+            "p25": 0.316,
+            "median": 0.81,
+            "p75": 1.341,
+            "p90": 1.631,
+            "mean": 0.842,
+            "iqr": 1.025
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.104,
+            "p25": 0.248,
+            "median": 0.618,
+            "p75": 1.078,
+            "p90": 1.297,
+            "mean": 0.685,
+            "iqr": 0.83
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 193,
+              "median_mfe_r": 0.835,
+              "median_mae_r": 0.595,
+              "win_rate_pct": 39.9
+            },
+            "2023": {
+              "trades": 196,
+              "median_mfe_r": 0.754,
+              "median_mae_r": 0.652,
+              "win_rate_pct": 33.7
+            },
+            "2024": {
+              "trades": 207,
+              "median_mfe_r": 0.882,
+              "median_mae_r": 0.529,
+              "win_rate_pct": 45.4
+            },
+            "2025": {
+              "trades": 213,
+              "median_mfe_r": 0.807,
+              "median_mae_r": 0.615,
+              "win_rate_pct": 39.0
+            },
+            "2026": {
+              "trades": 163,
+              "median_mfe_r": 0.714,
+              "median_mae_r": 0.677,
+              "win_rate_pct": 31.9
+            }
+          }
+        },
+        "EXPANDED (>0.65 ATR)": {
+          "sample_size": 3,
+          "win_rate_pct": 33.3,
+          "mean_r": 0.154,
+          "forward_mfe_r_dist": {
+            "p10": 0.41,
+            "p25": 0.654,
+            "median": 1.061,
+            "p75": 1.361,
+            "p90": 1.542,
+            "mean": 0.99,
+            "iqr": 0.708
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.238,
+            "p25": 0.331,
+            "median": 0.486,
+            "p75": 0.827,
+            "p90": 1.031,
+            "mean": 0.61,
+            "iqr": 0.496
+          },
+          "yearly_stability": {
+            "2024": {
+              "trades": 2,
+              "median_mfe_r": 1.361,
+              "median_mae_r": 0.331,
+              "win_rate_pct": 50.0
+            }
+          }
+        },
+        "NORMAL (0.35-0.65 ATR)": {
+          "sample_size": 91,
+          "win_rate_pct": 40.7,
+          "mean_r": 0.087,
+          "forward_mfe_r_dist": {
+            "p10": 0.065,
+            "p25": 0.298,
+            "median": 0.866,
+            "p75": 1.472,
+            "p90": 1.807,
+            "mean": 0.903,
+            "iqr": 1.173
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.094,
+            "p25": 0.209,
+            "median": 0.56,
+            "p75": 1.099,
+            "p90": 1.379,
+            "mean": 0.687,
+            "iqr": 0.89
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 26,
+              "median_mfe_r": 0.982,
+              "median_mae_r": 0.54,
+              "win_rate_pct": 46.2
+            },
+            "2023": {
+              "trades": 29,
+              "median_mfe_r": 0.515,
+              "median_mae_r": 0.538,
+              "win_rate_pct": 37.9
+            },
+            "2024": {
+              "trades": 21,
+              "median_mfe_r": 1.134,
+              "median_mae_r": 0.372,
+              "win_rate_pct": 57.1
+            },
+            "2025": {
+              "trades": 8,
+              "median_mfe_r": 0.485,
+              "median_mae_r": 1.282,
+              "win_rate_pct": 12.5
+            },
+            "2026": {
+              "trades": 7,
+              "median_mfe_r": 0.366,
+              "median_mae_r": 0.871,
+              "win_rate_pct": 14.3
+            }
+          }
+        }
+      },
+      "gap_bucket": {
+        "LARGE (>0.50 ATR)": {
+          "sample_size": 593,
+          "win_rate_pct": 37.3,
+          "mean_r": 0.008,
+          "forward_mfe_r_dist": {
+            "p10": 0.109,
+            "p25": 0.346,
+            "median": 0.804,
+            "p75": 1.278,
+            "p90": 1.606,
+            "mean": 0.834,
+            "iqr": 0.932
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.11,
+            "p25": 0.254,
+            "median": 0.624,
+            "p75": 1.063,
+            "p90": 1.286,
+            "mean": 0.675,
+            "iqr": 0.809
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 114,
+              "median_mfe_r": 0.868,
+              "median_mae_r": 0.659,
+              "win_rate_pct": 39.5
+            },
+            "2023": {
+              "trades": 123,
+              "median_mfe_r": 0.721,
+              "median_mae_r": 0.604,
+              "win_rate_pct": 36.6
+            },
+            "2024": {
+              "trades": 119,
+              "median_mfe_r": 0.915,
+              "median_mae_r": 0.429,
+              "win_rate_pct": 50.4
+            },
+            "2025": {
+              "trades": 132,
+              "median_mfe_r": 0.762,
+              "median_mae_r": 0.684,
+              "win_rate_pct": 34.1
+            },
+            "2026": {
+              "trades": 105,
+              "median_mfe_r": 0.692,
+              "median_mae_r": 0.721,
+              "win_rate_pct": 24.8
+            }
+          }
+        },
+        "MEDIUM": {
+          "sample_size": 1,
+          "win_rate_pct": 100.0,
+          "mean_r": 0.366,
+          "forward_mfe_r_dist": {
+            "p10": 0.448,
+            "p25": 0.448,
+            "median": 0.448,
+            "p75": 0.448,
+            "p90": 0.448,
+            "mean": 0.448,
+            "iqr": 0.0
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.515,
+            "p25": 0.515,
+            "median": 0.515,
+            "p75": 0.515,
+            "p90": 0.515,
+            "mean": 0.515,
+            "iqr": 0.0
+          },
+          "yearly_stability": {}
+        },
+        "MEDIUM (0.20-0.50 ATR)": {
+          "sample_size": 271,
+          "win_rate_pct": 37.6,
+          "mean_r": 0.033,
+          "forward_mfe_r_dist": {
+            "p10": 0.09,
+            "p25": 0.248,
+            "median": 0.813,
+            "p75": 1.426,
+            "p90": 1.673,
+            "mean": 0.849,
+            "iqr": 1.177
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.087,
+            "p25": 0.24,
+            "median": 0.627,
+            "p75": 1.123,
+            "p90": 1.358,
+            "mean": 0.708,
+            "iqr": 0.882
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 57,
+              "median_mfe_r": 0.788,
+              "median_mae_r": 0.554,
+              "win_rate_pct": 42.1
+            },
+            "2023": {
+              "trades": 65,
+              "median_mfe_r": 0.833,
+              "median_mae_r": 0.627,
+              "win_rate_pct": 33.8
+            },
+            "2024": {
+              "trades": 54,
+              "median_mfe_r": 0.865,
+              "median_mae_r": 0.838,
+              "win_rate_pct": 31.5
+            },
+            "2025": {
+              "trades": 56,
+              "median_mfe_r": 0.902,
+              "median_mae_r": 0.532,
+              "win_rate_pct": 44.6
+            },
+            "2026": {
+              "trades": 39,
+              "median_mfe_r": 0.545,
+              "median_mae_r": 0.702,
+              "win_rate_pct": 35.9
+            }
+          }
+        },
+        "SMALL (<0.20 ATR)": {
+          "sample_size": 201,
+          "win_rate_pct": 42.8,
+          "mean_r": 0.102,
+          "forward_mfe_r_dist": {
+            "p10": 0.111,
+            "p25": 0.303,
+            "median": 0.873,
+            "p75": 1.473,
+            "p90": 1.686,
+            "mean": 0.889,
+            "iqr": 1.17
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.094,
+            "p25": 0.228,
+            "median": 0.596,
+            "p75": 1.091,
+            "p90": 1.302,
+            "mean": 0.684,
+            "iqr": 0.863
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 47,
+              "median_mfe_r": 0.951,
+              "median_mae_r": 0.557,
+              "win_rate_pct": 40.4
+            },
+            "2023": {
+              "trades": 38,
+              "median_mfe_r": 0.494,
+              "median_mae_r": 0.837,
+              "win_rate_pct": 26.3
+            },
+            "2024": {
+              "trades": 57,
+              "median_mfe_r": 0.914,
+              "median_mae_r": 0.514,
+              "win_rate_pct": 52.6
+            },
+            "2025": {
+              "trades": 33,
+              "median_mfe_r": 0.727,
+              "median_mae_r": 0.82,
+              "win_rate_pct": 42.4
+            },
+            "2026": {
+              "trades": 26,
+              "median_mfe_r": 1.169,
+              "median_mae_r": 0.562,
+              "win_rate_pct": 50.0
+            }
+          }
+        }
+      },
+      "nr7_bucket": {
+        "NON_NR7": {
+          "sample_size": 922,
+          "win_rate_pct": 40.3,
+          "mean_r": 0.071,
+          "forward_mfe_r_dist": {
+            "p10": 0.121,
+            "p25": 0.336,
+            "median": 0.846,
+            "p75": 1.366,
+            "p90": 1.646,
+            "mean": 0.867,
+            "iqr": 1.03
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.098,
+            "p25": 0.24,
+            "median": 0.595,
+            "p75": 1.07,
+            "p90": 1.291,
+            "mean": 0.669,
+            "iqr": 0.83
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 192,
+              "median_mfe_r": 0.867,
+              "median_mae_r": 0.558,
+              "win_rate_pct": 42.2
+            },
+            "2023": {
+              "trades": 195,
+              "median_mfe_r": 0.745,
+              "median_mae_r": 0.604,
+              "win_rate_pct": 35.9
+            },
+            "2024": {
+              "trades": 198,
+              "median_mfe_r": 0.907,
+              "median_mae_r": 0.524,
+              "win_rate_pct": 48.0
+            },
+            "2025": {
+              "trades": 192,
+              "median_mfe_r": 0.849,
+              "median_mae_r": 0.607,
+              "win_rate_pct": 40.6
+            },
+            "2026": {
+              "trades": 145,
+              "median_mfe_r": 0.717,
+              "median_mae_r": 0.652,
+              "win_rate_pct": 33.1
+            }
+          }
+        },
+        "NR7": {
+          "sample_size": 144,
+          "win_rate_pct": 26.4,
+          "mean_r": -0.21,
+          "forward_mfe_r_dist": {
+            "p10": 0.045,
+            "p25": 0.163,
+            "median": 0.581,
+            "p75": 1.209,
+            "p90": 1.573,
+            "mean": 0.722,
+            "iqr": 1.046
+          },
+          "forward_mae_r_dist": {
+            "p10": 0.129,
+            "p25": 0.348,
+            "median": 0.883,
+            "p75": 1.138,
+            "p90": 1.347,
+            "mean": 0.787,
+            "iqr": 0.79
+          },
+          "yearly_stability": {
+            "2022": {
+              "trades": 27,
+              "median_mfe_r": 0.739,
+              "median_mae_r": 0.692,
+              "win_rate_pct": 29.6
+            },
+            "2023": {
+              "trades": 31,
+              "median_mfe_r": 0.426,
+              "median_mae_r": 0.975,
+              "win_rate_pct": 22.6
+            },
+            "2024": {
+              "trades": 32,
+              "median_mfe_r": 0.863,
+              "median_mae_r": 0.497,
+              "win_rate_pct": 37.5
+            },
+            "2025": {
+              "trades": 29,
+              "median_mfe_r": 0.462,
+              "median_mae_r": 1.016,
+              "win_rate_pct": 20.7
+            },
+            "2026": {
+              "trades": 25,
+              "median_mfe_r": 0.446,
+              "median_mae_r": 1.014,
+              "win_rate_pct": 20.0
+            }
+          }
+        }
+      }
+    }
+  },
   "executive_verdict": {
     "production_ready": false,
-    "composite_score": -2.4,
+    "composite_score": 4.7,
     "key_findings": [
-      "Calendar-Day Sharpe: -0.26 (unbiased continuous 252-day accounting)",
-      "Deflated Sharpe Ratio (DSR): 0.0037 (controlling for 25 Zoo trials)",
-      "Apex 50k 50,000-Path P(Pass): 0.3%, P(Breach): 6.7%",
-      "Walk-Forward Efficiency (WFE): 33.3% across 6 regimes",
-      "CPCV Probability of Backtest Overfitting (PBO): 60.0%",
+      "Calendar-Day Sharpe: 0.33 (unbiased continuous 252-day accounting)",
+      "Deflated Sharpe Ratio (DSR): 0.0433 (controlling for 25 Zoo trials)",
+      "Apex 50k 50,000-Path P(Pass): 1.1%, P(Breach): 1.8%",
+      "Walk-Forward Efficiency (WFE): 191.8% across 6 regimes",
+      "CPCV Probability of Backtest Overfitting (PBO): 26.7%",
       "FOMC Catalyst Impact: NEUTRAL: Strategy shows balanced performance across macro event windows."
     ]
   },
   "calendar_metrics": {
     "total_calendar_days": 1732,
-    "trading_days_active": 817,
+    "trading_days_active": 1066,
     "trading_days_total": 1191,
-    "exposure_rate_pct": 68.6,
-    "total_net_pnl": -1469.72,
-    "annualized_pnl": -310.97,
-    "daily_pnl_mean": -1.23,
-    "daily_pnl_std": 75.1,
-    "daily_downside_std": 46.87,
-    "calendar_sharpe": -0.261,
-    "calendar_sortino": -0.418,
-    "calmar_ratio": -0.108,
-    "gain_to_pain_ratio": 0.954,
-    "max_drawdown_dollars": 2875.44,
-    "max_drawdown_pct": 5.75,
-    "win_rate_daily_pct": 27.66,
-    "best_day_pnl": 135.84,
-    "worst_day_pnl": -84.16
+    "exposure_rate_pct": 89.5,
+    "total_net_pnl": 2079.72,
+    "annualized_pnl": 440.04,
+    "daily_pnl_mean": 1.75,
+    "daily_pnl_std": 83.25,
+    "daily_downside_std": 52.97,
+    "calendar_sharpe": 0.333,
+    "calendar_sortino": 0.523,
+    "calmar_ratio": 0.129,
+    "gain_to_pain_ratio": 1.057,
+    "max_drawdown_dollars": 3403.88,
+    "max_drawdown_pct": 6.81,
+    "win_rate_daily_pct": 37.9,
+    "best_day_pnl": 273.76,
+    "worst_day_pnl": -211.96
   },
   "deflated_sharpe": {
-    "estimated_sharpe": -0.315,
+    "estimated_sharpe": 0.352,
     "benchmark_sharpe": 0.0,
-    "probabilistic_sharpe_ratio": 0.2866,
+    "probabilistic_sharpe_ratio": 0.7664,
     "expected_max_null_sharpe": 1.182,
-    "deflated_sharpe_ratio": 0.0037,
+    "deflated_sharpe_ratio": 0.0433,
     "trials_tested": 25,
-    "sample_length_days": 817,
-    "skewness": 0.611,
-    "kurtosis": -1.251,
+    "sample_length_days": 1066,
+    "skewness": 0.461,
+    "kurtosis": -0.354,
     "passes_deflated_hurdle": false,
-    "fwer_p_value": 1.0
+    "fwer_p_value": 0.9987
   },
   "macro_attribution": {
     "cohorts": [
       {
         "catalyst": "NON_EVENT",
-        "total_trades": 743,
-        "net_pnl": -1041.88,
-        "win_rate_pct": 27.9,
-        "profit_factor": 0.96,
-        "expectancy_r": -0.018,
-        "avg_trade_pnl": -1.4,
-        "max_loss": -84.16,
-        "max_win": 135.84,
-        "risk_adjusted_pnl_share": -70.9
+        "total_trades": 985,
+        "net_pnl": 2263.72,
+        "win_rate_pct": 38.5,
+        "profit_factor": 1.07,
+        "expectancy_r": 0.04,
+        "avg_trade_pnl": 2.3,
+        "max_loss": -195.96,
+        "max_win": 264.04,
+        "risk_adjusted_pnl_share": 108.8
       },
       {
         "catalyst": "FOMC",
-        "total_trades": 29,
-        "net_pnl": -611.64,
-        "win_rate_pct": 17.2,
-        "profit_factor": 0.53,
-        "expectancy_r": -0.264,
-        "avg_trade_pnl": -21.09,
-        "max_loss": -84.16,
-        "max_win": 135.84,
-        "risk_adjusted_pnl_share": -41.6
+        "total_trades": 27,
+        "net_pnl": -53.44,
+        "win_rate_pct": 33.3,
+        "profit_factor": 0.97,
+        "expectancy_r": -0.112,
+        "avg_trade_pnl": -1.98,
+        "max_loss": -211.96,
+        "max_win": 273.76,
+        "risk_adjusted_pnl_share": -2.6
       },
       {
         "catalyst": "NFP",
-        "total_trades": 45,
-        "net_pnl": 183.8,
-        "win_rate_pct": 31.1,
-        "profit_factor": 1.11,
-        "expectancy_r": 0.051,
-        "avg_trade_pnl": 4.08,
-        "max_loss": -84.16,
-        "max_win": 135.84,
-        "risk_adjusted_pnl_share": 12.5
+        "total_trades": 54,
+        "net_pnl": -130.56,
+        "win_rate_pct": 29.6,
+        "profit_factor": 0.95,
+        "expectancy_r": -0.029,
+        "avg_trade_pnl": -2.42,
+        "max_loss": -156.96,
+        "max_win": 231.52,
+        "risk_adjusted_pnl_share": -6.3
       }
     ],
-    "event_day_pnl": -427.84,
-    "non_event_day_pnl": -1041.88,
-    "event_day_trade_count": 74,
-    "non_event_day_trade_count": 743,
-    "fomc_vulnerability_index": -21.09,
+    "event_day_pnl": -184.0,
+    "non_event_day_pnl": 2263.72,
+    "event_day_trade_count": 81,
+    "non_event_day_trade_count": 985,
+    "fomc_vulnerability_index": -1.98,
     "recommendation": "NEUTRAL: Strategy shows balanced performance across macro event windows."
   },
   "excursion_efficiency": {
-    "mean_mfe_ticks": 79.8,
-    "mean_mae_ticks": 61.0,
-    "drift_ratio": 1.309,
-    "mfe_capture_efficiency_pct": 171.7,
+    "mean_mfe_ticks": 75.5,
+    "mean_mae_ticks": 59.8,
+    "drift_ratio": 1.263,
+    "mfe_capture_efficiency_pct": 145.2,
     "mae_resilience_pct": 38.5,
     "optimal_time_exit_minutes": 45,
     "half_life_minutes": 35.0
@@ -105,12 +570,12 @@
     "total_splits": 15,
     "num_groups": 6,
     "k_test_groups": 2,
-    "median_oos_sharpe": -0.476,
-    "mean_oos_sharpe": -0.346,
-    "min_oos_sharpe": -2.345,
-    "max_oos_sharpe": 1.078,
-    "pbo_pct": 60.0,
-    "degradation_ratio": 0.0,
+    "median_oos_sharpe": 0.257,
+    "mean_oos_sharpe": 0.349,
+    "min_oos_sharpe": -1.235,
+    "max_oos_sharpe": 2.092,
+    "pbo_pct": 26.7,
+    "degradation_ratio": 0.793,
     "splits": [
       {
         "split_id": 1,
@@ -118,12 +583,12 @@
           0,
           1
         ],
-        "is_sharpe": 0.149,
-        "oos_sharpe": -1.498,
-        "is_pnl": 460.36,
-        "oos_pnl": -2204.52,
-        "is_win_rate": 29.7,
-        "oos_win_rate": 22.8
+        "is_sharpe": 0.507,
+        "oos_sharpe": 0.257,
+        "is_pnl": 1779.24,
+        "oos_pnl": 581.76,
+        "is_win_rate": 38.4,
+        "oos_win_rate": 37.6
       },
       {
         "split_id": 2,
@@ -131,12 +596,12 @@
           0,
           2
         ],
-        "is_sharpe": -0.242,
-        "oos_sharpe": -0.476,
-        "is_pnl": -718.08,
-        "oos_pnl": -733.52,
-        "is_win_rate": 28.5,
-        "oos_win_rate": 26.5
+        "is_sharpe": -0.184,
+        "oos_sharpe": 1.321,
+        "is_pnl": -641.88,
+        "oos_pnl": 2833.08,
+        "is_win_rate": 36.9,
+        "oos_win_rate": 39.8
       },
       {
         "split_id": 3,
@@ -144,12 +609,12 @@
           0,
           3
         ],
-        "is_sharpe": -0.01,
-        "oos_sharpe": -0.767,
-        "is_pnl": -31.08,
-        "oos_pnl": -1153.52,
-        "is_win_rate": 29.0,
-        "oos_win_rate": 25.4
+        "is_sharpe": -0.385,
+        "oos_sharpe": 1.428,
+        "is_pnl": -1348.04,
+        "oos_pnl": 3005.4,
+        "is_win_rate": 35.7,
+        "oos_win_rate": 41.2
       },
       {
         "split_id": 4,
@@ -157,12 +622,12 @@
           0,
           4
         ],
-        "is_sharpe": 0.834,
-        "oos_sharpe": -2.345,
-        "is_pnl": 2536.92,
-        "oos_pnl": -3385.52,
-        "is_win_rate": 32.0,
-        "oos_win_rate": 21.0
+        "is_sharpe": 0.526,
+        "oos_sharpe": 0.155,
+        "is_pnl": 1804.28,
+        "oos_pnl": 337.52,
+        "is_win_rate": 38.4,
+        "oos_win_rate": 37.6
       },
       {
         "split_id": 5,
@@ -170,12 +635,12 @@
           0,
           5
         ],
-        "is_sharpe": -0.126,
-        "oos_sharpe": -0.676,
-        "is_pnl": -388.48,
-        "oos_pnl": -1019.68,
-        "is_win_rate": 28.8,
-        "oos_win_rate": 25.6
+        "is_sharpe": 0.547,
+        "oos_sharpe": -0.22,
+        "is_pnl": 1990.84,
+        "oos_pnl": -462.04,
+        "is_win_rate": 39.3,
+        "oos_win_rate": 34.4
       },
       {
         "split_id": 6,
@@ -183,12 +648,12 @@
           1,
           2
         ],
-        "is_sharpe": -0.701,
-        "oos_sharpe": 0.358,
-        "is_pnl": -2088.64,
-        "oos_pnl": 575.48,
-        "is_win_rate": 26.5,
-        "oos_win_rate": 30.1
+        "is_sharpe": 0.372,
+        "oos_sharpe": 0.662,
+        "is_pnl": 1435.28,
+        "oos_pnl": 1306.84,
+        "is_win_rate": 37.8,
+        "oos_win_rate": 39.0
       },
       {
         "split_id": 7,
@@ -196,12 +661,12 @@
           1,
           3
         ],
-        "is_sharpe": -0.58,
-        "oos_sharpe": 0.099,
-        "is_pnl": -1676.08,
-        "oos_pnl": 155.48,
-        "is_win_rate": 26.5,
-        "oos_win_rate": 29.0
+        "is_sharpe": 0.269,
+        "oos_sharpe": 0.766,
+        "is_pnl": 1010.4,
+        "oos_pnl": 1479.16,
+        "is_win_rate": 36.9,
+        "oos_win_rate": 40.4
       },
       {
         "split_id": 8,
@@ -209,12 +674,12 @@
           1,
           4
         ],
-        "is_sharpe": 0.301,
-        "oos_sharpe": -1.363,
-        "is_pnl": 891.92,
-        "oos_pnl": -2076.52,
-        "is_win_rate": 29.4,
-        "oos_win_rate": 24.6
+        "is_sharpe": 1.13,
+        "oos_sharpe": -0.592,
+        "is_pnl": 4162.72,
+        "oos_pnl": -1188.72,
+        "is_win_rate": 39.6,
+        "oos_win_rate": 36.7
       },
       {
         "split_id": 9,
@@ -222,12 +687,12 @@
           1,
           5
         ],
-        "is_sharpe": -0.682,
-        "oos_sharpe": 0.184,
-        "is_pnl": -2033.48,
-        "oos_pnl": 289.32,
-        "is_win_rate": 26.3,
-        "oos_win_rate": 29.3
+        "is_sharpe": 1.119,
+        "oos_sharpe": -1.041,
+        "is_pnl": 4349.28,
+        "oos_pnl": -1988.28,
+        "is_win_rate": 40.5,
+        "oos_win_rate": 33.5
       },
       {
         "split_id": 10,
@@ -235,12 +700,12 @@
           2,
           3
         ],
-        "is_sharpe": -0.978,
-        "oos_sharpe": 0.998,
-        "is_pnl": -2872.64,
-        "oos_pnl": 1626.48,
-        "is_win_rate": 25.1,
-        "oos_win_rate": 32.7
+        "is_sharpe": -0.382,
+        "oos_sharpe": 2.092,
+        "is_pnl": -1522.2,
+        "oos_pnl": 3730.48,
+        "is_win_rate": 35.5,
+        "oos_win_rate": 42.7
       },
       {
         "split_id": 11,
@@ -248,12 +713,12 @@
           2,
           4
         ],
-        "is_sharpe": -0.119,
-        "oos_sharpe": -0.381,
-        "is_pnl": -348.08,
-        "oos_pnl": -605.52,
-        "is_win_rate": 28.1,
-        "oos_win_rate": 28.3
+        "is_sharpe": 0.598,
+        "oos_sharpe": 0.566,
+        "is_pnl": 2292.52,
+        "oos_pnl": 1062.6,
+        "is_win_rate": 38.5,
+        "oos_win_rate": 39.0
       },
       {
         "split_id": 12,
@@ -261,12 +726,12 @@
           2,
           5
         ],
-        "is_sharpe": -1.111,
-        "oos_sharpe": 1.078,
-        "is_pnl": -3273.48,
-        "oos_pnl": 1760.32,
-        "is_win_rate": 25.0,
-        "oos_win_rate": 33.0
+        "is_sharpe": 0.614,
+        "oos_sharpe": 0.148,
+        "is_pnl": 2479.08,
+        "oos_pnl": 263.04,
+        "is_win_rate": 39.4,
+        "oos_win_rate": 35.8
       },
       {
         "split_id": 13,
@@ -274,12 +739,12 @@
           3,
           4
         ],
-        "is_sharpe": 0.038,
-        "oos_sharpe": -0.66,
-        "is_pnl": 115.36,
-        "oos_pnl": -1025.52,
-        "is_win_rate": 28.5,
-        "oos_win_rate": 27.2
+        "is_sharpe": 0.368,
+        "oos_sharpe": 0.674,
+        "is_pnl": 1457.8,
+        "oos_pnl": 1234.92,
+        "is_win_rate": 37.3,
+        "oos_win_rate": 40.4
       },
       {
         "split_id": 14,
@@ -287,12 +752,12 @@
           3,
           5
         ],
-        "is_sharpe": -0.871,
-        "oos_sharpe": 0.837,
-        "is_pnl": -2586.48,
-        "oos_pnl": 1340.32,
-        "is_win_rate": 25.6,
-        "oos_win_rate": 31.9
+        "is_sharpe": 0.439,
+        "oos_sharpe": 0.252,
+        "is_pnl": 1772.92,
+        "oos_pnl": 435.36,
+        "is_win_rate": 38.3,
+        "oos_win_rate": 37.2
       },
       {
         "split_id": 15,
@@ -300,12 +765,12 @@
           4,
           5
         ],
-        "is_sharpe": -0.186,
-        "oos_sharpe": -0.572,
-        "is_pnl": -578.04,
-        "oos_pnl": -891.68,
-        "is_win_rate": 27.8,
-        "oos_win_rate": 27.5
+        "is_sharpe": 1.057,
+        "oos_sharpe": -1.235,
+        "is_pnl": 4312.24,
+        "oos_pnl": -2232.52,
+        "is_win_rate": 40.1,
+        "oos_win_rate": 33.5
       }
     ]
   },
@@ -313,130 +778,130 @@
     "strategy_name": "afternoon_trend_continuation",
     "mode": "ANCHORED",
     "total_folds": 6,
-    "profitable_oos_folds": 2,
-    "consistency_pct": 33.3,
-    "mean_wfe_pct": 33.3,
-    "overall_oos_pnl": 73.68,
-    "overall_oos_sharpe": 0.02,
+    "profitable_oos_folds": 3,
+    "consistency_pct": 50.0,
+    "mean_wfe_pct": 191.8,
+    "overall_oos_pnl": 154.44,
+    "overall_oos_sharpe": 0.036,
     "passes_wfe_gate": false,
     "folds": [
       {
         "fold_id": 1,
         "is_period": "2022-01-01 -> 2022-12-31",
         "oos_period": "2023-01-01 -> 2023-06-30",
-        "is_trades": 188,
-        "oos_trades": 85,
-        "is_pnl": -1595.08,
-        "oos_pnl": -693.6,
-        "is_sharpe": -1.616,
-        "oos_sharpe": -1.414,
-        "wfe_pct": 0.0,
-        "is_win_rate": 21.3,
-        "oos_win_rate": 25.9
+        "is_trades": 219,
+        "oos_trades": 113,
+        "is_pnl": 1902.96,
+        "oos_pnl": -681.92,
+        "is_sharpe": 1.237,
+        "oos_sharpe": -1.141,
+        "wfe_pct": -35.8,
+        "is_win_rate": 39.7,
+        "oos_win_rate": 34.5
       },
       {
         "fold_id": 2,
         "is_period": "2022-01-01 -> 2023-06-30",
         "oos_period": "2023-07-01 -> 2023-12-31",
-        "is_trades": 273,
-        "oos_trades": 87,
-        "is_pnl": -2288.68,
-        "oos_pnl": -120.92,
-        "is_sharpe": -1.55,
-        "oos_sharpe": -0.236,
-        "wfe_pct": 0.0,
-        "is_win_rate": 22.7,
-        "oos_win_rate": 28.7
+        "is_trades": 332,
+        "oos_trades": 112,
+        "is_pnl": 1221.04,
+        "oos_pnl": -968.84,
+        "is_sharpe": 0.566,
+        "oos_sharpe": -1.71,
+        "wfe_pct": -79.3,
+        "is_win_rate": 38.0,
+        "oos_win_rate": 32.1
       },
       {
         "fold_id": 3,
         "is_period": "2022-01-01 -> 2023-12-31",
         "oos_period": "2024-01-01 -> 2024-06-30",
-        "is_trades": 360,
-        "oos_trades": 76,
-        "is_pnl": -2409.6,
-        "oos_pnl": 1164.84,
-        "is_sharpe": -1.212,
-        "oos_sharpe": 2.52,
-        "wfe_pct": 100.0,
-        "is_win_rate": 24.2,
-        "oos_win_rate": 36.8
+        "is_trades": 445,
+        "oos_trades": 115,
+        "is_pnl": 130.72,
+        "oos_pnl": 1555.68,
+        "is_sharpe": 0.048,
+        "oos_sharpe": 2.788,
+        "wfe_pct": 1190.1,
+        "is_win_rate": 36.4,
+        "oos_win_rate": 44.3
       },
       {
         "fold_id": 4,
         "is_period": "2022-01-01 -> 2024-06-30",
         "oos_period": "2024-07-01 -> 2024-12-31",
-        "is_trades": 436,
-        "oos_trades": 77,
-        "is_pnl": -1244.76,
-        "oos_pnl": 647.68,
-        "is_sharpe": -0.506,
-        "oos_sharpe": 1.376,
-        "wfe_pct": 100.0,
-        "is_win_rate": 26.4,
-        "oos_win_rate": 35.1
+        "is_trades": 560,
+        "oos_trades": 114,
+        "is_pnl": 1686.4,
+        "oos_pnl": 1720.72,
+        "is_sharpe": 0.508,
+        "oos_sharpe": 3.211,
+        "wfe_pct": 102.0,
+        "is_win_rate": 38.0,
+        "oos_win_rate": 46.5
       },
       {
         "fold_id": 5,
         "is_period": "2022-01-01 -> 2024-12-31",
         "oos_period": "2025-01-01 -> 2025-06-30",
-        "is_trades": 513,
-        "oos_trades": 85,
-        "is_pnl": -597.08,
-        "oos_pnl": -809.6,
-        "is_sharpe": -0.204,
-        "oos_sharpe": -1.716,
-        "wfe_pct": 0.0,
-        "is_win_rate": 27.7,
-        "oos_win_rate": 23.5
+        "is_trades": 674,
+        "oos_trades": 109,
+        "is_pnl": 3407.12,
+        "oos_pnl": 988.88,
+        "is_sharpe": 0.88,
+        "oos_sharpe": 1.657,
+        "wfe_pct": 29.0,
+        "is_win_rate": 39.5,
+        "oos_win_rate": 45.9
       },
       {
         "fold_id": 6,
         "is_period": "2022-01-01 -> 2025-06-30",
         "oos_period": "2025-07-01 -> 2026-09-30",
-        "is_trades": 598,
-        "oos_trades": 217,
-        "is_pnl": -1406.68,
-        "oos_pnl": -114.72,
-        "is_sharpe": -0.413,
-        "oos_sharpe": -0.092,
-        "wfe_pct": 0.0,
-        "is_win_rate": 27.1,
-        "oos_win_rate": 29.0
+        "is_trades": 784,
+        "oos_trades": 281,
+        "is_pnl": 4432.52,
+        "oos_pnl": -2460.08,
+        "is_sharpe": 0.992,
+        "oos_sharpe": -1.743,
+        "wfe_pct": -55.5,
+        "is_win_rate": 40.4,
+        "oos_win_rate": 30.6
       }
     ]
   },
   "synthetic_stress": {
-    "baseline_pnl": -1469.72,
+    "baseline_pnl": 2079.72,
     "scenarios": [
       {
         "scenario_name": "Stationary Block Bootstrap (Autocorrelated)",
         "num_simulations": 2000,
-        "mean_pnl": -1520.87,
-        "p95_pnl": 2942.53,
-        "p05_pnl": -5772.42,
-        "max_drawdown_p95": 2751.53,
-        "prob_ruin_pct": 78.65,
+        "mean_pnl": 2083.19,
+        "p95_pnl": 7207.64,
+        "p05_pnl": -3022.84,
+        "max_drawdown_p95": 3405.65,
+        "prob_ruin_pct": 48.6,
         "passed": false
       },
       {
         "scenario_name": "GARCH(1,1) Volatility Clustering Cluster Shock",
         "num_simulations": 2000,
-        "mean_pnl": -1448.59,
-        "p95_pnl": 3167.07,
-        "p05_pnl": -5617.44,
-        "max_drawdown_p95": 2936.19,
-        "prob_ruin_pct": 77.1,
+        "mean_pnl": 2016.96,
+        "p95_pnl": 6718.83,
+        "p05_pnl": -2313.99,
+        "max_drawdown_p95": 3153.98,
+        "prob_ruin_pct": 36.95,
         "passed": false
       },
       {
         "scenario_name": "3x Extreme Slippage Friction Drag Stress",
         "num_simulations": 2000,
-        "mean_pnl": -3827.17,
-        "p95_pnl": 402.28,
-        "p05_pnl": -7970.87,
-        "max_drawdown_p95": 2583.36,
-        "prob_ruin_pct": 94.05,
+        "mean_pnl": -1091.07,
+        "p95_pnl": 3570.61,
+        "p05_pnl": -5914.99,
+        "max_drawdown_p95": 2977.78,
+        "prob_ruin_pct": 75.95,
         "passed": false
       }
     ],
@@ -444,18 +909,18 @@
     "verdict": "VULNERABLE: Synthetic shock sequences trigger trailing floor breach."
   },
   "prop_firm_monte_carlo": {
-    "num_paths": 5000,
-    "p_pass_pct": 0.34,
-    "p_breach_pct": 6.72,
+    "num_paths": 50000,
+    "p_pass_pct": 1.1,
+    "p_breach_pct": 1.83,
     "p_dll_pct": 0.0,
-    "p_timeout_pct": 92.94,
-    "median_trades_to_pass": 140,
-    "p90_trades_to_pass": 148,
-    "median_max_drawdown": 1307.28,
-    "p95_max_drawdown": 2509.43,
-    "p99_max_drawdown": 2542.7,
-    "buffer_dilution_pct": 100.4,
-    "permanent_lock_rate_pct": 0.34,
+    "p_timeout_pct": 97.07,
+    "median_trades_to_pass": 127,
+    "p90_trades_to_pass": 147,
+    "median_max_drawdown": 1024.06,
+    "p95_max_drawdown": 2083.12,
+    "p99_max_drawdown": 2525.52,
+    "buffer_dilution_pct": 83.3,
+    "permanent_lock_rate_pct": 1.1,
     "recommendation": "DISQUALIFIED: Breach probability exceeds institutional risk tolerance (>5%)."
   },
   "regime_heatmaps": {
@@ -525,10 +990,10 @@
       {
         "row_label": "Q2_LOW",
         "col_label": "FOMC",
-        "trades": 9,
-        "net_pnl": 145.56,
-        "win_rate_pct": 33.3,
-        "expectancy_r": 0.202,
+        "trades": 10,
+        "net_pnl": -301.32,
+        "win_rate_pct": 20.0,
+        "expectancy_r": -0.278,
         "status": "UNFAVORABLE"
       },
       {
@@ -543,103 +1008,103 @@
       {
         "row_label": "Q2_LOW",
         "col_label": "NFP",
-        "trades": 8,
-        "net_pnl": -210.28,
-        "win_rate_pct": 12.5,
-        "expectancy_r": -0.329,
-        "status": "UNFAVORABLE"
-      },
-      {
-        "row_label": "Q2_LOW",
-        "col_label": "PPI",
-        "trades": 0,
-        "net_pnl": 0.0,
-        "win_rate_pct": 0.0,
-        "expectancy_r": 0.0,
-        "status": "NEUTRAL"
-      },
-      {
-        "row_label": "Q2_LOW",
-        "col_label": "NON_EVENT",
-        "trades": 176,
-        "net_pnl": -1202.16,
-        "win_rate_pct": 24.4,
-        "expectancy_r": -0.086,
-        "status": "UNFAVORABLE"
-      },
-      {
-        "row_label": "Q3_MODERATE",
-        "col_label": "FOMC",
-        "trades": 17,
-        "net_pnl": -747.72,
-        "win_rate_pct": 11.8,
-        "expectancy_r": -0.55,
-        "status": "UNFAVORABLE"
-      },
-      {
-        "row_label": "Q3_MODERATE",
-        "col_label": "CPI",
-        "trades": 0,
-        "net_pnl": 0.0,
-        "win_rate_pct": 0.0,
-        "expectancy_r": 0.0,
-        "status": "NEUTRAL"
-      },
-      {
-        "row_label": "Q3_MODERATE",
-        "col_label": "NFP",
-        "trades": 29,
-        "net_pnl": -113.64,
-        "win_rate_pct": 27.6,
-        "expectancy_r": -0.049,
-        "status": "UNFAVORABLE"
-      },
-      {
-        "row_label": "Q3_MODERATE",
-        "col_label": "PPI",
-        "trades": 0,
-        "net_pnl": 0.0,
-        "win_rate_pct": 0.0,
-        "expectancy_r": 0.0,
-        "status": "NEUTRAL"
-      },
-      {
-        "row_label": "Q3_MODERATE",
-        "col_label": "NON_EVENT",
-        "trades": 364,
-        "net_pnl": -28.24,
-        "win_rate_pct": 28.8,
-        "expectancy_r": -0.001,
-        "status": "UNFAVORABLE"
-      },
-      {
-        "row_label": "Q4_ELEVATED",
-        "col_label": "FOMC",
-        "trades": 3,
-        "net_pnl": -9.48,
-        "win_rate_pct": 0.0,
-        "expectancy_r": -0.04,
-        "status": "UNFAVORABLE"
-      },
-      {
-        "row_label": "Q4_ELEVATED",
-        "col_label": "CPI",
-        "trades": 0,
-        "net_pnl": 0.0,
-        "win_rate_pct": 0.0,
-        "expectancy_r": 0.0,
-        "status": "NEUTRAL"
-      },
-      {
-        "row_label": "Q4_ELEVATED",
-        "col_label": "NFP",
-        "trades": 8,
-        "net_pnl": 507.72,
-        "win_rate_pct": 62.5,
-        "expectancy_r": 0.793,
+        "trades": 6,
+        "net_pnl": 525.88,
+        "win_rate_pct": 66.7,
+        "expectancy_r": 0.684,
         "status": "EDGE"
       },
       {
+        "row_label": "Q2_LOW",
+        "col_label": "PPI",
+        "trades": 0,
+        "net_pnl": 0.0,
+        "win_rate_pct": 0.0,
+        "expectancy_r": 0.0,
+        "status": "NEUTRAL"
+      },
+      {
+        "row_label": "Q2_LOW",
+        "col_label": "NON_EVENT",
+        "trades": 253,
+        "net_pnl": -27.04,
+        "win_rate_pct": 37.2,
+        "expectancy_r": 0.015,
+        "status": "UNFAVORABLE"
+      },
+      {
+        "row_label": "Q3_MODERATE",
+        "col_label": "FOMC",
+        "trades": 7,
+        "net_pnl": -64.84,
+        "win_rate_pct": 42.9,
+        "expectancy_r": -0.068,
+        "status": "UNFAVORABLE"
+      },
+      {
+        "row_label": "Q3_MODERATE",
+        "col_label": "CPI",
+        "trades": 0,
+        "net_pnl": 0.0,
+        "win_rate_pct": 0.0,
+        "expectancy_r": 0.0,
+        "status": "NEUTRAL"
+      },
+      {
+        "row_label": "Q3_MODERATE",
+        "col_label": "NFP",
+        "trades": 31,
+        "net_pnl": -669.04,
+        "win_rate_pct": 22.6,
+        "expectancy_r": -0.204,
+        "status": "UNFAVORABLE"
+      },
+      {
+        "row_label": "Q3_MODERATE",
+        "col_label": "PPI",
+        "trades": 0,
+        "net_pnl": 0.0,
+        "win_rate_pct": 0.0,
+        "expectancy_r": 0.0,
+        "status": "NEUTRAL"
+      },
+      {
+        "row_label": "Q3_MODERATE",
+        "col_label": "NON_EVENT",
+        "trades": 489,
+        "net_pnl": 2137.08,
+        "win_rate_pct": 39.5,
+        "expectancy_r": 0.067,
+        "status": "UNFAVORABLE"
+      },
+      {
+        "row_label": "Q4_ELEVATED",
+        "col_label": "FOMC",
+        "trades": 10,
+        "net_pnl": 312.72,
+        "win_rate_pct": 40.0,
+        "expectancy_r": 0.023,
+        "status": "UNFAVORABLE"
+      },
+      {
+        "row_label": "Q4_ELEVATED",
+        "col_label": "CPI",
+        "trades": 0,
+        "net_pnl": 0.0,
+        "win_rate_pct": 0.0,
+        "expectancy_r": 0.0,
+        "status": "NEUTRAL"
+      },
+      {
+        "row_label": "Q4_ELEVATED",
+        "col_label": "NFP",
+        "trades": 17,
+        "net_pnl": 12.6,
+        "win_rate_pct": 29.4,
+        "expectancy_r": 0.039,
+        "status": "UNFAVORABLE"
+      },
+      {
         "row_label": "Q4_ELEVATED",
         "col_label": "PPI",
         "trades": 0,
@@ -651,10 +1116,10 @@
       {
         "row_label": "Q4_ELEVATED",
         "col_label": "NON_EVENT",
-        "trades": 203,
-        "net_pnl": 188.52,
-        "win_rate_pct": 29.1,
-        "expectancy_r": 0.011,
+        "trades": 243,
+        "net_pnl": 153.68,
+        "win_rate_pct": 37.9,
+        "expectancy_r": 0.012,
         "status": "UNFAVORABLE"
       },
       {
@@ -705,31 +1170,31 @@
     ]
   },
   "loss_taxonomy": {
-    "total_losses": 591,
+    "total_losses": 662,
     "breakdown": {
       "Immediate Flush": {
-        "count": 104,
-        "percentage": 17.6,
-        "total_loss_dollars": 8752.64,
-        "avg_loss_dollars": 84.16
+        "count": 193,
+        "percentage": 29.2,
+        "total_loss_dollars": 16143.8,
+        "avg_loss_dollars": 83.65
       },
       "Trapped Trade": {
-        "count": 233,
-        "percentage": 39.4,
-        "total_loss_dollars": 1708.28,
-        "avg_loss_dollars": 7.33
+        "count": 216,
+        "percentage": 32.6,
+        "total_loss_dollars": 1663.16,
+        "avg_loss_dollars": 7.7
       },
       "Friction Drain": {
-        "count": 0,
-        "percentage": 0.0,
-        "total_loss_dollars": 0.0,
-        "avg_loss_dollars": 0.0
+        "count": 4,
+        "percentage": 0.6,
+        "total_loss_dollars": 8.92,
+        "avg_loss_dollars": 2.23
       },
       "Structural Invalidation": {
-        "count": 254,
-        "percentage": 43.0,
-        "total_loss_dollars": 21305.64,
-        "avg_loss_dollars": 83.88
+        "count": 249,
+        "percentage": 37.6,
+        "total_loss_dollars": 18525.6,
+        "avg_loss_dollars": 74.4
       }
     }
   },
@@ -738,64 +1203,64 @@
       {
         "slippage_ticks": 0.0,
         "slippage_pts": 0.0,
-        "total_net_pnl": -1469.72,
-        "expectancy_dollars": -1.8,
-        "expectancy_r": -0.022,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 3997.72,
+        "expectancy_dollars": 3.75,
+        "expectancy_r": 0.001,
+        "win_rate_pct": 38.1
       },
       {
         "slippage_ticks": 0.5,
         "slippage_pts": 0.125,
-        "total_net_pnl": -2173.22,
-        "expectancy_dollars": -2.66,
-        "expectancy_r": -0.033,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 3045.72,
+        "expectancy_dollars": 2.86,
+        "expectancy_r": -0.01,
+        "win_rate_pct": 38.1
       },
       {
         "slippage_ticks": 1.0,
         "slippage_pts": 0.25,
-        "total_net_pnl": -2876.72,
-        "expectancy_dollars": -3.52,
-        "expectancy_r": -0.044,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 2093.72,
+        "expectancy_dollars": 1.96,
+        "expectancy_r": -0.022,
+        "win_rate_pct": 38.0
       },
       {
         "slippage_ticks": 1.5,
         "slippage_pts": 0.375,
-        "total_net_pnl": -3580.22,
-        "expectancy_dollars": -4.38,
-        "expectancy_r": -0.055,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 1141.72,
+        "expectancy_dollars": 1.07,
+        "expectancy_r": -0.033,
+        "win_rate_pct": 37.7
       },
       {
         "slippage_ticks": 2.0,
         "slippage_pts": 0.5,
-        "total_net_pnl": -4283.72,
-        "expectancy_dollars": -5.24,
-        "expectancy_r": -0.066,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 189.72,
+        "expectancy_dollars": 0.18,
+        "expectancy_r": -0.044,
+        "win_rate_pct": 37.5
       },
       {
         "slippage_ticks": 3.0,
         "slippage_pts": 0.75,
-        "total_net_pnl": -5690.72,
-        "expectancy_dollars": -6.97,
-        "expectancy_r": -0.087,
-        "win_rate_pct": 27.7
+        "total_net_pnl": -1714.28,
+        "expectancy_dollars": -1.61,
+        "expectancy_r": -0.067,
+        "win_rate_pct": 37.3
       }
     ],
-    "critical_slippage_s_star": 0.0,
-    "is_viable": false
+    "critical_slippage_s_star": 2.1,
+    "is_viable": true
   },
   "ratchet_envelope": {
-    "min_clearance": -375.44,
-    "permanent_lock_achieved": false,
-    "terminal_equity": 48530.28,
-    "terminal_floor": 47524.92,
+    "min_clearance": 144.28,
+    "permanent_lock_achieved": true,
+    "terminal_equity": 52079.72,
+    "terminal_floor": 50100.0,
     "points_sample": [
       {
         "trade_num": 0,
-        "timestamp": "2022-01-03T13:20:00",
+        "timestamp": "2022-01-03T15:55:00",
         "equity": 50000.0,
         "hwm": 50000.0,
         "trailing_floor": 47500.0,
@@ -804,1024 +1269,1064 @@
         "trade_pnl": 0.0
       },
       {
-        "trade_num": 8,
-        "timestamp": "2022-01-19T13:35:00",
-        "equity": 49569.72,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 2069.72,
+        "trade_num": 10,
+        "timestamp": "2022-01-19T13:45:00",
+        "equity": 49998.0,
+        "hwm": 50062.6,
+        "trailing_floor": 47562.6,
+        "buffer_clearance": 2435.4,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 16,
-        "timestamp": "2022-02-02T13:50:00",
-        "equity": 49660.44,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 2160.44,
+        "trade_num": 20,
+        "timestamp": "2022-02-04T14:25:00",
+        "equity": 49619.24,
+        "hwm": 50062.6,
+        "trailing_floor": 47562.6,
+        "buffer_clearance": 2056.64,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -128.48
       },
       {
-        "trade_num": 24,
-        "timestamp": "2022-02-17T13:25:00",
-        "equity": 49369.16,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1869.16,
+        "trade_num": 30,
+        "timestamp": "2022-02-22T15:40:00",
+        "equity": 49426.68,
+        "hwm": 50062.6,
+        "trailing_floor": 47562.6,
+        "buffer_clearance": 1864.08,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 32,
-        "timestamp": "2022-03-07T14:30:00",
-        "equity": 49239.88,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1739.88,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 123.0
       },
       {
         "trade_num": 40,
-        "timestamp": "2022-03-23T13:40:00",
-        "equity": 48890.6,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1390.6,
+        "timestamp": "2022-03-08T14:35:00",
+        "equity": 49801.68,
+        "hwm": 50062.6,
+        "trailing_floor": 47562.6,
+        "buffer_clearance": 2239.08,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -86.48
       },
       {
-        "trade_num": 48,
-        "timestamp": "2022-04-05T14:10:00",
-        "equity": 49062.32,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1562.32,
+        "trade_num": 50,
+        "timestamp": "2022-03-24T14:50:00",
+        "equity": 49803.12,
+        "hwm": 50062.6,
+        "trailing_floor": 47562.6,
+        "buffer_clearance": 2240.52,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": 20.52
       },
       {
-        "trade_num": 56,
-        "timestamp": "2022-04-22T13:45:00",
-        "equity": 48609.04,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1109.04,
+        "trade_num": 60,
+        "timestamp": "2022-04-07T15:05:00",
+        "equity": 50110.84,
+        "hwm": 50110.84,
+        "trailing_floor": 47610.84,
+        "buffer_clearance": 2500.0,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 69.52
       },
       {
-        "trade_num": 64,
-        "timestamp": "2022-05-09T13:35:00",
-        "equity": 49139.76,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1639.76,
+        "trade_num": 70,
+        "timestamp": "2022-04-26T14:05:00",
+        "equity": 50167.04,
+        "hwm": 50239.36,
+        "trailing_floor": 47739.36,
+        "buffer_clearance": 2427.68,
         "is_locked": false,
-        "trade_pnl": 135.84
-      },
-      {
-        "trade_num": 72,
-        "timestamp": "2022-05-23T13:45:00",
-        "equity": 49369.48,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1869.48,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 165.76
       },
       {
         "trade_num": 80,
-        "timestamp": "2022-06-07T13:25:00",
-        "equity": 49078.2,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1578.2,
+        "timestamp": "2022-05-12T14:05:00",
+        "equity": 50430.0,
+        "hwm": 50430.0,
+        "trailing_floor": 47930.0,
+        "buffer_clearance": 2500.0,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 104.28
       },
       {
-        "trade_num": 88,
-        "timestamp": "2022-06-24T13:35:00",
-        "equity": 48705.92,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1205.92,
+        "trade_num": 90,
+        "timestamp": "2022-05-27T14:25:00",
+        "equity": 50528.48,
+        "hwm": 50921.92,
+        "trailing_floor": 48421.92,
+        "buffer_clearance": 2106.56,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -152.48
       },
       {
-        "trade_num": 96,
-        "timestamp": "2022-07-11T13:45:00",
-        "equity": 48414.64,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 914.64,
+        "trade_num": 100,
+        "timestamp": "2022-06-14T15:25:00",
+        "equity": 50014.16,
+        "hwm": 50921.92,
+        "trailing_floor": 48421.92,
+        "buffer_clearance": 1592.24,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -52.48
       },
       {
-        "trade_num": 104,
-        "timestamp": "2022-07-26T13:40:00",
-        "equity": 48563.36,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1063.36,
+        "trade_num": 110,
+        "timestamp": "2022-06-30T13:45:00",
+        "equity": 49555.16,
+        "hwm": 50921.92,
+        "trailing_floor": 48421.92,
+        "buffer_clearance": 1133.24,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 112,
-        "timestamp": "2022-08-08T13:50:00",
-        "equity": 48654.08,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1154.08,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -69.96
       },
       {
         "trade_num": 120,
-        "timestamp": "2022-08-24T13:30:00",
-        "equity": 48304.8,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 804.8,
+        "timestamp": "2022-07-20T14:55:00",
+        "equity": 49662.6,
+        "hwm": 50921.92,
+        "trailing_floor": 48421.92,
+        "buffer_clearance": 1240.68,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 107.52
       },
       {
-        "trade_num": 128,
-        "timestamp": "2022-09-07T13:20:00",
-        "equity": 48071.52,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 571.52,
+        "trade_num": 130,
+        "timestamp": "2022-08-05T13:55:00",
+        "equity": 50129.8,
+        "hwm": 50921.92,
+        "trailing_floor": 48421.92,
+        "buffer_clearance": 1707.88,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -124.0
       },
       {
-        "trade_num": 136,
-        "timestamp": "2022-09-20T13:40:00",
-        "equity": 48243.24,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 743.24,
+        "trade_num": 140,
+        "timestamp": "2022-08-24T15:15:00",
+        "equity": 50761.0,
+        "hwm": 50921.92,
+        "trailing_floor": 48421.92,
+        "buffer_clearance": 2339.08,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 144,
-        "timestamp": "2022-10-04T13:30:00",
-        "equity": 48252.96,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 752.96,
+        "trade_num": 150,
+        "timestamp": "2022-09-08T14:05:00",
+        "equity": 50919.44,
+        "hwm": 51009.4,
+        "trailing_floor": 48509.4,
+        "buffer_clearance": 2410.04,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 152,
-        "timestamp": "2022-10-20T13:35:00",
-        "equity": 48181.68,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 681.68,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
         "trade_num": 160,
-        "timestamp": "2022-11-01T13:45:00",
-        "equity": 48191.4,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 691.4,
+        "timestamp": "2022-09-26T13:45:00",
+        "equity": 50679.88,
+        "hwm": 51009.4,
+        "trailing_floor": 48509.4,
+        "buffer_clearance": 2170.48,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -139.48
       },
       {
-        "trade_num": 168,
-        "timestamp": "2022-11-15T13:50:00",
-        "equity": 48120.12,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 620.12,
+        "trade_num": 170,
+        "timestamp": "2022-10-12T15:20:00",
+        "equity": 50744.84,
+        "hwm": 51009.4,
+        "trailing_floor": 48509.4,
+        "buffer_clearance": 2235.44,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -99.0
       },
       {
-        "trade_num": 176,
-        "timestamp": "2022-11-29T13:40:00",
-        "equity": 48268.84,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 768.84,
+        "trade_num": 180,
+        "timestamp": "2022-10-27T13:55:00",
+        "equity": 51297.08,
+        "hwm": 51301.56,
+        "trailing_floor": 48801.56,
+        "buffer_clearance": 2495.52,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 184,
-        "timestamp": "2022-12-20T13:30:00",
-        "equity": 48139.56,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 639.56,
+        "trade_num": 190,
+        "timestamp": "2022-11-11T14:50:00",
+        "equity": 51227.8,
+        "hwm": 51544.64,
+        "trailing_floor": 49044.64,
+        "buffer_clearance": 2183.16,
         "is_locked": false,
-        "trade_pnl": 135.84
-      },
-      {
-        "trade_num": 192,
-        "timestamp": "2023-01-09T13:45:00",
-        "equity": 48508.28,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1008.28,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": 210.0
       },
       {
         "trade_num": 200,
-        "timestamp": "2023-01-26T13:40:00",
-        "equity": 48217.0,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 717.0,
+        "timestamp": "2022-11-29T14:10:00",
+        "equity": 51677.2,
+        "hwm": 51677.2,
+        "trailing_floor": 49177.2,
+        "buffer_clearance": 2500.0,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 179.28
       },
       {
-        "trade_num": 208,
-        "timestamp": "2023-02-08T13:30:00",
-        "equity": 48284.72,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 784.72,
+        "trade_num": 210,
+        "timestamp": "2022-12-15T14:25:00",
+        "equity": 52143.84,
+        "hwm": 52145.32,
+        "trailing_floor": 49645.32,
+        "buffer_clearance": 2498.52,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": 147.0
       },
       {
-        "trade_num": 216,
-        "timestamp": "2023-02-28T15:15:00",
-        "equity": 48572.44,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1072.44,
+        "trade_num": 220,
+        "timestamp": "2023-01-04T14:40:00",
+        "equity": 51827.0,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 2004.6,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -75.96
       },
       {
-        "trade_num": 224,
-        "timestamp": "2023-03-15T14:05:00",
-        "equity": 48223.16,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 723.16,
+        "trade_num": 230,
+        "timestamp": "2023-01-20T14:10:00",
+        "equity": 51416.0,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1593.6,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 232,
-        "timestamp": "2023-04-05T14:10:00",
-        "equity": 48151.88,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 651.88,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -4.48
       },
       {
         "trade_num": 240,
-        "timestamp": "2023-04-20T13:45:00",
-        "equity": 47721.6,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 221.6,
+        "timestamp": "2023-02-03T14:45:00",
+        "equity": 51162.72,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1340.32,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -10.48
       },
       {
-        "trade_num": 248,
-        "timestamp": "2023-05-05T13:25:00",
-        "equity": 47650.32,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 150.32,
+        "trade_num": 250,
+        "timestamp": "2023-02-21T14:15:00",
+        "equity": 51415.16,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1592.76,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -60.0
       },
       {
-        "trade_num": 256,
-        "timestamp": "2023-05-18T13:45:00",
-        "equity": 48100.04,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 600.04,
+        "trade_num": 260,
+        "timestamp": "2023-03-07T15:55:00",
+        "equity": 51031.36,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1208.96,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 264,
-        "timestamp": "2023-06-07T13:50:00",
-        "equity": 47947.76,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 447.76,
+        "trade_num": 270,
+        "timestamp": "2023-03-23T14:30:00",
+        "equity": 51092.04,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1269.64,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 272,
-        "timestamp": "2023-06-27T13:50:00",
-        "equity": 47795.48,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 295.48,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
         "trade_num": 280,
-        "timestamp": "2023-07-20T14:10:00",
-        "equity": 48002.2,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 502.2,
+        "timestamp": "2023-04-06T15:15:00",
+        "equity": 51528.76,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1706.36,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 80.52
       },
       {
-        "trade_num": 288,
-        "timestamp": "2023-08-02T13:50:00",
-        "equity": 48069.92,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 569.92,
+        "trade_num": 290,
+        "timestamp": "2023-04-25T15:10:00",
+        "equity": 51569.92,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1747.52,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 1.52
       },
       {
-        "trade_num": 296,
-        "timestamp": "2023-08-18T14:20:00",
-        "equity": 48079.64,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 579.64,
+        "trade_num": 300,
+        "timestamp": "2023-05-09T14:15:00",
+        "equity": 51463.64,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1641.24,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -111.48
       },
       {
-        "trade_num": 304,
-        "timestamp": "2023-09-07T15:50:00",
-        "equity": 47811.36,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 311.36,
+        "trade_num": 310,
+        "timestamp": "2023-05-24T14:30:00",
+        "equity": 51387.84,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1565.44,
         "is_locked": false,
-        "trade_pnl": -3.16
-      },
-      {
-        "trade_num": 312,
-        "timestamp": "2023-09-22T13:45:00",
-        "equity": 47879.08,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 379.08,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -40.48
       },
       {
         "trade_num": 320,
-        "timestamp": "2023-10-05T14:55:00",
-        "equity": 47726.8,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 226.8,
+        "timestamp": "2023-06-09T14:10:00",
+        "equity": 50754.04,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 931.64,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -75.48
       },
       {
-        "trade_num": 328,
-        "timestamp": "2023-10-19T14:00:00",
-        "equity": 48153.52,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 653.52,
+        "trade_num": 330,
+        "timestamp": "2023-06-27T15:00:00",
+        "equity": 51199.72,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1377.32,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": 171.76
       },
       {
-        "trade_num": 336,
-        "timestamp": "2023-11-02T13:55:00",
-        "equity": 48244.24,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 744.24,
+        "trade_num": 340,
+        "timestamp": "2023-07-14T14:10:00",
+        "equity": 51059.96,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1237.56,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 344,
-        "timestamp": "2023-11-27T13:45:00",
-        "equity": 47871.96,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 371.96,
+        "trade_num": 350,
+        "timestamp": "2023-07-31T14:35:00",
+        "equity": 50822.64,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1000.24,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 352,
-        "timestamp": "2023-12-07T13:30:00",
-        "equity": 48020.68,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 520.68,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 94.52
       },
       {
         "trade_num": 360,
-        "timestamp": "2023-12-26T13:55:00",
-        "equity": 47590.4,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 90.4,
+        "timestamp": "2023-08-16T14:00:00",
+        "equity": 50763.64,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 941.24,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 368,
-        "timestamp": "2024-01-18T14:50:00",
-        "equity": 48179.12,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 679.12,
+        "trade_num": 370,
+        "timestamp": "2023-08-30T15:05:00",
+        "equity": 50446.4,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 624.0,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 14.52
       },
       {
-        "trade_num": 376,
-        "timestamp": "2024-02-08T14:30:00",
-        "equity": 48605.84,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1105.84,
+        "trade_num": 380,
+        "timestamp": "2023-09-18T14:00:00",
+        "equity": 50321.08,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 498.68,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -89.0
       },
       {
-        "trade_num": 384,
-        "timestamp": "2024-02-28T13:55:00",
-        "equity": 48476.56,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 976.56,
+        "trade_num": 390,
+        "timestamp": "2023-10-02T14:20:00",
+        "equity": 50275.28,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 452.88,
         "is_locked": false,
-        "trade_pnl": 135.84
-      },
-      {
-        "trade_num": 392,
-        "timestamp": "2024-03-18T14:05:00",
-        "equity": 48683.28,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1183.28,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 154.52
       },
       {
         "trade_num": 400,
-        "timestamp": "2024-04-05T13:55:00",
-        "equity": 48832.0,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1332.0,
+        "timestamp": "2023-10-17T14:30:00",
+        "equity": 50779.24,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 956.84,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 116.52
       },
       {
-        "trade_num": 408,
-        "timestamp": "2024-04-25T14:05:00",
-        "equity": 48818.72,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1318.72,
+        "trade_num": 410,
+        "timestamp": "2023-10-31T13:45:00",
+        "equity": 50525.68,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 703.28,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -95.48
       },
       {
-        "trade_num": 416,
-        "timestamp": "2024-05-07T14:35:00",
-        "equity": 48991.44,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1491.44,
+        "trade_num": 420,
+        "timestamp": "2023-11-17T14:00:00",
+        "equity": 50574.12,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 751.72,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 424,
-        "timestamp": "2024-05-28T14:20:00",
-        "equity": 48862.16,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1362.16,
+        "trade_num": 430,
+        "timestamp": "2023-12-05T13:50:00",
+        "equity": 50087.16,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 264.76,
         "is_locked": false,
-        "trade_pnl": -3.16
-      },
-      {
-        "trade_num": 432,
-        "timestamp": "2024-06-14T13:45:00",
-        "equity": 48709.88,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1209.88,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
         "trade_num": 440,
-        "timestamp": "2024-07-12T15:05:00",
-        "equity": 48719.6,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1219.6,
+        "timestamp": "2023-12-21T14:25:00",
+        "equity": 50309.36,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 486.96,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -73.0
       },
       {
-        "trade_num": 448,
-        "timestamp": "2024-07-29T14:15:00",
-        "equity": 49111.32,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1611.32,
+        "trade_num": 450,
+        "timestamp": "2024-01-09T15:15:00",
+        "equity": 50678.32,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 855.92,
         "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 110.28
       },
       {
-        "trade_num": 456,
-        "timestamp": "2024-08-15T14:30:00",
-        "equity": 49071.04,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1571.04,
+        "trade_num": 460,
+        "timestamp": "2024-01-26T15:05:00",
+        "equity": 51051.24,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1228.84,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": 113.28
       },
       {
-        "trade_num": 464,
-        "timestamp": "2024-09-03T14:15:00",
-        "equity": 48698.76,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1198.76,
+        "trade_num": 470,
+        "timestamp": "2024-02-09T14:45:00",
+        "equity": 51217.68,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1395.28,
         "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 472,
-        "timestamp": "2024-09-20T13:45:00",
-        "equity": 48928.48,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1428.48,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -12.48
       },
       {
         "trade_num": 480,
-        "timestamp": "2024-10-07T14:35:00",
-        "equity": 49216.2,
-        "hwm": 50000.0,
-        "trailing_floor": 47500.0,
-        "buffer_clearance": 1716.2,
+        "timestamp": "2024-02-28T13:55:00",
+        "equity": 51338.8,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 1516.4,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 488,
-        "timestamp": "2024-10-28T14:35:00",
-        "equity": 50024.92,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
+        "trade_num": 490,
+        "timestamp": "2024-03-14T14:35:00",
+        "equity": 51920.76,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 2098.36,
+        "is_locked": false,
+        "trade_pnl": 111.76
+      },
+      {
+        "trade_num": 500,
+        "timestamp": "2024-03-28T14:10:00",
+        "equity": 52067.28,
+        "hwm": 52322.4,
+        "trailing_floor": 49822.4,
+        "buffer_clearance": 2244.88,
+        "is_locked": false,
+        "trade_pnl": -68.96
+      },
+      {
+        "trade_num": 510,
+        "timestamp": "2024-04-15T14:10:00",
+        "equity": 52462.24,
+        "hwm": 52462.24,
+        "trailing_floor": 49962.24,
         "buffer_clearance": 2500.0,
         "is_locked": false,
-        "trade_pnl": 135.84
-      },
-      {
-        "trade_num": 496,
-        "timestamp": "2024-11-20T14:45:00",
-        "equity": 49791.64,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 2266.72,
-        "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 504,
-        "timestamp": "2024-12-06T13:45:00",
-        "equity": 49419.36,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1894.44,
-        "is_locked": false,
-        "trade_pnl": -84.16
-      },
-      {
-        "trade_num": 512,
-        "timestamp": "2024-12-27T13:35:00",
-        "equity": 49487.08,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1962.16,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 69.04
       },
       {
         "trade_num": 520,
-        "timestamp": "2025-01-16T13:35:00",
-        "equity": 49473.8,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1948.88,
+        "timestamp": "2024-04-29T14:35:00",
+        "equity": 52149.4,
+        "hwm": 52462.24,
+        "trailing_floor": 49962.24,
+        "buffer_clearance": 2187.16,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -46.48
       },
       {
-        "trade_num": 528,
-        "timestamp": "2025-01-30T13:55:00",
-        "equity": 49425.52,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1900.6,
+        "trade_num": 530,
+        "timestamp": "2024-05-13T13:45:00",
+        "equity": 52422.32,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 2431.0,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -69.0
       },
       {
-        "trade_num": 536,
-        "timestamp": "2025-02-19T13:45:00",
-        "equity": 48972.24,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1447.32,
+        "trade_num": 540,
+        "timestamp": "2024-05-29T14:20:00",
+        "equity": 52082.24,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 2090.92,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 74.28
       },
       {
-        "trade_num": 544,
-        "timestamp": "2025-03-04T13:35:00",
-        "equity": 49421.96,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1897.04,
+        "trade_num": 550,
+        "timestamp": "2024-06-13T14:20:00",
+        "equity": 51729.4,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 1738.08,
         "is_locked": false,
-        "trade_pnl": -3.16
-      },
-      {
-        "trade_num": 552,
-        "timestamp": "2025-03-21T14:45:00",
-        "equity": 49350.68,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1825.76,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": -89.0
       },
       {
         "trade_num": 560,
-        "timestamp": "2025-04-07T13:45:00",
-        "equity": 49198.4,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1673.48,
+        "timestamp": "2024-06-28T15:20:00",
+        "equity": 51686.4,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 1695.08,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": 105.04
       },
       {
-        "trade_num": 568,
-        "timestamp": "2025-04-24T13:55:00",
-        "equity": 48907.12,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1382.2,
+        "trade_num": 570,
+        "timestamp": "2024-07-17T14:15:00",
+        "equity": 51376.6,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 1385.28,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 576,
-        "timestamp": "2025-05-07T13:40:00",
-        "equity": 48476.84,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 951.92,
+        "trade_num": 580,
+        "timestamp": "2024-08-02T13:45:00",
+        "equity": 51591.28,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 1599.96,
         "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 584,
-        "timestamp": "2025-05-28T14:10:00",
-        "equity": 48787.56,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1262.64,
+        "trade_num": 590,
+        "timestamp": "2024-08-19T14:10:00",
+        "equity": 51951.72,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 1960.4,
         "is_locked": false,
-        "trade_pnl": -3.16
-      },
-      {
-        "trade_num": 592,
-        "timestamp": "2025-06-12T14:30:00",
-        "equity": 48797.28,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1272.36,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_pnl": 111.76
       },
       {
         "trade_num": 600,
-        "timestamp": "2025-07-01T13:35:00",
-        "equity": 48645.0,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1120.08,
+        "timestamp": "2024-09-04T14:50:00",
+        "equity": 52168.92,
+        "hwm": 52491.32,
+        "trailing_floor": 49991.32,
+        "buffer_clearance": 2177.6,
         "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_pnl": 26.52
       },
       {
-        "trade_num": 608,
-        "timestamp": "2025-07-18T14:10:00",
-        "equity": 48573.72,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1048.8,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_num": 610,
+        "timestamp": "2024-09-19T15:00:00",
+        "equity": 52981.88,
+        "hwm": 53028.36,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2881.88,
+        "is_locked": true,
+        "trade_pnl": -46.48
       },
       {
-        "trade_num": 616,
-        "timestamp": "2025-07-31T14:40:00",
-        "equity": 48282.44,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 757.52,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 620,
+        "timestamp": "2024-10-04T14:35:00",
+        "equity": 53067.8,
+        "hwm": 53135.28,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2967.8,
+        "is_locked": true,
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 624,
-        "timestamp": "2025-08-15T14:10:00",
-        "equity": 48512.16,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 987.24,
-        "is_locked": false,
-        "trade_pnl": 135.84
-      },
-      {
-        "trade_num": 632,
-        "timestamp": "2025-08-29T14:40:00",
-        "equity": 48579.88,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1054.96,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_num": 630,
+        "timestamp": "2024-10-21T15:00:00",
+        "equity": 53023.76,
+        "hwm": 53136.12,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2923.76,
+        "is_locked": true,
+        "trade_pnl": -69.48
       },
       {
         "trade_num": 640,
-        "timestamp": "2025-09-15T13:40:00",
-        "equity": 48288.6,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 763.68,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "timestamp": "2024-11-04T13:35:00",
+        "equity": 52995.96,
+        "hwm": 53232.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2895.96,
+        "is_locked": true,
+        "trade_pnl": -40.0
       },
       {
-        "trade_num": 648,
-        "timestamp": "2025-09-26T14:05:00",
-        "equity": 48240.32,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 715.4,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 650,
+        "timestamp": "2024-11-19T14:20:00",
+        "equity": 53299.4,
+        "hwm": 53299.4,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3199.4,
+        "is_locked": true,
+        "trade_pnl": 125.28
       },
       {
-        "trade_num": 656,
-        "timestamp": "2025-10-09T14:45:00",
-        "equity": 48007.04,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 482.12,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_num": 660,
+        "timestamp": "2024-12-05T14:05:00",
+        "equity": 53439.08,
+        "hwm": 53443.56,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3339.08,
+        "is_locked": true,
+        "trade_pnl": -4.48
       },
       {
-        "trade_num": 664,
-        "timestamp": "2025-10-24T13:50:00",
-        "equity": 48155.76,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 630.84,
-        "is_locked": false,
-        "trade_pnl": 135.84
-      },
-      {
-        "trade_num": 672,
-        "timestamp": "2025-11-13T14:00:00",
-        "equity": 47725.48,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 200.56,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_num": 670,
+        "timestamp": "2024-12-20T15:00:00",
+        "equity": 53170.8,
+        "hwm": 53585.6,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3070.8,
+        "is_locked": true,
+        "trade_pnl": 46.52
       },
       {
         "trade_num": 680,
-        "timestamp": "2025-12-01T14:35:00",
-        "equity": 47793.2,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 268.28,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "timestamp": "2025-01-08T14:35:00",
+        "equity": 53694.0,
+        "hwm": 53777.96,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3594.0,
+        "is_locked": true,
+        "trade_pnl": -79.48
       },
       {
-        "trade_num": 688,
-        "timestamp": "2025-12-15T13:40:00",
-        "equity": 47362.92,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": -162.0,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 690,
+        "timestamp": "2025-01-24T14:40:00",
+        "equity": 54162.88,
+        "hwm": 54256.84,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4062.88,
+        "is_locked": true,
+        "trade_pnl": 24.52
       },
       {
-        "trade_num": 696,
-        "timestamp": "2025-12-30T14:10:00",
-        "equity": 47233.64,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": -291.28,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 700,
+        "timestamp": "2025-02-11T13:55:00",
+        "equity": 54218.84,
+        "hwm": 54394.48,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4118.84,
+        "is_locked": true,
+        "trade_pnl": -84.48
       },
       {
-        "trade_num": 704,
-        "timestamp": "2026-01-12T15:55:00",
-        "equity": 47897.36,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 372.44,
-        "is_locked": false,
-        "trade_pnl": 71.84
-      },
-      {
-        "trade_num": 712,
-        "timestamp": "2026-01-28T13:35:00",
-        "equity": 48486.08,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 961.16,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_num": 710,
+        "timestamp": "2025-02-28T13:55:00",
+        "equity": 54284.28,
+        "hwm": 54450.16,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4184.28,
+        "is_locked": true,
+        "trade_pnl": -66.48
       },
       {
         "trade_num": 720,
-        "timestamp": "2026-02-18T14:00:00",
-        "equity": 48576.8,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 1051.88,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "timestamp": "2025-03-18T14:00:00",
+        "equity": 54495.48,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4395.48,
+        "is_locked": true,
+        "trade_pnl": -70.0
       },
       {
-        "trade_num": 728,
-        "timestamp": "2026-03-06T13:40:00",
-        "equity": 48424.52,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 899.6,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_num": 730,
+        "timestamp": "2025-04-01T15:15:00",
+        "equity": 54220.2,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4120.2,
+        "is_locked": true,
+        "trade_pnl": 36.52
       },
       {
-        "trade_num": 736,
-        "timestamp": "2026-03-26T14:00:00",
-        "equity": 48226.24,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 701.32,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_num": 740,
+        "timestamp": "2025-04-17T15:55:00",
+        "equity": 54134.4,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4034.4,
+        "is_locked": true,
+        "trade_pnl": 5.52
       },
       {
-        "trade_num": 744,
-        "timestamp": "2026-04-27T14:20:00",
-        "equity": 48293.96,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 769.04,
-        "is_locked": false,
-        "trade_pnl": -3.16
-      },
-      {
-        "trade_num": 752,
-        "timestamp": "2026-05-14T13:40:00",
-        "equity": 48141.68,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 616.76,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 750,
+        "timestamp": "2025-05-02T14:30:00",
+        "equity": 53919.32,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3819.32,
+        "is_locked": true,
+        "trade_pnl": -122.48
       },
       {
         "trade_num": 760,
-        "timestamp": "2026-05-27T14:30:00",
-        "equity": 47931.4,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 406.48,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "timestamp": "2025-05-20T14:10:00",
+        "equity": 54256.76,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4156.76,
+        "is_locked": true,
+        "trade_pnl": 120.76
       },
       {
-        "trade_num": 768,
-        "timestamp": "2026-06-09T13:30:00",
-        "equity": 47792.12,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 267.2,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_num": 770,
+        "timestamp": "2025-06-04T14:15:00",
+        "equity": 54377.68,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4277.68,
+        "is_locked": true,
+        "trade_pnl": -91.0
       },
       {
-        "trade_num": 776,
-        "timestamp": "2026-06-30T14:05:00",
-        "equity": 47639.84,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 114.92,
-        "is_locked": false,
-        "trade_pnl": 135.84
+        "trade_num": 780,
+        "timestamp": "2025-06-23T14:40:00",
+        "equity": 54362.92,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4262.92,
+        "is_locked": true,
+        "trade_pnl": -77.96
       },
       {
-        "trade_num": 784,
-        "timestamp": "2026-07-22T13:35:00",
-        "equity": 47568.56,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 43.64,
-        "is_locked": false,
-        "trade_pnl": -3.16
-      },
-      {
-        "trade_num": 792,
-        "timestamp": "2026-08-07T13:45:00",
-        "equity": 48249.28,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 724.36,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 790,
+        "timestamp": "2025-07-11T14:05:00",
+        "equity": 54547.64,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4447.64,
+        "is_locked": true,
+        "trade_pnl": -4.48
       },
       {
         "trade_num": 800,
-        "timestamp": "2026-08-27T13:45:00",
-        "equity": 48016.0,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 491.08,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "timestamp": "2025-07-28T14:10:00",
+        "equity": 54031.4,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3931.4,
+        "is_locked": true,
+        "trade_pnl": -91.48
       },
       {
-        "trade_num": 808,
-        "timestamp": "2026-09-14T14:15:00",
-        "equity": 48164.72,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 639.8,
-        "is_locked": false,
-        "trade_pnl": -84.16
+        "trade_num": 810,
+        "timestamp": "2025-08-11T13:50:00",
+        "equity": 53587.6,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3487.6,
+        "is_locked": true,
+        "trade_pnl": -71.0
       },
       {
-        "trade_num": 816,
-        "timestamp": "2026-09-29T15:05:00",
-        "equity": 48394.44,
-        "hwm": 50024.92,
-        "trailing_floor": 47524.92,
-        "buffer_clearance": 869.52,
-        "is_locked": false,
-        "trade_pnl": -3.16
+        "trade_num": 820,
+        "timestamp": "2025-08-26T14:00:00",
+        "equity": 53887.08,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3787.08,
+        "is_locked": true,
+        "trade_pnl": -67.96
+      },
+      {
+        "trade_num": 830,
+        "timestamp": "2025-09-12T14:40:00",
+        "equity": 53944.24,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3844.24,
+        "is_locked": true,
+        "trade_pnl": -128.48
+      },
+      {
+        "trade_num": 840,
+        "timestamp": "2025-09-29T14:30:00",
+        "equity": 53947.72,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3847.72,
+        "is_locked": true,
+        "trade_pnl": 62.52
+      },
+      {
+        "trade_num": 850,
+        "timestamp": "2025-10-13T14:00:00",
+        "equity": 54073.36,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3973.36,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 860,
+        "timestamp": "2025-10-30T13:50:00",
+        "equity": 54114.08,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 4014.08,
+        "is_locked": true,
+        "trade_pnl": -86.0
+      },
+      {
+        "trade_num": 870,
+        "timestamp": "2025-11-14T13:45:00",
+        "equity": 53519.72,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3419.72,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 880,
+        "timestamp": "2025-12-02T15:15:00",
+        "equity": 53725.44,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3625.44,
+        "is_locked": true,
+        "trade_pnl": 144.76
+      },
+      {
+        "trade_num": 890,
+        "timestamp": "2025-12-19T14:00:00",
+        "equity": 53312.92,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3212.92,
+        "is_locked": true,
+        "trade_pnl": -80.96
+      },
+      {
+        "trade_num": 900,
+        "timestamp": "2026-01-07T15:15:00",
+        "equity": 53194.84,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 3094.84,
+        "is_locked": true,
+        "trade_pnl": -77.96
+      },
+      {
+        "trade_num": 910,
+        "timestamp": "2026-01-27T14:50:00",
+        "equity": 52955.32,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2855.32,
+        "is_locked": true,
+        "trade_pnl": -29.48
+      },
+      {
+        "trade_num": 920,
+        "timestamp": "2026-02-12T15:15:00",
+        "equity": 52715.0,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2615.0,
+        "is_locked": true,
+        "trade_pnl": -38.48
+      },
+      {
+        "trade_num": 930,
+        "timestamp": "2026-02-27T15:00:00",
+        "equity": 52403.16,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 2303.16,
+        "is_locked": true,
+        "trade_pnl": 57.52
+      },
+      {
+        "trade_num": 940,
+        "timestamp": "2026-03-17T13:45:00",
+        "equity": 51992.16,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1892.16,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 950,
+        "timestamp": "2026-04-01T14:05:00",
+        "equity": 51734.36,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1634.36,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 960,
+        "timestamp": "2026-04-17T14:30:00",
+        "equity": 52010.56,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1910.56,
+        "is_locked": true,
+        "trade_pnl": -46.48
+      },
+      {
+        "trade_num": 970,
+        "timestamp": "2026-05-01T14:00:00",
+        "equity": 51941.52,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1841.52,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 980,
+        "timestamp": "2026-05-19T14:15:00",
+        "equity": 51555.28,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1455.28,
+        "is_locked": true,
+        "trade_pnl": -65.96
+      },
+      {
+        "trade_num": 990,
+        "timestamp": "2026-06-04T14:50:00",
+        "equity": 51519.24,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1419.24,
+        "is_locked": true,
+        "trade_pnl": 73.52
+      },
+      {
+        "trade_num": 1000,
+        "timestamp": "2026-06-22T14:00:00",
+        "equity": 51816.16,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1716.16,
+        "is_locked": true,
+        "trade_pnl": 68.28
+      },
+      {
+        "trade_num": 1010,
+        "timestamp": "2026-07-07T13:35:00",
+        "equity": 51822.84,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1722.84,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 1020,
+        "timestamp": "2026-07-23T15:15:00",
+        "equity": 51842.8,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1742.8,
+        "is_locked": true,
+        "trade_pnl": -4.48
+      },
+      {
+        "trade_num": 1030,
+        "timestamp": "2026-08-06T14:50:00",
+        "equity": 51548.96,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1448.96,
+        "is_locked": true,
+        "trade_pnl": 25.52
+      },
+      {
+        "trade_num": 1040,
+        "timestamp": "2026-08-21T14:05:00",
+        "equity": 51597.4,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1497.4,
+        "is_locked": true,
+        "trade_pnl": 60.76
+      },
+      {
+        "trade_num": 1050,
+        "timestamp": "2026-09-04T14:35:00",
+        "equity": 52050.64,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1950.64,
+        "is_locked": true,
+        "trade_pnl": -6.48
+      },
+      {
+        "trade_num": 1060,
+        "timestamp": "2026-09-22T14:35:00",
+        "equity": 52037.84,
+        "hwm": 54749.92,
+        "trailing_floor": 50100.0,
+        "buffer_clearance": 1937.84,
+        "is_locked": true,
+        "trade_pnl": 31.52
       }
     ]
   }

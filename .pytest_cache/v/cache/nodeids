@@ -44,5 +44,7 @@
   "tests/test_portfolio_and_incubation.py::test_orb_rvol_and_clutch_candle_quality",
   "tests/test_portfolio_and_incubation.py::test_portfolio_account_tracker_concurrency_and_locks",
   "tests/test_portfolio_and_incubation.py::test_portfolio_runner_session_capital_and_analytics",
+  "tests/test_regime_bucketing.py::test_forward_excursion_evaluation",
+  "tests/test_regime_bucketing.py::test_regime_bucketing_feature_extraction",
   "tests/test_strategies.py::test_strategy_discovery"
 ]

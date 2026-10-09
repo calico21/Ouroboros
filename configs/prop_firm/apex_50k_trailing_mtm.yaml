@@ -5,6 +5,11 @@ trailing_max_drawdown: 2500.0
 drawdown_type: "intra_trade_peak_mtm" # Options: intra_trade_peak_mtm, end_of_day, static
 floor_lock_threshold: 2600.0         # When HWM >= initial_balance + 2600 ($52,600), floor locks
 lock_floor_offset: 100.0             # Floor locks permanently at initial_balance + 100 ($50,100)
-daily_loss_limit: null               # Apex has no daily loss limit
+daily_loss_limit: null               # Apex official rules have NO daily loss limit (self-imposed risk breakers optional)
 max_contracts: 10                    # 10 MNQ or 2 NQ
+hard_flatten_time_est: "15:55"       # Flatten all positions prior to 16:59 ET CME Globex close
 liquidation_on_breach: true
+commission_per_contract_rt: 1.24     # Round-turn fee for MNQ ($0.62 per side)
+tick_size: 0.25
+tick_value: 0.50
+point_value: 2.00

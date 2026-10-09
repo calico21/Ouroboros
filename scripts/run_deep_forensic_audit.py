@@ -15,6 +15,7 @@ import argparse
 import sys
 import shutil
 import json
+from datetime import time, datetime
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict, Any
 
@@ -23,18 +24,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
 import pandas as pd
+import yaml
 
 from src.data.macro_calendar import MacroCalendar, CatalystType
 from src.data.multi_year_loader import MultiYearLoader
 from src.data.regime_classifier import RegimeClassifier, VolatilityRegime
-from src.core.events import TradeRecord
+from src.core.events import BarEvent, TradeRecord
 from src.core.enums import OrderSide, LossCategory
+from src.strategies.afternoon_trend_continuation.strategy import AfternoonTrendContinuationStrategy
 from src.analytics.loss_taxonomy import LossTaxonomyEngine
 from src.analytics.sensitivity import FrictionFrontierEngine
 from src.analytics.calendar_metrics import CalendarMetricsCalculator
 from src.analytics.deflated_sharpe import DeflatedSharpeCalculator
 from src.analytics.macro_attribution import MacroAttributionAnalyzer
 from src.analytics.liquidity_excursion import LiquidityExcursionAnalyzer
+from src.analytics.regime_bucketing_harness import RegimeBucketingHarness
 from src.validation.cpcv import CombinatorialPurgedCV
 from src.validation.walk_forward_matrix import WalkForwardMatrix
 from src.validation.synthetic_stress import SyntheticStressEngine
@@ -51,188 +55,212 @@ def generate_production_trades(
     calendar: Optional[MacroCalendar] = None
 ) -> tuple[pd.DataFrame, list[TradeRecord]]:
     """
-    Simulates multi-year trades for afternoon_trend_continuation on the continuous data.
-    Equipped with institutional filters:
-    1. Macro Blackout: Suppress trade entry on CPI release days.
-    2. Volatility Conditioning: Suppress entry in Quintile 5 crisis turbulence.
-    3. Momentum/Trend Alignment: Require significant morning trend (>20 pts).
-    4. Target Geometry: Stop 20 pts, Target 35 pts (1.75R) / Trailing Breakeven protection at +0.85R (+17 pts).
+    Executes real AfternoonTrendContinuationStrategy on the continuous bar series.
+    Enforces authentic strategy execution lifecycle:
+    1. Tracks 11:30 - 13:30 EST consolidation boundaries via MiddayConsolidationTracker.
+    2. Enters only on verified breakout above high or below low between 13:30 - 15:15 EST.
+    3. Respects institutional macro blackout (CPI / FOMC 14:00-14:30) and volatility quintiles.
+    4. Evaluates intra-bar MFE and MAE, Breakeven trigger at +0.85R, 60m Time-Stop, and 15:55 Hard Flatten.
+    5. Deducts CME Globex commission ($1.24 RT per contract) and 1-tick slippage from Net PnL.
     """
     macro_cal = calendar or MacroCalendar()
+    strategy = AfternoonTrendContinuationStrategy()
     trades = []
     records: list[TradeRecord] = []
     daily_groups = df_bars.groupby(df_bars.index.date)
 
-    np.random.seed(42)
+    # Instrument & execution specifications (CME Globex MNQ)
+    contracts = 2
+    point_val = 2.00   # $2.00 per point
+    tick_size = 0.25   # 0.25 index points
+    comm_rt = 1.24 * contracts  # $0.62 per side = $1.24 round turn per contract
+    slippage_per_fill = 0.50 * contracts  # 1.0 tick ($0.50) per contract on market/stop fills
 
     for trade_date, day_df in daily_groups:
-        if len(day_df) < 20:
+        if len(day_df) < 15:
             continue
 
-        # Afternoon window: 13:30 to 15:55 EST
-        afternoon_bars = day_df[(day_df.index.hour >= 13) & ((day_df.index.hour < 15) | ((day_df.index.hour == 15) & (day_df.index.minute <= 55)))]
-        if len(afternoon_bars) < 6:
-            continue
+        strategy.reset_session()
+        active_pos = None
 
-        # --- INSTITUTIONAL FILTER 1: MACRO BLACKOUT (CPI) ---
-        catalyst = afternoon_bars.iloc[0].get("catalyst", CatalystType.NONE.value)
-        if catalyst in ("CPI", CatalystType.CPI.value) or macro_cal.is_cpi_day(trade_date):
-            continue
+        for ts, row in day_df.iterrows():
+            bar = BarEvent(
+                timestamp=ts,
+                open=float(row["open"]),
+                high=float(row["high"]),
+                low=float(row["low"]),
+                close=float(row["close"]),
+                volume=float(row["volume"]),
+                symbol="MNQ"
+            )
+            t = ts.time()
 
-        # --- INSTITUTIONAL FILTER 2: VOLATILITY QUINTILE CONDITIONING ---
-        vol_regime = afternoon_bars.iloc[0].get("vol_regime", "")
-        if vol_regime in ("Q5_CRISIS", VolatilityRegime.Q5_CRISIS.value):
-            continue
+            # Manage active trade lifecycle if in position
+            if active_pos is not None:
+                active_pos["bars_held"] += 1
+                is_long = active_pos["side"] == OrderSide.LONG
+                entry_p = active_pos["entry_price"]
+                sl = active_pos["sl"]
+                tp = active_pos["tp"]
+                risk_pts = active_pos["risk_pts"]
 
-        # Check morning trend direction (09:30 - 11:30)
-        morning_bars = day_df[(day_df.index.hour >= 9) & (day_df.index.hour <= 11)]
-        if morning_bars.empty:
-            continue
+                # Intra-bar MFE / MAE excursions
+                if is_long:
+                    fav = bar.high - entry_p
+                    adv = entry_p - bar.low
+                else:
+                    fav = entry_p - bar.low
+                    adv = bar.high - entry_p
 
-        morning_open = morning_bars.iloc[0]["open"]
-        morning_close = morning_bars.iloc[-1]["close"]
-        morning_change = morning_close - morning_open
+                if fav > active_pos["max_fav"]:
+                    active_pos["max_fav"] = fav
+                    active_pos["time_to_peak"] = active_pos["bars_held"]
+                active_pos["max_adv"] = max(active_pos["max_adv"], adv)
 
-        # Directional momentum gate (> 20 points on MNQ)
-        if abs(morning_change) < 20.0:
-            continue
+                # Breakeven trigger: move SL to entry +/- 1 tick once MFE reaches trigger distance
+                if not active_pos["be_active"] and active_pos["max_fav"] >= active_pos["be_trigger_dist"]:
+                    active_pos["be_active"] = True
+                    if is_long:
+                        active_pos["sl"] = max(active_pos["sl"], entry_p + tick_size)
+                    else:
+                        active_pos["sl"] = min(active_pos["sl"], entry_p - tick_size)
+                    sl = active_pos["sl"]
 
-        is_bull = morning_change > 0
+                # Bracket exit checks
+                exit_price = None
+                exit_reason = None
 
-        # Afternoon trend continuation trigger at 13:30 - 13:45
-        entry_bar = afternoon_bars.iloc[1]
-        entry_time = entry_bar.name
-        entry_price = float(entry_bar["close"])
+                if is_long:
+                    if bar.low <= sl and bar.high >= tp:
+                        # Conservative tie-break assumption: SL hit first
+                        exit_price = sl - tick_size
+                        exit_reason = "STOP_LOSS"
+                    elif bar.low <= sl:
+                        exit_price = sl - tick_size
+                        exit_reason = "BREAKEVEN_STOP" if active_pos["be_active"] else "STOP_LOSS"
+                    elif bar.high >= tp:
+                        exit_price = tp
+                        exit_reason = "TAKE_PROFIT"
+                else:
+                    if bar.high >= sl and bar.low <= tp:
+                        exit_price = sl + tick_size
+                        exit_reason = "STOP_LOSS"
+                    elif bar.high >= sl:
+                        exit_price = sl + tick_size
+                        exit_reason = "BREAKEVEN_STOP" if active_pos["be_active"] else "STOP_LOSS"
+                    elif bar.low <= tp:
+                        exit_price = tp
+                        exit_reason = "TAKE_PROFIT"
 
-        contracts = 2
-        point_val = 2.0  # MNQ $2.00 per point
-        stop_dist = 20.0
-        target_dist = 35.0  # Empirical median run
-        be_trigger_dist = 17.0  # +0.85R breakeven trigger
+                # Inertia time stop check (60 minutes / 12 bars)
+                if exit_price is None and active_pos["bars_held"] >= active_pos["time_stop_bars"]:
+                    exit_price = (bar.close - tick_size) if is_long else (bar.close + tick_size)
+                    exit_reason = "TIME_STOP"
 
-        if is_bull:
-            stop_price = entry_price - stop_dist
-            target_price = entry_price + target_dist
-        else:
-            stop_price = entry_price + stop_dist
-            target_price = entry_price - target_dist
+                # Apex 15:55 EST hard flatten check
+                if exit_price is None and t >= time(15, 55):
+                    exit_price = (bar.close - tick_size) if is_long else (bar.close + tick_size)
+                    exit_reason = "1555_HARD_FLATTEN"
 
-        exit_time = afternoon_bars.iloc[-1].name
-        exit_price = float(afternoon_bars.iloc[-1]["close"])
-        exit_reason = "1555_HARD_FLATTEN"
-        max_fav = 0.0
-        max_adv = 0.0
-        be_active = False
-        bars_held = 0
-        time_to_peak = 0
+                if exit_price is not None:
+                    # Calculate realized PnL
+                    if is_long:
+                        raw_pnl = (exit_price - entry_p) * point_val * contracts
+                    else:
+                        raw_pnl = (entry_p - exit_price) * point_val * contracts
 
-        for b_idx, bar in afternoon_bars.iloc[2:].iterrows():
-            bars_held += 1
-            if is_bull:
-                fav = bar["high"] - entry_price
-                adv = entry_price - bar["low"]
-                if fav > max_fav:
-                    max_fav = fav
-                    time_to_peak = bars_held
-                max_adv = max(max_adv, adv)
+                    # Slippage deduction: Market entry pays slippage; limit TP does not pay exit slippage
+                    slip_cost = (slippage_per_fill * 2) if exit_reason != "TAKE_PROFIT" else slippage_per_fill
+                    net_pnl = raw_pnl - comm_rt - slip_cost
 
-                # Breakeven trigger: move SL to entry + 1 tick buffer
-                if not be_active and max_fav >= be_trigger_dist:
-                    be_active = True
-                    stop_price = max(stop_price, entry_price + 0.25)
+                    r_multiple = ((exit_price - entry_p) if is_long else (entry_p - exit_price)) / risk_pts
+                    mfe_r = active_pos["max_fav"] / risk_pts
+                    mae_r = active_pos["max_adv"] / risk_pts
+                    mae_dollars = active_pos["max_adv"] * point_val * contracts
 
-                if bar["low"] <= stop_price:
-                    exit_time = b_idx
-                    exit_price = stop_price
-                    exit_reason = "BREAKEVEN_STOP" if be_active else "STOP_LOSS"
-                    break
-                elif bar["high"] >= target_price:
-                    exit_time = b_idx
-                    exit_price = target_price
-                    exit_reason = "TAKE_PROFIT"
-                    break
-            else:
-                fav = entry_price - bar["low"]
-                adv = bar["high"] - entry_price
-                if fav > max_fav:
-                    max_fav = fav
-                    time_to_peak = bars_held
-                max_adv = max(max_adv, adv)
+                    trade_id = f"TRD_{len(trades)+1:04d}"
+                    catalyst = row.get("catalyst", CatalystType.NONE.value) if hasattr(row, "get") else CatalystType.NONE.value
 
-                # Breakeven trigger: move SL to entry - 1 tick buffer
-                if not be_active and max_fav >= be_trigger_dist:
-                    be_active = True
-                    stop_price = min(stop_price, entry_price - 0.25)
+                    trades.append({
+                        "trade_id": trade_id,
+                        "strategy": strategy_name,
+                        "entry_time": active_pos["entry_time"].isoformat(),
+                        "exit_time": ts.isoformat(),
+                        "direction": "LONG" if is_long else "SHORT",
+                        "entry_price": round(entry_p, 2),
+                        "exit_price": round(exit_price, 2),
+                        "net_pnl": round(net_pnl, 2),
+                        "r_multiple": round(r_multiple, 3),
+                        "mfe_ticks": round(active_pos["max_fav"] / tick_size, 1),
+                        "mae_ticks": round(active_pos["max_adv"] / tick_size, 1),
+                        "mfe_r": round(mfe_r, 3),
+                        "mae_r": round(mae_r, 3),
+                        "mae_dollars": round(mae_dollars, 2),
+                        "risk_pts": round(risk_pts, 2),
+                        "exit_reason": exit_reason,
+                        "catalyst": catalyst
+                    })
 
-                if bar["high"] >= stop_price:
-                    exit_time = b_idx
-                    exit_price = stop_price
-                    exit_reason = "BREAKEVEN_STOP" if be_active else "STOP_LOSS"
-                    break
-                elif bar["low"] <= target_price:
-                    exit_time = b_idx
-                    exit_price = target_price
-                    exit_reason = "TAKE_PROFIT"
-                    break
+                    rec = TradeRecord(
+                        trade_id=trade_id,
+                        symbol="MNQ",
+                        strategy_name=strategy_name,
+                        tag=active_pos["tag"],
+                        side=active_pos["side"],
+                        contracts=contracts,
+                        entry_time=active_pos["entry_time"],
+                        entry_price=entry_p,
+                        exit_time=ts,
+                        exit_price=exit_price,
+                        exit_reason=exit_reason,
+                        initial_sl=active_pos["sl"],
+                        initial_tp=active_pos["tp"],
+                        risk_r_price=risk_pts,
+                        mfe_price=entry_p + active_pos["max_fav"] if is_long else entry_p - active_pos["max_fav"],
+                        mae_price=entry_p - active_pos["max_adv"] if is_long else entry_p + active_pos["max_adv"],
+                        mfe_r=mfe_r,
+                        mae_r=mae_r,
+                        time_to_peak_mfe=active_pos["time_to_peak"],
+                        bars_held=active_pos["bars_held"],
+                        gross_pnl=raw_pnl,
+                        net_pnl=net_pnl,
+                        commissions=comm_rt,
+                        slippage_paid=slip_cost,
+                        r_multiple=r_multiple,
+                        excursion_efficiency=((exit_price - entry_p) / active_pos["max_fav"]) if is_long and active_pos["max_fav"] > 0 else 0.0
+                    )
+                    records.append(rec)
+                    active_pos = None
+                    continue
 
-        # Net PnL (subtract $1.04 per contract round-trip fees)
-        fee = 2.08 * contracts
-        if is_bull:
-            raw_pnl = (exit_price - entry_price) * point_val * contracts
-        else:
-            raw_pnl = (entry_price - exit_price) * point_val * contracts
+            # Check if strategy produces a new setup
+            if active_pos is None:
+                setup = strategy.on_bar(bar)
+                if setup:
+                    is_long = setup.direction == OrderSide.LONG
+                    entry_slip = tick_size if is_long else -tick_size
+                    entry_p = bar.close + entry_slip
+                    risk_pts = abs(entry_p - setup.stop_loss)
+                    if risk_pts <= 0:
+                        risk_pts = tick_size
 
-        net_pnl = raw_pnl - fee
-        r_multiple = net_pnl / (stop_dist * point_val * contracts)
-        mfe_r = max_fav / stop_dist
-        mae_r = max_adv / stop_dist
-
-        trade_id = f"TRD_{len(trades)+1:04d}"
-        trades.append({
-            "trade_id": trade_id,
-            "strategy": strategy_name,
-            "entry_time": entry_time.isoformat(),
-            "exit_time": exit_time.isoformat(),
-            "direction": "LONG" if is_bull else "SHORT",
-            "entry_price": entry_price,
-            "exit_price": exit_price,
-            "net_pnl": round(net_pnl, 2),
-            "r_multiple": round(r_multiple, 3),
-            "mfe_ticks": round(max_fav * 4.0, 1),
-            "mae_ticks": round(max_adv * 4.0, 1),
-            "exit_reason": exit_reason,
-            "catalyst": catalyst
-        })
-
-        rec = TradeRecord(
-            trade_id=trade_id,
-            symbol="MNQ",
-            strategy_name=strategy_name,
-            tag="PM_BREAKOUT",
-            side=OrderSide.LONG if is_bull else OrderSide.SHORT,
-            contracts=contracts,
-            entry_time=entry_time,
-            entry_price=entry_price,
-            exit_time=exit_time,
-            exit_price=exit_price,
-            exit_reason=exit_reason,
-            initial_sl=entry_price - stop_dist if is_bull else entry_price + stop_dist,
-            initial_tp=entry_price + target_dist if is_bull else entry_price - target_dist,
-            risk_r_price=stop_dist,
-            mfe_price=entry_price + max_fav if is_bull else entry_price - max_fav,
-            mae_price=entry_price - max_adv if is_bull else entry_price + max_adv,
-            mfe_r=mfe_r,
-            mae_r=mae_r,
-            time_to_peak_mfe=time_to_peak,
-            bars_held=bars_held,
-            gross_pnl=raw_pnl,
-            net_pnl=net_pnl,
-            commissions=fee,
-            slippage_paid=0.50 * contracts,
-            r_multiple=r_multiple,
-            excursion_efficiency=(exit_price - entry_price) / max_fav if is_bull and max_fav > 0 else 0.0
-        )
-        records.append(rec)
+                    be_r = float(setup.metadata.get("breakeven_trigger_r", 0.85))
+                    active_pos = {
+                        "entry_time": ts,
+                        "side": setup.direction,
+                        "entry_price": entry_p,
+                        "sl": setup.stop_loss,
+                        "tp": setup.take_profit,
+                        "risk_pts": risk_pts,
+                        "be_trigger_dist": risk_pts * be_r,
+                        "be_active": False,
+                        "time_stop_bars": setup.time_stop_bars or 12,
+                        "bars_held": 0,
+                        "time_to_peak": 0,
+                        "max_fav": 0.0,
+                        "max_adv": 0.0,
+                        "tag": setup.tag
+                    }
 
     return pd.DataFrame(trades), records
 
@@ -283,18 +311,38 @@ def run_audit():
         end_date=args.end,
         force_recompute=args.force_refresh
     )
+    data_prov = {
+        "is_real_market_data": loader.is_real_market_data,
+        "provenance_tag": loader.provenance,
+        "disclaimer": getattr(df_bars, "attrs", {}).get(
+            "provenance_disclaimer",
+            "Synthesized stochastic dataset via GBM regime model. Real Databento Globex ticks required for production sign-off."
+        )
+    }
     print(f"      Total 5m continuous bars: {len(df_bars):,} across {len(set(df_bars.index.date)):,} trading sessions.")
+    print(f"      Dataset Provenance: {data_prov['provenance_tag']}")
+    print(f"      Verified Real Tick Data: {data_prov['is_real_market_data']}")
+    if not data_prov["is_real_market_data"]:
+        print("      [AUDIT NOTICE] Using synthetic dataset. Backtest metrics reflect generative parameters rather than CME Globex order flow.")
 
-    # 2. Tag regimes
-    print("\n[2/7] Classifying econometric regimes (Volatility Quintiles & Catalysts)...")
+    # 2. Tag regimes & pre-register session bucketing features
+    print("\n[2/7] Classifying econometric regimes & evaluating pre-registered bucketing...")
     regime_classifier = RegimeClassifier(macro_calendar=calendar)
     df_tagged = regime_classifier.tag_dataframe(df_bars.iloc[:1000])  # Sample tag verify
-    print("      Econometric regime tags applied.")
+    
+    regime_harness = RegimeBucketingHarness()
+    daily_regime_features = regime_harness.compute_daily_regime_features(df_bars)
+    print("      Econometric regime tags and pre-market features extracted.")
 
     # 3. Generate realized multi-year trades
     print("\n[3/7] Simulating institutional execution across continuous timeline...")
     trades_df, trade_records = generate_production_trades(df_bars, strategy_name=args.strategy, calendar=calendar)
     print(f"      Realized trades generated: N = {len(trades_df)}")
+
+    # Evaluate forward MFE / MAE in R distributions across pre-registered buckets
+    bucketing_results = regime_harness.evaluate_forward_excursion_by_bucket(trades_df, daily_regime_features)
+    trend_ext_pct = bucketing_results.get("overall_trend_extension_sessions_fraction_pct", 0.0)
+    print(f"      Empirical IB Extension >= 1.5x ATR Sessions: {trend_ext_pct:.1f}%")
 
     # 4. Continuous Calendar Metrics & DSR
     print("\n[4/7] Computing unbiased calendar metrics & Deflated Sharpe Ratio (DSR)...")
@@ -340,7 +388,7 @@ def run_audit():
 
     # 7. 50,000-Path Apex 50k Trailing Floor Monte Carlo
     print(f"\n[7/7] Simulating {args.mc_paths:,}-path Apex 50k MTM Ratchet Monte Carlo...")
-    mc_sim = PropFirmMonteCarloSimulator()
+    mc_sim = PropFirmMonteCarloSimulator.from_yaml("configs/prop_firm/apex_50k_trailing_mtm.yaml")
     mc_res = mc_sim.simulate(trades_df, n_paths=args.mc_paths)
     print(f"      P(Pass Target +$3,000): {mc_res.p_pass_pct:.1f}%")
     print(f"      P(Breach Trailing Floor -$2,500): {mc_res.p_breach_pct:.2f}%")
@@ -368,6 +416,8 @@ def run_audit():
         ratchet_report=ratchet_res,
         loss_taxonomy=loss_tax,
         friction_frontier=frict_front,
+        data_provenance=data_prov,
+        regime_bucketing=bucketing_results,
         output_dir=args.output
     )
 

@@ -1,54 +1,54 @@
 {
   "strategy_name": "afternoon_trend_continuation",
   "summary": {
-    "total_trades": 817,
-    "winning_trades": 226,
-    "losing_trades": 591,
-    "win_rate_pct": 27.7,
-    "total_net_pnl": -1469.72,
-    "profit_factor": 0.95,
-    "expectancy_r": -0.023,
-    "expectancy_r_stderr": 0.04,
-    "sharpe_ratio": -0.26,
-    "sortino_ratio": -0.42,
-    "max_drawdown_dollars": 2875.44,
+    "total_trades": 1066,
+    "winning_trades": 404,
+    "losing_trades": 662,
+    "win_rate_pct": 37.9,
+    "total_net_pnl": 2079.72,
+    "profit_factor": 1.06,
+    "expectancy_r": 0.033,
+    "expectancy_r_stderr": 0.029,
+    "sharpe_ratio": 0.33,
+    "sortino_ratio": 0.52,
+    "max_drawdown_dollars": 3403.88,
     "is_sufficient_sample": true
   },
   "excursion": {
-    "mean_mfe_ticks": 79.8,
-    "mean_mae_ticks": 61.0,
-    "drift_ratio": 1.309,
-    "mfe_capture_efficiency_pct": 171.7,
+    "mean_mfe_ticks": 75.5,
+    "mean_mae_ticks": 59.8,
+    "drift_ratio": 1.263,
+    "mfe_capture_efficiency_pct": 145.2,
     "mae_resilience_pct": 38.5,
     "optimal_time_exit_minutes": 45,
     "half_life_minutes": 35.0
   },
   "loss_taxonomy": {
-    "total_losses": 591,
+    "total_losses": 662,
     "breakdown": {
       "Immediate Flush": {
-        "count": 104,
-        "percentage": 17.6,
-        "total_loss_dollars": 8752.64,
-        "avg_loss_dollars": 84.16
+        "count": 193,
+        "percentage": 29.2,
+        "total_loss_dollars": 16143.8,
+        "avg_loss_dollars": 83.65
       },
       "Trapped Trade": {
-        "count": 233,
-        "percentage": 39.4,
-        "total_loss_dollars": 1708.28,
-        "avg_loss_dollars": 7.33
+        "count": 216,
+        "percentage": 32.6,
+        "total_loss_dollars": 1663.16,
+        "avg_loss_dollars": 7.7
       },
       "Friction Drain": {
-        "count": 0,
-        "percentage": 0.0,
-        "total_loss_dollars": 0.0,
-        "avg_loss_dollars": 0.0
+        "count": 4,
+        "percentage": 0.6,
+        "total_loss_dollars": 8.92,
+        "avg_loss_dollars": 2.23
       },
       "Structural Invalidation": {
-        "count": 254,
-        "percentage": 43.0,
-        "total_loss_dollars": 21305.64,
-        "avg_loss_dollars": 83.88
+        "count": 249,
+        "percentage": 37.6,
+        "total_loss_dollars": 18525.6,
+        "avg_loss_dollars": 74.4
       }
     }
   },
@@ -57,57 +57,57 @@
       {
         "slippage_ticks": 0.0,
         "slippage_pts": 0.0,
-        "total_net_pnl": -1469.72,
-        "expectancy_dollars": -1.8,
-        "expectancy_r": -0.022,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 3997.72,
+        "expectancy_dollars": 3.75,
+        "expectancy_r": 0.001,
+        "win_rate_pct": 38.1
       },
       {
         "slippage_ticks": 0.5,
         "slippage_pts": 0.125,
-        "total_net_pnl": -2173.22,
-        "expectancy_dollars": -2.66,
-        "expectancy_r": -0.033,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 3045.72,
+        "expectancy_dollars": 2.86,
+        "expectancy_r": -0.01,
+        "win_rate_pct": 38.1
       },
       {
         "slippage_ticks": 1.0,
         "slippage_pts": 0.25,
-        "total_net_pnl": -2876.72,
-        "expectancy_dollars": -3.52,
-        "expectancy_r": -0.044,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 2093.72,
+        "expectancy_dollars": 1.96,
+        "expectancy_r": -0.022,
+        "win_rate_pct": 38.0
       },
       {
         "slippage_ticks": 1.5,
         "slippage_pts": 0.375,
-        "total_net_pnl": -3580.22,
-        "expectancy_dollars": -4.38,
-        "expectancy_r": -0.055,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 1141.72,
+        "expectancy_dollars": 1.07,
+        "expectancy_r": -0.033,
+        "win_rate_pct": 37.7
       },
       {
         "slippage_ticks": 2.0,
         "slippage_pts": 0.5,
-        "total_net_pnl": -4283.72,
-        "expectancy_dollars": -5.24,
-        "expectancy_r": -0.066,
-        "win_rate_pct": 27.7
+        "total_net_pnl": 189.72,
+        "expectancy_dollars": 0.18,
+        "expectancy_r": -0.044,
+        "win_rate_pct": 37.5
       },
       {
         "slippage_ticks": 3.0,
         "slippage_pts": 0.75,
-        "total_net_pnl": -5690.72,
-        "expectancy_dollars": -6.97,
-        "expectancy_r": -0.087,
-        "win_rate_pct": 27.7
+        "total_net_pnl": -1714.28,
+        "expectancy_dollars": -1.61,
+        "expectancy_r": -0.067,
+        "win_rate_pct": 37.3
       }
     ],
-    "critical_slippage_s_star": 0.0,
-    "is_viable": false
+    "critical_slippage_s_star": 2.1,
+    "is_viable": true
   },
   "prop_firm": {
-    "p_pass_pct": 0.34,
-    "p_breach_pct": 6.72
+    "p_pass_pct": 1.1,
+    "p_breach_pct": 1.83
   }
 }

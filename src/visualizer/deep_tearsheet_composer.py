@@ -41,6 +41,8 @@ class DeepTearsheetComposer:
         ratchet_report: RatchetEnvelopeReport,
         loss_taxonomy: Optional[Dict[str, Any]] = None,
         friction_frontier: Optional[Dict[str, Any]] = None,
+        data_provenance: Optional[Dict[str, Any]] = None,
+        regime_bucketing: Optional[Dict[str, Any]] = None,
         output_dir: str = "reports/audit"
     ) -> Dict[str, Any]:
         out_path = Path(output_dir)
@@ -49,6 +51,12 @@ class DeepTearsheetComposer:
         full_audit = {
             "strategy_name": strategy_name,
             "audit_timestamp": "2026-10-08T12:00:00Z",
+            "data_provenance": data_provenance or {
+                "is_real_market_data": False,
+                "source": "SYNTHETIC_STOCHASTIC_SIMULATION",
+                "disclaimer": "Metrics describe generative assumptions, NOT empirical CME Globex order flow."
+            },
+            "regime_bucketing": regime_bucketing or {},
             "executive_verdict": {
                 "production_ready": bool(
                     calendar_metrics.calendar_sharpe >= 1.5 and

@@ -208,9 +208,9 @@ class AlphaDriftSentinel:
             return DriftStatus(
                 status="HEALTHY",
                 trade_count=0,
-                rolling_win_rate_15=0.705,
-                wilson_lower_bound=self.wilson_lower_bound,
-                rolling_expectancy_15=self.mu_0,
+                rolling_win_rate_15=None,
+                wilson_lower_bound=None,
+                rolling_expectancy_15=None,
                 expectancy_hurdle=self.expectancy_hurdle,
                 cusum_statistic=0.0,
                 cusum_threshold=self.h,
