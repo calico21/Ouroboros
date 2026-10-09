@@ -1,0 +1,8 @@
+name: midday_equilibrium_fade
+strategy_name: midday_equilibrium_fade
+sleeve: sleeve_e_bounded_mr
+morning_range_atr_cap: 0.65
+max_sl_pts: 25.0
+contract_size: 1
+time_stop_est: "13:45:00"
+quarantine_full_sl_window_hits: 2

@@ -1,0 +1,9 @@
+name: thin_eth_gap_failure
+strategy_name: thin_eth_gap_failure
+sleeve: sleeve_a_eth
+gap_min_atr: 0.25
+gap_max_atr: 0.90
+eth_volume_max_pct: 40.0
+contract_size: 2
+max_sl_pts: 35.0
+time_stop_est: "11:00:00"

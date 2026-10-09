@@ -1,0 +1,287 @@
+{
+  "afternoon_trend_continuation": {
+    "strategy_name": "afternoon_trend_continuation",
+    "total_sessions": 54,
+    "qualified_sessions": 50,
+    "participation_rate_pct": 92.59,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 50,
+    "forward_30m": {
+      "mean_mfe_r": 1.173,
+      "mean_mae_r": 0.573,
+      "edge_ratio": 2.05
+    },
+    "forward_60m": {
+      "mean_mfe_r": 2.098,
+      "mean_mae_r": 0.771,
+      "edge_ratio": 2.72
+    }
+  },
+  "coil_expansion": {
+    "strategy_name": "coil_expansion",
+    "total_sessions": 54,
+    "qualified_sessions": 3,
+    "participation_rate_pct": 5.56,
+    "gate_status": "UNDER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 3,
+    "forward_30m": {
+      "mean_mfe_r": 0.321,
+      "mean_mae_r": 0.462,
+      "edge_ratio": 0.7
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.321,
+      "mean_mae_r": 0.645,
+      "edge_ratio": 0.5
+    }
+  },
+  "ib_failed_extension_rotation": {
+    "strategy_name": "ib_failed_extension_rotation",
+    "total_sessions": 54,
+    "qualified_sessions": 5,
+    "participation_rate_pct": 9.26,
+    "gate_status": "UNDER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 5,
+    "forward_30m": {
+      "mean_mfe_r": 0.595,
+      "mean_mae_r": 0.517,
+      "edge_ratio": 1.15
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.634,
+      "mean_mae_r": 0.665,
+      "edge_ratio": 0.95
+    }
+  },
+  "letf_rebalance_continuation": {
+    "strategy_name": "letf_rebalance_continuation",
+    "total_sessions": 54,
+    "qualified_sessions": 9,
+    "participation_rate_pct": 16.67,
+    "gate_status": "QUALIFIED_CANONICAL",
+    "is_qualified": true,
+    "total_setups_triggered": 9,
+    "forward_30m": {
+      "mean_mfe_r": 1.416,
+      "mean_mae_r": 0.945,
+      "edge_ratio": 1.5
+    },
+    "forward_60m": {
+      "mean_mfe_r": 1.616,
+      "mean_mae_r": 0.954,
+      "edge_ratio": 1.69
+    }
+  },
+  "macro_overshoot_fade": {
+    "strategy_name": "macro_overshoot_fade",
+    "total_sessions": 54,
+    "qualified_sessions": 2,
+    "participation_rate_pct": 3.7,
+    "gate_status": "UNDER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 2,
+    "forward_30m": {
+      "mean_mfe_r": 0.335,
+      "mean_mae_r": 2.238,
+      "edge_ratio": 0.15
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.841,
+      "mean_mae_r": 2.9,
+      "edge_ratio": 0.29
+    }
+  },
+  "midday_equilibrium_fade": {
+    "strategy_name": "midday_equilibrium_fade",
+    "total_sessions": 54,
+    "qualified_sessions": 19,
+    "participation_rate_pct": 35.19,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 19,
+    "forward_30m": {
+      "mean_mfe_r": 0.46,
+      "mean_mae_r": 0.624,
+      "edge_ratio": 0.74
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.636,
+      "mean_mae_r": 0.928,
+      "edge_ratio": 0.69
+    }
+  },
+  "moc_imbalance_response": {
+    "strategy_name": "moc_imbalance_response",
+    "total_sessions": 54,
+    "qualified_sessions": 33,
+    "participation_rate_pct": 61.11,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 33,
+    "forward_30m": {
+      "mean_mfe_r": 0.642,
+      "mean_mae_r": 0.639,
+      "edge_ratio": 1.0
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.894,
+      "mean_mae_r": 0.813,
+      "edge_ratio": 1.1
+    }
+  },
+  "open_drive_continuation": {
+    "strategy_name": "open_drive_continuation",
+    "total_sessions": 54,
+    "qualified_sessions": 45,
+    "participation_rate_pct": 83.33,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 45,
+    "forward_30m": {
+      "mean_mfe_r": 0.649,
+      "mean_mae_r": 0.79,
+      "edge_ratio": 0.82
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.97,
+      "mean_mae_r": 1.098,
+      "edge_ratio": 0.88
+    }
+  },
+  "orb_5m_binary": {
+    "strategy_name": "orb_5m_binary",
+    "total_sessions": 54,
+    "qualified_sessions": 26,
+    "participation_rate_pct": 48.15,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 26,
+    "forward_30m": {
+      "mean_mfe_r": 0.824,
+      "mean_mae_r": 1.023,
+      "edge_ratio": 0.81
+    },
+    "forward_60m": {
+      "mean_mfe_r": 1.101,
+      "mean_mae_r": 1.445,
+      "edge_ratio": 0.76
+    }
+  },
+  "positive_gamma_pin_fade": {
+    "strategy_name": "positive_gamma_pin_fade",
+    "total_sessions": 54,
+    "qualified_sessions": 37,
+    "participation_rate_pct": 68.52,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 37,
+    "forward_30m": {
+      "mean_mfe_r": 0.238,
+      "mean_mae_r": 0.686,
+      "edge_ratio": 0.35
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.253,
+      "mean_mae_r": 1.327,
+      "edge_ratio": 0.19
+    }
+  },
+  "post_opex_gamma_release": {
+    "strategy_name": "post_opex_gamma_release",
+    "total_sessions": 54,
+    "qualified_sessions": 19,
+    "participation_rate_pct": 35.19,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 19,
+    "forward_30m": {
+      "mean_mfe_r": 0.608,
+      "mean_mae_r": 0.343,
+      "edge_ratio": 1.77
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.799,
+      "mean_mae_r": 0.39,
+      "edge_ratio": 2.05
+    }
+  },
+  "thin_eth_gap_failure": {
+    "strategy_name": "thin_eth_gap_failure",
+    "total_sessions": 54,
+    "qualified_sessions": 12,
+    "participation_rate_pct": 22.22,
+    "gate_status": "QUALIFIED_CANONICAL",
+    "is_qualified": true,
+    "total_setups_triggered": 12,
+    "forward_30m": {
+      "mean_mfe_r": 0.941,
+      "mean_mae_r": 1.076,
+      "edge_ratio": 0.87
+    },
+    "forward_60m": {
+      "mean_mfe_r": 1.666,
+      "mean_mae_r": 1.39,
+      "edge_ratio": 1.2
+    }
+  },
+  "trapped_liquidity_sweep": {
+    "strategy_name": "trapped_liquidity_sweep",
+    "total_sessions": 54,
+    "qualified_sessions": 27,
+    "participation_rate_pct": 50.0,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 27,
+    "forward_30m": {
+      "mean_mfe_r": 1.709,
+      "mean_mae_r": 2.217,
+      "edge_ratio": 0.77
+    },
+    "forward_60m": {
+      "mean_mfe_r": 2.163,
+      "mean_mae_r": 2.671,
+      "edge_ratio": 0.81
+    }
+  },
+  "va_traverse_80pct": {
+    "strategy_name": "va_traverse_80pct",
+    "total_sessions": 54,
+    "qualified_sessions": 12,
+    "participation_rate_pct": 22.22,
+    "gate_status": "QUALIFIED_CANONICAL",
+    "is_qualified": true,
+    "total_setups_triggered": 12,
+    "forward_30m": {
+      "mean_mfe_r": 0.411,
+      "mean_mae_r": 0.514,
+      "edge_ratio": 0.8
+    },
+    "forward_60m": {
+      "mean_mfe_r": 0.568,
+      "mean_mae_r": 0.657,
+      "edge_ratio": 0.86
+    }
+  },
+  "vwap_mean_reversion_10am": {
+    "strategy_name": "vwap_mean_reversion_10am",
+    "total_sessions": 54,
+    "qualified_sessions": 50,
+    "participation_rate_pct": 92.59,
+    "gate_status": "REJECTED_OVER_PARTICIPATION",
+    "is_qualified": false,
+    "total_setups_triggered": 96,
+    "forward_30m": {
+      "mean_mfe_r": 1.378,
+      "mean_mae_r": 2.205,
+      "edge_ratio": 0.63
+    },
+    "forward_60m": {
+      "mean_mfe_r": 1.753,
+      "mean_mae_r": 3.123,
+      "edge_ratio": 0.56
+    }
+  }
+}

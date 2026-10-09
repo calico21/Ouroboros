@@ -8,6 +8,7 @@ from typing import Optional, Dict, Any
 import yaml
 
 from src.core.events import BarEvent, TradeSetup
+from src.data.cme_session_clock import get_cme_trade_date_str
 
 
 class BaseStrategy(ABC):
@@ -19,6 +20,8 @@ class BaseStrategy(ABC):
 
     def __init__(self, config_overrides: Optional[Dict[str, Any]] = None):
         self.config = self._load_local_config()
+        strat_name = getattr(self, "STRATEGY_NAME", self.__class__.__name__)
+        self.config.setdefault("strategy_name", strat_name)
         if config_overrides:
             self.config.update(config_overrides)
         self.current_session_id: Optional[str] = None
@@ -50,8 +53,8 @@ class BaseStrategy(ABC):
         pass
 
     def check_session_boundary(self, bar: BarEvent) -> None:
-        """Helper to trigger reset_session() on calendar date change."""
-        bar_date = bar.timestamp.strftime("%Y-%m-%d")
-        if self.current_session_id != bar_date:
-            self.current_session_id = bar_date
+        """Helper to trigger reset_session() on CME Trade Date (18:00 ET rollover)."""
+        trade_date = get_cme_trade_date_str(bar.timestamp)
+        if self.current_session_id != trade_date:
+            self.current_session_id = trade_date
             self.reset_session()

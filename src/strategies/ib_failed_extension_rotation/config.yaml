@@ -1,0 +1,9 @@
+name: ib_failed_extension_rotation
+strategy_name: ib_failed_extension_rotation
+sleeve: sleeve_c_auction
+ib_range_min_atr: 0.35
+ib_range_max_atr: 0.85
+extension_min_pts: 5.0
+max_risk_pts: 35.0
+contract_size: 2
+time_stop_est: "13:30:00"

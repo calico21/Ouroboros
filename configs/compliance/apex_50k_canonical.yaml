@@ -1,0 +1,22 @@
+account:
+  starting_balance: 50000.00
+  target_profit: 3000.00          # Qualification target: $53,000.00
+  contract_cap: 3                 # Portfolio concurrency cap: 3 MNQ
+
+trailing_floor:
+  model: "PEAK_UNREALIZED_MTM"   # Ratchets tick-by-tick on floating peak MFE
+  buffer_amount: 2500.00         # Initial floor: $47,500.00
+  lock_hwm_trigger: 52600.00     # Once equity hits $52,600.00...
+  locked_floor_level: 50100.00   # ...floor freezes permanently at $50,100.00
+
+session_circuit_breakers:
+  daily_loss_limit: 1000.00      # Self-imposed DLL ($1,000 realized + unrealized)
+  order_cancellation_est: "15:50:00"
+  hard_liquidation_est: "15:55:00" # Relaxed to 15:58:00 exclusively for Strategy #8
+  allow_overnight: false         # Zero exposure across 16:00-18:00 ET maintenance
+
+friction:
+  commission_rt_per_contract: 1.24 # $0.62 per side per MNQ
+  min_slippage_ticks_per_side: 1.0 # 1 tick = $0.25 pt = $0.50 on MNQ
+  point_value: 2.00
+  tick_size: 0.25

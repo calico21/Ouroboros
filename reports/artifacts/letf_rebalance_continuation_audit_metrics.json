@@ -1,0 +1,217 @@
+{
+  "summary": {
+    "total_trades": 1,
+    "winning_trades": 1,
+    "losing_trades": 0,
+    "win_rate_pct": 100.0,
+    "win_rate_wilson_ci95": [
+      20.65,
+      100.0
+    ],
+    "win_rate_wilson_ci_str": "100.0% (95% CI: [20.7%, 100.0%])",
+    "total_net_pnl": 99.52,
+    "total_gross_pnl": 104.0,
+    "total_fees_paid": 4.48,
+    "profit_factor": 999.0,
+    "expectancy_dollars": 99.52,
+    "expectancy_r": 1.03,
+    "expectancy_r_stderr": 0.0,
+    "expectancy_r_ci95": [
+      1.03,
+      1.03
+    ],
+    "expectancy_r_ci_str": "+1.030R \u00b1 0.000 (95% CI: [+1.030R, +1.030R])",
+    "median_r": 1.03,
+    "skewness_r": 0.0,
+    "avg_win_dollars": 99.52,
+    "avg_loss_dollars": 0.0,
+    "win_loss_payoff_ratio": 0.0,
+    "max_drawdown_dollars": 0.0,
+    "sharpe_ratio": 2234.22,
+    "sortino_ratio": 2234.22,
+    "is_sufficient_sample": false,
+    "sample_significance_status": "INSUFFICIENT_SAMPLE (N = 1 / 30 minimum)",
+    "sample_warning": "STATUS: INSUFFICIENT_SAMPLE (N = 1 / 30 minimum). Statistical estimates, Sharpe/Sortino, and win rate are prone to small-sample bias."
+  },
+  "excursion": {
+    "median_mfe_r": 1.069,
+    "median_mae_r": 0.188,
+    "mean_mfe_r": 1.069,
+    "mean_mae_r": 0.188,
+    "drift_ratio": 5.684,
+    "median_time_to_peak_mfe": 5,
+    "mean_time_to_peak_mfe": 5.0,
+    "excursion_efficiency": 0.963,
+    "is_alpha_disqualified": false
+  },
+  "loss_taxonomy": {
+    "total_losses": 0,
+    "breakdown": {},
+    "summary": "Zero losing trades recorded."
+  },
+  "friction_frontier": {
+    "frontier_table": [
+      {
+        "slippage_ticks": 0.0,
+        "slippage_pts": 0.0,
+        "total_net_pnl": 101.52,
+        "expectancy_dollars": 101.52,
+        "expectancy_r": 1.005,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 0.5,
+        "slippage_pts": 0.125,
+        "total_net_pnl": 100.52,
+        "expectancy_dollars": 100.52,
+        "expectancy_r": 0.995,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 1.0,
+        "slippage_pts": 0.25,
+        "total_net_pnl": 99.52,
+        "expectancy_dollars": 99.52,
+        "expectancy_r": 0.985,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 1.5,
+        "slippage_pts": 0.375,
+        "total_net_pnl": 98.52,
+        "expectancy_dollars": 98.52,
+        "expectancy_r": 0.975,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 2.0,
+        "slippage_pts": 0.5,
+        "total_net_pnl": 97.52,
+        "expectancy_dollars": 97.52,
+        "expectancy_r": 0.966,
+        "win_rate_pct": 100.0
+      },
+      {
+        "slippage_ticks": 3.0,
+        "slippage_pts": 0.75,
+        "total_net_pnl": 95.52,
+        "expectancy_dollars": 95.52,
+        "expectancy_r": 0.946,
+        "win_rate_pct": 100.0
+      }
+    ],
+    "critical_slippage_s_star": "> 3.0",
+    "is_viable": true
+  },
+  "regimes": {
+    "by_session_window": {
+      "13:30-15:30 (Afternoon Drive)": {
+        "trade_count": 1,
+        "win_rate_pct": 100.0,
+        "total_net_pnl": 99.52,
+        "avg_net_pnl": 99.52,
+        "expectancy_r": 1.03
+      }
+    },
+    "by_day_of_week": {
+      "Monday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Tuesday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Wednesday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Thursday": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Friday": {
+        "trade_count": 1,
+        "win_rate_pct": 100.0,
+        "total_net_pnl": 99.52,
+        "avg_net_pnl": 99.52,
+        "expectancy_r": 1.03
+      }
+    },
+    "by_atr_quintile": {
+      "Q1": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q2": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q3": {
+        "trade_count": 1,
+        "win_rate_pct": 100.0,
+        "total_net_pnl": 99.52,
+        "avg_net_pnl": 99.52,
+        "expectancy_r": 1.03
+      },
+      "Q4": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      },
+      "Q5": {
+        "trade_count": 0,
+        "win_rate_pct": 0.0,
+        "total_net_pnl": 0.0,
+        "avg_net_pnl": 0.0,
+        "expectancy_r": 0.0
+      }
+    }
+  },
+  "prop_firm": {
+    "initial_balance": 50000.0,
+    "current_balance": 50099.52,
+    "high_water_mark": 50108.0,
+    "trailing_floor": 47608.0,
+    "remaining_cushion": 2491.52,
+    "status": "ACTIVE",
+    "breach_reason": null,
+    "passed_evaluation": false,
+    "profit_target": 3000.0,
+    "target_balance": 53000.0,
+    "sample_status": "INSUFFICIENT_SAMPLE (N = 1 / 30 minimum)"
+  },
+  "bars_processed": 14904,
+  "strategy_name": "letf_rebalance_continuation",
+  "monte_carlo": {
+    "iterations": 10000,
+    "is_suppressed": true,
+    "status": "SUPPRESSED_INSUFFICIENT_SAMPLE (N = 1 / 15 required)",
+    "warning": "Monte Carlo simulation suppressed: requires at least 15 empirical trades (observed N=1) to prevent deceptive probability estimates.",
+    "prob_pass_pct": null,
+    "prob_breach_pct": null,
+    "prob_inconclusive_pct": null,
+    "median_trades_to_pass": null,
+    "percentile_curves": {}
+  }
+}

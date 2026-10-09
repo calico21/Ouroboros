@@ -25,6 +25,7 @@ class BarEvent:
     session_id: Optional[str] = None
     is_rth: bool = True
     atr_14: Optional[float] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
     @property
     def range(self) -> float:
@@ -58,6 +59,8 @@ class TradeSetup:
     time_stop_bars: Optional[int] = None  # Max holding duration before inertia/time exit
     protect_at_1r: bool = False    # Tighten SL to BE once MFE reaches >= +0.85R
     tag: str = "default"           # Sub-setup identifier for forensic attribution
+    strategy_name: Optional[str] = None
+    symbol: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def validate(self, current_price: float) -> bool:

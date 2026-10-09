@@ -1,0 +1,8 @@
+name: va_traverse_80pct
+strategy_name: va_traverse_80pct
+sleeve: sleeve_c_auction
+va_min_width: 50.0
+va_max_width: 150.0
+max_risk_pts: 35.0
+contract_size: 2
+time_stop_est: "13:30:00"

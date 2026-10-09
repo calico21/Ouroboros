@@ -1,0 +1,8 @@
+name: moc_imbalance_response
+strategy_name: moc_imbalance_response
+sleeve: sleeve_d_cash_close
+imbalance_adv_pct_min: 90.0
+fixed_sl_pts: 14.0
+contract_size: 1
+mandatory_exit_time: "15:58:00"
+quarantine_slippage_ticks: 2.0

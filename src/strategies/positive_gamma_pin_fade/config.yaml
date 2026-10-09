@@ -1,0 +1,8 @@
+name: positive_gamma_pin_fade
+strategy_name: positive_gamma_pin_fade
+sleeve: sleeve_e_bounded_mr
+excursion_min_pct: 0.0035
+excursion_max_pct: 0.0065
+max_sl_pts: 28.0
+contract_size: 1
+time_stop_est: "15:15:00"

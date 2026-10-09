@@ -1,0 +1,7 @@
+name: post_opex_gamma_release
+strategy_name: post_opex_gamma_release
+sleeve: sleeve_b_compression
+range_ratio_cap: 0.80
+max_risk_pts: 40.0
+contract_size: 2
+time_stop_est: "14:30:00"

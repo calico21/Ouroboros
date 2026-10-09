@@ -1,0 +1,8 @@
+name: coil_expansion
+strategy_name: coil_expansion
+sleeve: sleeve_b_compression
+prior_range_atr_cap: 0.55
+eth_range_atr_cap: 0.40
+max_risk_pts: 35.0
+contract_size: 2
+time_stop_est: "14:30:00"

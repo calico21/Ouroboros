@@ -1,0 +1,12 @@
+name: macro_overshoot_fade
+strategy_name: macro_overshoot_fade
+sleeve: sleeve_a_eth
+mechanism: "Fades liquidity vacuum stop-runs at 08:30 ET economic releases"
+catalysts: [CPI, PPI, NFP, PCE, Retail Sales]
+release_surprise_hurdle: 1.0
+min_impulse_range_atr_pct: 0.40
+fib_retrace_entry: 0.382
+max_risk_pts: 40.0
+contract_size: 2
+time_stop_est: "09:00:00"
+quarantine_threshold_r: -0.15
