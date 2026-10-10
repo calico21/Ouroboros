@@ -1,81 +1,28 @@
 import os
 from pathlib import Path
 
-# Carga de variables de entorno desde live/.env si existe
-ENV_FILE = Path(__file__).parent / ".env"
-if ENV_FILE.exists():
-    with open(ENV_FILE) as f:
-        for line in f:
-            if line.strip() and not line.startswith("#") and "=" in line:
-                k, v = line.strip().split("=", 1)
-                os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+# Credenciales Alpaca
+ALPACA_API_KEY = os.getenv("ALPACA_API_KEY") or os.getenv("ALPACA_KEY", "")
+ALPACA_SECRET_KEY = os.getenv("ALPACA_SECRET_KEY") or os.getenv("ALPACA_SECRET", "")
+ALPACA_PAPER = True  # Cambiar a False únicamente en cuenta real fondeada
 
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+# Universo Validado Anti-Overfitting (4 Años Auditados)
+ACTIVE_UNIVERSE = ["BK", "TFX", "MRNA", "WAT", "HUM", "CNC"]
 
-# Reglas Oficiales Apex Trader Funding (50k)
-APEX_RULES = {
-    "starting_balance": 50000.0,
-    "buffer": 2000.0,
-    "initial_floor": 48000.0,
-    "lock_hwm": 52600.0,
-    "lock_floor": 50100.0,
-    "profit_target": 53000.0,
-    "cme_commission_rt": 1.24
-}
+# Gestión de Riesgo y Cartera
+RISK_PER_TRADE_USD = 100.0        # Riesgo monetario estricto por operación
+MAX_CONCURRENT_POSITIONS = 2       # Máximo de posiciones abiertas simultáneas
+MAX_SHARE_CAP = 500                # Techo máximo de acciones por ticket (liquidez)
+MIN_RISK_PER_SHARE = 0.05          # Stop mínimo para evitar sobreapalancamiento en bajo rango
+TP_R_MULTIPLE = 1.75               # Asimetría matemática: Take Profit a +1.75R
+STOP_BUFFER_USD = 0.02             # Buffer de stop más allá del extremo barrido
 
-# Cesta CME Cuádruple
-ASSETS = {
-    "MNQ": {
-        "name": "Micro E-mini Nasdaq-100",
-        "ticker": "NQ=F",
-        "pt_val": 2.0,
-        "tick": 0.25,
-        "max_sw": 16.0,
-        "min_stop": 12.0,
-        "max_stop": 22.0,
-        "start": "09:40",
-        "end": "11:30",
-        "base_ctos": 2,
-        "sprint_ctos": 3
-    },
-    "MGC": {
-        "name": "Micro Gold",
-        "ticker": "GC=F",
-        "pt_val": 10.0,
-        "tick": 0.10,
-        "max_sw": 3.5,
-        "min_stop": 1.8,
-        "max_stop": 3.5,
-        "start": "08:25",
-        "end": "10:30",
-        "base_ctos": 2,
-        "sprint_ctos": 3
-    },
-    "SIL": {
-        "name": "Micro Silver",
-        "ticker": "SI=F",
-        "pt_val": 1000.0,
-        "tick": 0.005,
-        "max_sw": 0.15,
-        "min_stop": 0.04,
-        "max_stop": 0.08,
-        "start": "08:25",
-        "end": "10:30",
-        "base_ctos": 1,
-        "sprint_ctos": 1
-    },
-    "ZB": {
-        "name": "30Y Treasury Bond",
-        "ticker": "ZB=F",
-        "pt_val": 1000.0,
-        "tick": 0.0312,
-        "max_sw": 0.35,
-        "min_stop": 0.06,
-        "max_stop": 0.12,
-        "start": "08:20",
-        "end": "10:00",
-        "base_ctos": 1,
-        "sprint_ctos": 1
-    }
-}
+# Horarios de Subasta (America/New_York)
+TIMEZONE = "America/New_York"
+WINDOW_START = "09:35"             # Esperar 5m tras el Open para asentar el spread
+WINDOW_END = "11:30"               # Fin de la ventana de liquidez matinal
+FORCE_CLOSE_TIME = "15:55"         # Cierre intradía forzoso (sin riesgo overnight)
+
+# Filtro Cuantitativo de Volumen
+VOL_SMA_PERIOD = 20
+MIN_VOL_RATIO = 0.95               # Volumen actual >= 95% de la media móvil
