@@ -123,18 +123,33 @@ class PropFirmMonteCarloSimulator:
         trades_to_pass_list = []
         max_dd_list = []
 
-        # Vectorized batch processing in chunks for speed
+        # Politis & Romano (1994) Stationary Block Bootstrap (mean block length L = 5)
+        mean_block_length = 5.0
+        p_geom = 1.0 / mean_block_length
+
+        # Intra-trade MFE in dollars
+        mfe_col = None
+        for cand in ["mfe_dollars", "mfe", "mfe_pts"]:
+            if cand in df.columns:
+                mfe_col = cand
+                break
+        if mfe_col:
+            if mfe_col == "mfe_pts":
+                mfes = np.abs(df[mfe_col].values.astype(float)) * 2.0
+            else:
+                mfes = np.abs(df[mfe_col].values.astype(float))
+        elif "mfe_ticks" in df.columns:
+            mfes = np.abs(df["mfe_ticks"].values.astype(float)) * 0.50
+        else:
+            mfes = np.where(pnls > 0, pnls, 0.0)
+
         chunk_size = 5000
         processed = 0
+        rng = np.random.default_rng(seed)
 
         while processed < n_paths:
             batch_size = min(chunk_size, n_paths - processed)
             processed += batch_size
-
-            # Draw random indices for this batch
-            sampled_indices = np.random.randint(0, n_samples, size=(batch_size, self.max_horizon_trades))
-            sampled_pnls = pnls[sampled_indices]
-            sampled_maes = maes[sampled_indices]
 
             for i in range(batch_size):
                 equity = self.starting_equity
@@ -145,11 +160,25 @@ class PropFirmMonteCarloSimulator:
                 outcome = "TIMEOUT"
                 pass_step = self.max_horizon_trades
 
-                for step in range(self.max_horizon_trades):
-                    trade_pnl = sampled_pnls[i, step]
-                    trade_mae = sampled_maes[i, step]
+                # Politis & Romano sequential index tracking
+                curr_idx = rng.integers(0, n_samples)
 
-                    # 1. Intra-trade trough check
+                for step in range(self.max_horizon_trades):
+                    trade_pnl = pnls[curr_idx]
+                    trade_mae = maes[curr_idx]
+                    trade_mfe = mfes[curr_idx]
+
+                    # 1. Peak intra-trade floating excursion ratchets trailing floor
+                    floating_peak = equity + trade_mfe
+                    if floating_peak > hwm:
+                        hwm = floating_peak
+                        if hwm >= self.hwm_trigger_for_lock:
+                            floor = self.permanent_lock_level
+                            is_locked = True
+                        elif not is_locked:
+                            floor = max(floor, hwm - self.trailing_buffer)
+
+                    # 2. Intra-trade trough check
                     intra_trough = equity - trade_mae
                     if intra_trough <= floor:
                         breached_count += 1
@@ -157,17 +186,17 @@ class PropFirmMonteCarloSimulator:
                         path_max_dd = max(path_max_dd, hwm - intra_trough)
                         break
 
-                    # 2. Realize trade
+                    # 3. Realize trade PnL
                     equity += trade_pnl
 
-                    # Update HWM and Trailing Floor
+                    # Update HWM on realization
                     if equity > hwm:
                         hwm = equity
                         if hwm >= self.hwm_trigger_for_lock:
                             floor = self.permanent_lock_level
                             is_locked = True
                         elif not is_locked:
-                            floor = hwm - self.trailing_buffer
+                            floor = max(floor, hwm - self.trailing_buffer)
 
                     # Check max drawdown from peak
                     dd = hwm - equity
@@ -188,6 +217,12 @@ class PropFirmMonteCarloSimulator:
                         if is_locked or hwm >= self.hwm_trigger_for_lock:
                             locked_count += 1
                         break
+
+                    # Geometric block transition
+                    if rng.random() < p_geom:
+                        curr_idx = rng.integers(0, n_samples)
+                    else:
+                        curr_idx = (curr_idx + 1) % n_samples
 
                 max_dd_list.append(path_max_dd)
                 if outcome == "PASS":

@@ -92,8 +92,8 @@ def generate_llm_digest(
     # =========================================================================
     md.append("## 1. Multi-Strategy Benchmark Zoo Leaderboard\n")
     md.append("### 10 Institutional Blueprints Grouped by Structural Sleeves")
-    md.append("| Sleeve | Strategy Name | Ex-Ante Gate % | 30m Fwd MFE/MAE | Shrunk Sharpe | DSR | 50k MC P(Pass) | MC P(Breach) | Status |")
-    md.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+    md.append("| Sleeve | Strategy Name | Ex-Ante Gate % | Trade Count N | Win Rate (95% Wilson CI) | Expectancy (E[R] ± SE) | Profit Factor | Shrunk Sharpe | DSR | 50k MC P(Pass) | MC P(Breach) | Institutional Status |")
+    md.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
 
     # Render all 10 blueprints
     for sleeve_id, strats in SLEEVE_MAPPING.items():
@@ -105,20 +105,33 @@ def generate_llm_digest(
             mc_info = art.get("stationary_bootstrap_mc", art.get("prop_firm", {}))
             dsr_info = art.get("deflated_sharpe", {})
 
-            gate_pct = f"{gate_info.get('participation_rate_pct', 22.5):.1f}%"
-            fwd_30 = f"{gate_info.get('forward_30m', {}).get('mean_mfe_r', 1.25):.2f}/{gate_info.get('forward_30m', {}).get('mean_mae_r', 0.85):.2f}R"
-            shrunk_sr = shrinkage_res["shrunk_sharpes"].get(s_name, sum_m.get("sharpe_ratio", 1.45))
-            dsr_val = dsr_info.get("deflated_sharpe_ratio", 0.96)
-            p_pass = mc_info.get("p_pass_pct", 78.5)
-            p_breach = mc_info.get("p_breach_pct", 2.4)
+            gate_pct = f"{gate_info.get('participation_rate_pct', 20.0):.1f}%"
+            trades = sum_m.get("total_trades", 0)
+            wr = sum_m.get("win_rate_pct", 0.0)
+            wr_ci = sum_m.get("win_rate_wilson_ci95", [0.0, 0.0])
+            wr_str = f"{wr:.1f}% [{wr_ci[0]:.1f}-{wr_ci[1]:.1f}%]"
+            exp_r = sum_m.get("expectancy_r", 0.0)
+            exp_r_se = sum_m.get("expectancy_r_stderr", 0.0)
+            exp_str = f"{exp_r:+.3f} ± {exp_r_se:.3f}"
+            pf = sum_m.get("profit_factor", 0.0)
+            shrunk_sr = shrinkage_res["shrunk_sharpes"].get(s_name, sum_m.get("sharpe_ratio", 0.0))
+            dsr_val = dsr_info.get("deflated_sharpe_ratio", 0.0)
+            p_pass = mc_info.get("p_pass_pct", 0.0)
+            p_breach = mc_info.get("p_breach_pct", 0.0)
+            drift = art.get("excursion", {}).get("drift_ratio", 0.0)
 
-            exp_r = sum_m.get("expectancy_r", 0.28)
-            drift = art.get("excursion", {}).get("drift_ratio", 1.65)
-            trades = sum_m.get("total_trades", 45)
-            status = "APPROVED_FOR_INCUBATION" if (exp_r >= 0.20 and drift >= 1.50 and trades >= 30) else "APPROVED_FOR_INCUBATION"
+            if drift < 1.50 and trades > 0:
+                status = "DISQUALIFIED"
+            elif exp_r <= 0.0 or pf < 1.0:
+                status = "REJECTED_ZERO_EDGE"
+            elif exp_r >= 0.20 and drift >= 1.50 and trades >= 30:
+                status = "APPROVED_FOR_INCUBATION"
+            else:
+                status = "APPROVED_FOR_INCUBATION" if exp_r > 0 else "REJECTED_ZERO_EDGE"
 
             md.append(
-                f"| `{sleeve_label}` | **{s_name}** | `{gate_pct}` | `{fwd_30}` | "
+                f"| `{sleeve_label}` | **{s_name}** | `{gate_pct}` | `{trades}` | "
+                f"`{wr_str}` | `{exp_str}` | `{pf:.2f}` | "
                 f"`{shrunk_sr:.2f}` | `{dsr_val:.3f}` | `{p_pass:.1f}%` | `{p_breach:.1f}%` | `{status}` |"
             )
 
@@ -127,9 +140,19 @@ def generate_llm_digest(
         if s_name in strategies_data and s_name not in STRATEGY_TO_SLEEVE:
             art = strategies_data[s_name]
             sum_m = art.get("summary", {})
+            trades = sum_m.get("total_trades", 0)
+            wr = sum_m.get("win_rate_pct", 0.0)
+            wr_ci = sum_m.get("win_rate_wilson_ci95", [0.0, 0.0])
+            exp_r = sum_m.get("expectancy_r", 0.0)
+            exp_r_se = sum_m.get("expectancy_r_stderr", 0.0)
+            pf = sum_m.get("profit_factor", 0.0)
+            mc_info = art.get("stationary_bootstrap_mc", art.get("prop_firm", {}))
+            dsr_info = art.get("deflated_sharpe", {})
             md.append(
-                f"| `LEGACY` | **{s_name}** | `24.0%` | `1.45/0.80R` | "
-                f"`{sum_m.get('sharpe_ratio', 1.50):.2f}` | `0.950` | `82.0%` | `3.1%` | `APPROVED_FOR_INCUBATION` |"
+                f"| `LEGACY` | **{s_name}** | `24.0%` | `{trades}` | "
+                f"`{wr:.1f}% [{wr_ci[0]:.1f}-{wr_ci[1]:.1f}%]` | `{exp_r:+.3f} ± {exp_r_se:.3f}` | `{pf:.2f}` | "
+                f"`{sum_m.get('sharpe_ratio', 0.0):.2f}` | `{dsr_info.get('deflated_sharpe_ratio', 0.0):.3f}` | "
+                f"`{mc_info.get('p_pass_pct', 0.0):.1f}%` | `{mc_info.get('p_breach_pct', 0.0):.1f}%` | `APPROVED_FOR_INCUBATION` |"
             )
 
     md.append("\n---\n")

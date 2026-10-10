@@ -66,7 +66,10 @@ class WalkForwardMatrix:
 
         df = trades_df.copy()
         time_col = "exit_time" if "exit_time" in df.columns else ("timestamp" if "timestamp" in df.columns else df.columns[0])
-        df["dt"] = pd.to_datetime(df[time_col])
+        try:
+            df["dt"] = pd.to_datetime(df[time_col], utc=True)
+        except Exception:
+            df["dt"] = pd.to_datetime([pd.Timestamp(t) for t in df[time_col]], utc=True)
         df = df.sort_values("dt").reset_index(drop=True)
         pnl_col = "net_pnl" if "net_pnl" in df.columns else "pnl"
 
@@ -87,12 +90,17 @@ class WalkForwardMatrix:
         for fold_idx, (is_start, is_end, oos_start, oos_end) in enumerate(windows, 1):
             if self.mode == "ROLLING" and fold_idx > 1:
                 # Rolling 1-year IS window
-                is_start_dt = pd.to_datetime(oos_start) - pd.DateOffset(years=1)
+                is_start_dt = pd.to_datetime(oos_start, utc=True) - pd.DateOffset(years=1)
                 is_start = is_start_dt.strftime("%Y-%m-%d")
                 is_end = oos_start
 
-            is_mask = (df["dt"] >= is_start) & (df["dt"] <= is_end)
-            oos_mask = (df["dt"] >= oos_start) & (df["dt"] <= oos_end)
+            is_s_dt = pd.to_datetime(is_start, utc=True)
+            is_e_dt = pd.to_datetime(is_end, utc=True)
+            oos_s_dt = pd.to_datetime(oos_start, utc=True)
+            oos_e_dt = pd.to_datetime(oos_end, utc=True)
+
+            is_mask = (df["dt"] >= is_s_dt) & (df["dt"] <= is_e_dt)
+            oos_mask = (df["dt"] >= oos_s_dt) & (df["dt"] <= oos_e_dt)
 
             is_sub = df[is_mask]
             oos_sub = df[oos_mask]

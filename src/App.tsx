@@ -18,6 +18,7 @@ import {
   RefreshCw,
   Share2,
   ShieldAlert,
+  ShieldCheck,
   Sliders,
   Square,
   Radio,
@@ -27,6 +28,9 @@ import {
   XCircle,
   Zap,
 } from 'lucide-react';
+import Batch1DiscoveryView from './components/Batch1DiscoveryView';
+import Batch2DiscoveryView from './components/Batch2DiscoveryView';
+import ApexShieldStressCockpit from './components/ApexShieldStressCockpit';
 
 interface StrategyInfo {
   name: string;
@@ -54,7 +58,7 @@ export default function App() {
   const [propFirm, setPropFirm] = useState<string>('configs/prop_firm/apex_50k_trailing_mtm.yaml');
   const [execution, setExecution] = useState<string>('configs/execution/cme_globex_default.yaml');
   const [instrument, setInstrument] = useState<string>('configs/instruments/mnq.yaml');
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'sleeves' | 'live' | 'forensic' | 'fleet' | 'incubation' | 'plateau' | 'deathtree' | 'zoo' | 'friction' | 'regime' | 'code' | 'logs' | 'digest'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'apex_shield' | 'batch2' | 'batch1' | 'dashboard' | 'sleeves' | 'live' | 'forensic' | 'fleet' | 'incubation' | 'plateau' | 'deathtree' | 'zoo' | 'friction' | 'regime' | 'code' | 'logs' | 'digest'>('apex_shield');
 
   const [loading, setLoading] = useState<boolean>(false);
   const [auditData, setAuditData] = useState<any>(null);
@@ -900,6 +904,42 @@ export default function App() {
 
       {/* Main Tab Navigation */}
       <div className="border-b border-gray-800 bg-[#111827] px-6 flex items-center gap-1 text-xs font-mono overflow-x-auto">
+        <button
+          onClick={() => setActiveTab('apex_shield')}
+          className={`px-4 py-3 border-b-2 font-semibold flex items-center gap-1.5 transition cursor-pointer shrink-0 ${
+            activeTab === 'apex_shield'
+              ? 'border-emerald-400 text-emerald-300 bg-emerald-950/40 shadow-inner'
+              : 'border-transparent text-gray-300 hover:text-white'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4 text-emerald-400 fill-emerald-400/20" />
+          APEX SHIELD: MULTI-WINDOW STRESS RIG (2018–2026)
+        </button>
+
+        <button
+          onClick={() => setActiveTab('batch2')}
+          className={`px-4 py-3 border-b-2 font-semibold flex items-center gap-1.5 transition cursor-pointer shrink-0 ${
+            activeTab === 'batch2'
+              ? 'border-emerald-400 text-emerald-400 bg-emerald-950/20'
+              : 'border-transparent text-gray-400 hover:text-gray-200'
+          }`}
+        >
+          <Zap className="w-4 h-4 text-emerald-400 fill-emerald-400/20" />
+          TEST MASIVO: BATCH 2 (HIGH-DRIFT ALPHA)
+        </button>
+
+        <button
+          onClick={() => setActiveTab('batch1')}
+          className={`px-4 py-3 border-b-2 font-semibold flex items-center gap-1.5 transition cursor-pointer shrink-0 ${
+            activeTab === 'batch1'
+              ? 'border-zinc-400 text-zinc-300 bg-gray-800/40'
+              : 'border-transparent text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          <Layers className="w-4 h-4 text-zinc-500" />
+          BATCH 1 (MOTOR ZOMBI AUDIT)
+        </button>
+
         <button
           onClick={() => setActiveTab('dashboard')}
           className={`px-4 py-3 border-b-2 font-semibold flex items-center gap-1.5 transition cursor-pointer shrink-0 ${
@@ -2843,6 +2883,21 @@ export default function App() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* TAB: APEX SHIELD MULTI-WINDOW STRESS RIG (2018–2026) */}
+        {activeTab === 'apex_shield' && (
+          <ApexShieldStressCockpit />
+        )}
+
+        {/* TAB: TEST MASIVO BATCH 2 (HIGH-DRIFT ASYMMETRIC ALPHA) */}
+        {activeTab === 'batch2' && (
+          <Batch2DiscoveryView />
+        )}
+
+        {/* TAB: TEST MASIVO BATCH 1 (APEX 50K RIG) */}
+        {activeTab === 'batch1' && (
+          <Batch1DiscoveryView />
         )}
 
         {/* TAB: 10 INSTITUTIONAL BLUEPRINTS & STRUCTURAL SLEEVES */}

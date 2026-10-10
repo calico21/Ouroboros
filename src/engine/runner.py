@@ -64,6 +64,7 @@ class BacktestRunner:
 
             # 1. New day session checks
             self.account.check_new_day(bar.timestamp)
+            self.strategy.check_session_boundary(bar)
 
             # 2. Process active trades & pending orders with current bar
             self.simulator.process_bar(bar, self.account)

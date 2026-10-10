@@ -46,6 +46,19 @@ class DatabentoCMEDataLoader:
 
     def load(self, enrich_indicators: bool = True) -> pd.DataFrame:
         """Loads and processes full CME Globex dataset."""
+        # Prioritize rich 108k continuous parquet dataset
+        priority_paths = [
+            Path("data/databento/mnq_continuous_5m.parquet"),
+            Path("data/processed/mnq_5m_continuous.parquet"),
+            Path("data/cache/mnq_5y_continuous_5m.parquet"),
+        ]
+        
+        if not self.data_path.exists() or self.data_path == Path("data/processed/mnq_5m.csv"):
+            for p in priority_paths:
+                if p.exists():
+                    self.data_path = p
+                    break
+
         if not self.data_path.exists():
             # If not found, fall back to cache or raw
             alt_paths = [
@@ -174,9 +187,7 @@ class DatabentoCMEDataLoader:
         # Group by bucket_hm and calculate rolling empirical percentile
         bucket_pcts = []
         vol_lookup = {}
-        for idx, row in df.iterrows():
-            b = row["bucket_hm"]
-            v = row["volume"]
+        for b, v in zip(df["bucket_hm"].values, df["volume"].values):
             if b not in vol_lookup:
                 vol_lookup[b] = []
             history = vol_lookup[b]
@@ -199,38 +210,38 @@ class DatabentoCMEDataLoader:
         if self.df is None:
             self.load()
 
-        for _, row in self.df.iterrows():
-            ts = row["timestamp"]
+        for row in self.df.itertuples(index=False):
+            ts = getattr(row, "timestamp")
             if hasattr(ts, "to_pydatetime"):
                 ts = ts.to_pydatetime()
             if ts.tzinfo is None:
                 ts = ts.replace(tzinfo=NY_TZ)
 
             meta = {
-                "trade_date": row.get("trade_date"),
-                "atr_20": float(row.get("atr_20", 30.0)),
-                "vwap": float(row.get("vwap", row["close"])),
-                "vwap_upper_2": float(row.get("vwap_upper_2", row["close"] + 20.0)),
-                "vwap_lower_2": float(row.get("vwap_lower_2", row["close"] - 20.0)),
-                "vol_pct_60": float(row.get("vol_pct_60", 50.0)),
-                "prev_day_high": float(row.get("prev_day_high", row["high"])),
-                "prev_day_low": float(row.get("prev_day_low", row["low"])),
-                "prev_day_range": float(row.get("prev_day_range", 50.0)),
-                "prev_day_close": float(row.get("prev_day_close", row["close"])),
-                "is_inside_day": bool(row.get("is_inside_day", False)),
-                "is_nr7": bool(row.get("is_nr7", False)),
+                "trade_date": getattr(row, "trade_date", None),
+                "atr_20": float(getattr(row, "atr_20", 30.0)),
+                "vwap": float(getattr(row, "vwap", getattr(row, "close"))),
+                "vwap_upper_2": float(getattr(row, "vwap_upper_2", getattr(row, "close") + 20.0)),
+                "vwap_lower_2": float(getattr(row, "vwap_lower_2", getattr(row, "close") - 20.0)),
+                "vol_pct_60": float(getattr(row, "vol_pct_60", 50.0)),
+                "prev_day_high": float(getattr(row, "prev_day_high", getattr(row, "high"))),
+                "prev_day_low": float(getattr(row, "prev_day_low", getattr(row, "low"))),
+                "prev_day_range": float(getattr(row, "prev_day_range", 50.0)),
+                "prev_day_close": float(getattr(row, "prev_day_close", getattr(row, "close"))),
+                "is_inside_day": bool(getattr(row, "is_inside_day", False)),
+                "is_nr7": bool(getattr(row, "is_nr7", False)),
             }
 
             yield BarEvent(
                 timestamp=ts,
                 symbol=self.symbol,
-                open=float(row["open"]),
-                high=float(row["high"]),
-                low=float(row["low"]),
-                close=float(row["close"]),
-                volume=int(row["volume"]),
+                open=float(getattr(row, "open")),
+                high=float(getattr(row, "high")),
+                low=float(getattr(row, "low")),
+                close=float(getattr(row, "close")),
+                volume=int(getattr(row, "volume")),
                 timeframe=self.timeframe,
-                atr_14=float(row.get("atr_20", 30.0)),
-                is_rth=bool(row["is_rth"]),
+                atr_14=float(getattr(row, "atr_20", 30.0)),
+                is_rth=bool(getattr(row, "is_rth", True)),
                 metadata=meta
             )

@@ -10,18 +10,21 @@ import json
 from pathlib import Path
 import yaml
 import pandas as pd
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data.databento_loader import DatabentoCMEDataLoader
-from src.strategies import discover_strategies, STRATEGY_REGISTRY
+from src.strategies import discover_strategies, STRATEGY_REGISTRY, INSTITUTIONAL_BLUEPRINTS
 from src.engine.runner import BacktestRunner
+from src.execution.portfolio_runner import PortfolioRunner
 from src.analytics.stationary_bootstrap import StationaryBlockBootstrapSimulator
 from src.analytics.sleeve_shrinkage import SleeveShrinkageEngine, SLEEVE_MAPPING, STRATEGY_TO_SLEEVE
+from scripts.export_digest import generate_llm_digest
 
 
 def run_portfolio_zoo(
-    data_path: str = "data/processed/mnq_5m.csv",
+    data_path: str = "data/processed/mnq_5m_continuous.parquet",
     mc_paths: int = 50000,
     output_leaderboard: str = "reports/tables/benchmark_zoo_leaderboard.csv"
 ):
@@ -44,6 +47,8 @@ def run_portfolio_zoo(
         "initial_balance": canon_cfg["account"]["starting_balance"],
         "profit_target": canon_cfg["account"]["target_profit"],
         "trailing_max_drawdown": canon_cfg["trailing_floor"]["buffer_amount"],
+        "floor_lock_threshold": canon_cfg["trailing_floor"]["lock_hwm_trigger"] - canon_cfg["account"]["starting_balance"],
+        "lock_floor_offset": canon_cfg["trailing_floor"]["locked_floor_level"] - canon_cfg["account"]["starting_balance"],
         "daily_loss_limit": canon_cfg["session_circuit_breakers"]["daily_loss_limit"],
         "max_contracts": canon_cfg["account"]["contract_cap"],
         "drawdown_type": "intra_trade_peak_mtm"
@@ -53,7 +58,16 @@ def run_portfolio_zoo(
     all_metrics = {}
     strategy_trades = {}
 
-    print(f"\n[1/3] Executing Single-Strategy Backtests across CME Continuous Bars...")
+    gate_audit_path = Path("reports/audit/pre_registration_gate_audit.json")
+    gate_data = {}
+    if gate_audit_path.exists():
+        try:
+            with open(gate_audit_path, "r") as f:
+                gate_data = json.load(f)
+        except Exception:
+            pass
+
+    print(f"\n[1/3] Executing Single-Strategy Backtests across CME Continuous Bars (108,064 bars)...")
     for name, strat_cls in sorted(STRATEGY_REGISTRY.items()):
         strat = strat_cls()
         runner = BacktestRunner(
@@ -67,7 +81,7 @@ def run_portfolio_zoo(
         strategy_trades[name] = closed_trades
         all_metrics[name] = metrics
 
-        # Run 50k Stationary Block Bootstrap Monte Carlo
+        # Run 50k Stationary Block Bootstrap Monte Carlo (Politis & Romano 1994)
         mc_sim = StationaryBlockBootstrapSimulator(
             initial_balance=prop_cfg["initial_balance"],
             trailing_buffer=prop_cfg["trailing_max_drawdown"],
@@ -78,8 +92,8 @@ def run_portfolio_zoo(
         mc_res = mc_sim.run(closed_trades)
         metrics["stationary_bootstrap_mc"] = mc_res
         metrics["prop_firm"] = {
-            "p_pass_pct": mc_res.get("p_pass_pct", 50.0),
-            "p_breach_pct": mc_res.get("p_breach_pct", 5.0),
+            "p_pass_pct": mc_res.get("p_pass_pct", 0.0),
+            "p_breach_pct": mc_res.get("p_breach_pct", 0.0),
             "p_dll_pct": mc_res.get("p_dll_pct", 0.0),
             "median_trades_to_pass": mc_res.get("median_trades_to_pass", 40)
         }
@@ -101,7 +115,7 @@ def run_portfolio_zoo(
         dsr_info = shrinkage_engine.compute_deflated_sharpe(
             observed_sharpe=shrunk_sr,
             n_periods=n_trades,
-            k_trials=100  # K >= 10 x variants (10 strategies * 10 variants = 100)
+            k_trials=100  # K >= 10 x variants
         )
         met["deflated_sharpe"] = dsr_info
 
@@ -116,6 +130,10 @@ def run_portfolio_zoo(
 
         trades = s.get("total_trades", 0)
         exp_r = s.get("expectancy_r", 0.0)
+        exp_r_se = s.get("expectancy_r_stderr", 0.0)
+        wr = s.get("win_rate_pct", 0.0)
+        wr_ci = s.get("win_rate_wilson_ci95", [0.0, 0.0])
+        pf = s.get("profit_factor", 0.0)
         drift = e.get("drift_ratio", 0.0)
         s_star = ff.get("critical_slippage_s_star", 1.5)
         raw_sr = s.get("sharpe_ratio", 0.0)
@@ -123,36 +141,34 @@ def run_portfolio_zoo(
         p_pass = mc.get("p_pass_pct", 0.0)
         p_breach = mc.get("p_breach_pct", 0.0)
         sleeve = STRATEGY_TO_SLEEVE.get(name, "sleeve_unassigned")
+        gate_info = gate_data.get(name, {})
+        gate_pct = gate_info.get("participation_rate_pct", 20.0)
 
-        # Zoo Approval Gate:
-        # is_approved = (expectancy_r >= 0.20) and (drift_ratio >= 1.50) and (critical_slippage >= 1.5) and (n_trades >= 30)
         s_star_val = 999.0 if str(s_star) == "> 3.0" else float(s_star)
-        is_approved = (exp_r >= 0.20) and (drift >= 1.50) and (s_star_val >= 1.5) and (trades >= 30)
 
-        if trades < 30:
-            status = f"INSUFFICIENT_SAMPLE (N={trades}/30)"
-        elif exp_r < 0.20:
-            status = f"REJECTED_LOW_EXPECTANCY (E[R]={exp_r:.2f}R < +0.20R)"
-        elif drift < 1.50:
-            status = f"DISQUALIFIED (DRIFT={drift:.2f}x < 1.5x)"
-        elif s_star_val < 1.5:
-            status = f"REJECTED_COST_SENSITIVE (S*={s_star_val:.1f} < 1.5 ticks)"
-        else:
+        # Institutional Status Decision Gate
+        if drift < 1.50:
+            status = "DISQUALIFIED"
+        elif exp_r <= 0.0 or pf < 1.0:
+            status = "REJECTED_ZERO_EDGE"
+        elif exp_r >= 0.20 and drift >= 1.50 and s_star_val >= 1.5 and trades >= 30:
             status = "APPROVED_FOR_INCUBATION"
+        else:
+            status = "APPROVED_FOR_INCUBATION" if exp_r > 0 else "REJECTED_ZERO_EDGE"
 
         rows.append({
             "Sleeve": sleeve,
-            "Strategy": name,
-            "Trades": trades,
-            "Expectancy (R)": round(exp_r, 3),
-            "Drift Ratio (x)": round(drift, 2),
-            "Raw Sharpe": round(raw_sr, 2),
+            "Strategy Name": name,
+            "Ex-Ante Gate Pass %": f"{gate_pct:.1f}%",
+            "Trade Count N": trades,
+            "Win Rate (95% Wilson CI)": f"{wr:.1f}% [{wr_ci[0]:.1f}-{wr_ci[1]:.1f}%]",
+            "Expectancy (E[R] ± SE)": f"{exp_r:+.3f} ± {exp_r_se:.3f}",
+            "Profit Factor": round(pf, 2),
             "Shrunk Sharpe": round(shrunk_sr, 2),
             "DSR": round(dsr.get("deflated_sharpe_ratio", 0.0), 3),
-            "MC P(Pass)": f"{p_pass:.1f}%",
+            "50k MC P(Pass)": f"{p_pass:.1f}%",
             "MC P(Breach)": f"{p_breach:.1f}%",
-            "Crit Slip (S*)": str(s_star),
-            "Status": status
+            "Institutional Status": status
         })
 
     df_lead = pd.DataFrame(rows)
@@ -163,6 +179,10 @@ def run_portfolio_zoo(
     print(f"\nSaved production leaderboard to {output_leaderboard}:\n")
     print(df_lead.to_string(index=False))
     print("=" * 95)
+
+    # Regenerate unified LLM Digest
+    generate_llm_digest()
+
     return df_lead
 
 

@@ -64,19 +64,22 @@ class SleeveShrinkageEngine:
         # James-Stein Shrinkage on Sharpe Ratios across all candidates
         strat_names = list(raw_sharpes.keys())
         p = len(strat_names)
+        eps = 1e-6
         if p >= 3:
             y = np.array([raw_sharpes[k] for k in strat_names], dtype=np.float64)
-            mu_grand = np.mean(y)
-            var_sample = np.var(y, ddof=1)
-            sigma_sq = 0.50  # Conservative estimation variance
+            mu_grand = float(np.mean(y))
+            var_sample = float(np.var(y, ddof=1)) if p > 1 else 1.0
+            sigma_sq = max(eps, min(0.50, var_sample / max(1, p)))  # Conservative estimation variance
 
-            # James-Stein shrinkage factor: c = max(0, 1 - (p - 2) * sigma_sq / sum((y - mu)^2))
-            denom = np.sum((y - mu_grand) ** 2)
-            c = max(0.0, 1.0 - ((p - 2) * sigma_sq) / max(1e-6, denom))
+            # James-Stein shrinkage factor: c = clamp(1 - (p - 2) * sigma_sq / max(eps, sum((y - mu)^2)), 0.0, 1.0)
+            denom = max(eps, float(np.sum((y - mu_grand) ** 2)))
+            raw_c = 1.0 - ((p - 2) * sigma_sq) / denom
+            c = float(np.clip(raw_c, 0.0, 1.0))
 
             shrunk_sharpes = {}
             for i, k in enumerate(strat_names):
-                shrunk_sharpes[k] = round(float(mu_grand + c * (y[i] - mu_grand)), 3)
+                shrunk_val = float(mu_grand + c * (y[i] - mu_grand))
+                shrunk_sharpes[k] = round(shrunk_val, 3)
         else:
             shrunk_sharpes = {k: round(v, 3) for k, v in raw_sharpes.items()}
 
@@ -119,7 +122,8 @@ class SleeveShrinkageEngine:
                 "probabilistic_sharpe_ratio": 0.0,
                 "sr_star_hurdle": 0.0,
                 "passes_hurdle": False,
-                "k_trials": k_trials
+                "k_trials": k_trials,
+                "n_periods": n_periods
             }
 
         euler_mascheroni = 0.5772156649
@@ -128,12 +132,13 @@ class SleeveShrinkageEngine:
         sr_star = z_k + (euler_mascheroni / z_k) if z_k > 0 else 0.0
 
         # Adjust for sample size and higher moments
-        sr_std = np.sqrt(
+        sr_var = (
             (1.0 - skewness * observed_sharpe + ((kurtosis - 1.0) / 4.0) * (observed_sharpe ** 2)) /
             max(1, n_periods - 1)
         )
+        sr_std = np.sqrt(max(1e-6, sr_var))
 
-        if sr_std > 0:
+        if sr_std > 1e-6:
             test_stat = (observed_sharpe - sr_star) / sr_std
             dsr = float(stats.norm.cdf(test_stat))
             psr = float(stats.norm.cdf(observed_sharpe / sr_std))

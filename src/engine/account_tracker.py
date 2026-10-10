@@ -136,20 +136,18 @@ class PropFirmAccountTracker:
             # Floor remains at initial_balance - trailing_max_dd
             return
 
-        # Calculate tentative floating floor
-        new_floor = self.high_water_mark - self.trailing_max_dd
-
-        # Check permanent floor lock condition (e.g. at $52,600, lock at $50,100)
-        if (
+        # Trailing floor and permanent lock logic
+        if self.is_floor_locked and self.locked_floor_level is not None:
+            new_floor = self.locked_floor_level
+        elif (
             self.floor_lock_threshold is not None and
             self.locked_floor_level is not None and
             self.high_water_mark >= (self.initial_balance + self.floor_lock_threshold)
         ):
             self.is_floor_locked = True
-            new_floor = max(new_floor, self.locked_floor_level)
-
-        if self.is_floor_locked and self.locked_floor_level is not None:
-            new_floor = max(new_floor, self.locked_floor_level)
+            new_floor = self.locked_floor_level
+        else:
+            new_floor = self.high_water_mark - self.trailing_max_dd
 
         # Floor can NEVER ratchet downwards
         if new_floor > self.floor:

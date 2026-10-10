@@ -76,7 +76,10 @@ class CalendarMetricsCalculator:
         if not trades_df.empty:
             df = trades_df.copy()
             time_col = "exit_time" if "exit_time" in df.columns else ("timestamp" if "timestamp" in df.columns else df.columns[0])
-            df["date_str"] = pd.to_datetime(df[time_col]).dt.strftime("%Y-%m-%d")
+            try:
+                df["date_str"] = pd.to_datetime(df[time_col], utc=True).dt.tz_convert("America/New_York").dt.strftime("%Y-%m-%d")
+            except Exception:
+                df["date_str"] = [str(pd.Timestamp(t).date()) for t in df[time_col]]
             
             pnl_col = "net_pnl" if "net_pnl" in df.columns else "pnl"
             grouped = df.groupby("date_str")[pnl_col].sum()

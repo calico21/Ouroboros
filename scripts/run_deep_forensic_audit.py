@@ -83,14 +83,15 @@ def generate_production_trades(
         strategy.reset_session()
         active_pos = None
 
-        for ts, row in day_df.iterrows():
+        for row in day_df.itertuples():
+            ts = row.Index
             bar = BarEvent(
                 timestamp=ts,
-                open=float(row["open"]),
-                high=float(row["high"]),
-                low=float(row["low"]),
-                close=float(row["close"]),
-                volume=float(row["volume"]),
+                open=float(row.open),
+                high=float(row.high),
+                low=float(row.low),
+                close=float(row.close),
+                volume=float(row.volume),
                 symbol="MNQ"
             )
             t = ts.time()
@@ -179,11 +180,12 @@ def generate_production_trades(
                     mae_dollars = active_pos["max_adv"] * point_val * contracts
 
                     trade_id = f"TRD_{len(trades)+1:04d}"
-                    catalyst = row.get("catalyst", CatalystType.NONE.value) if hasattr(row, "get") else CatalystType.NONE.value
+                    catalyst = getattr(row, "catalyst", CatalystType.NONE.value)
 
                     trades.append({
                         "trade_id": trade_id,
                         "strategy": strategy_name,
+                        "trade_date": trade_date,
                         "entry_time": active_pos["entry_time"].isoformat(),
                         "exit_time": ts.isoformat(),
                         "direction": "LONG" if is_long else "SHORT",

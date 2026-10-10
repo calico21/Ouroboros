@@ -205,48 +205,35 @@ class ExecutionSimulator:
     def _liquidate_active_trade(
         self,
         *args,
+        reason: str = "TERMINATED_BY_CIRCUIT_BREAKER",
         adverse_slippage_ticks: float = 2.0,
         **kwargs
     ) -> Optional[TradeRecord]:
         """
-        Execute immediate market liquidation when account breach, DLL, or hard risk circuit trips.
-        Applies adverse slippage (2 ticks), computes final realized PnL, flags BREACH_LIQUIDATION,
-        and clears active state.
-        
-        Flexible signature supporting:
-          _liquidate_active_trade(bar, reason="BREACH_LIQUIDATION", account=None)
-          _liquidate_active_trade(trade, bar, reason="BREACH_LIQUIDATION", account=None)
+        Execute immediate market order liquidation when account breach, DLL, or circuit breaker trips.
+        - Deduct 2 ticks of adverse slippage ($0.50 pt / $1.00 per MNQ contract).
+        - Deduct round-turn commission ($1.24 per contract).
+        - Update account realized equity and mark trade status as TERMINATED_BY_CIRCUIT_BREAKER.
         """
+        bar: Optional[BarEvent] = None
+        account: Optional[PropFirmAccountTracker] = kwargs.get("account")
+        resolved_reason: str = kwargs.get("reason", reason)
+
+        # Parse polymorphic arguments:
+        # e.g., (trade, bar, reason), (bar, reason, account), (bar, reason), (trade, bar)
+        for arg in args:
+            if isinstance(arg, BarEvent):
+                bar = arg
+            elif isinstance(arg, dict):
+                if self.active_trade is None:
+                    self.active_trade = arg
+            elif isinstance(arg, str):
+                resolved_reason = arg
+            elif isinstance(arg, PropFirmAccountTracker):
+                account = arg
+
         if self.active_trade is None:
             return None
-
-        # Resolve polymorphic arguments
-        bar: Optional[BarEvent] = None
-        reason: str = "BREACH_LIQUIDATION"
-        account: Optional[PropFirmAccountTracker] = kwargs.get("account")
-
-        if len(args) == 1:
-            if isinstance(args[0], BarEvent):
-                bar = args[0]
-            elif isinstance(args[0], dict):
-                # trade dict passed
-                pass
-        elif len(args) >= 2:
-            if isinstance(args[0], BarEvent):
-                bar = args[0]
-                reason = str(args[1])
-            elif isinstance(args[1], BarEvent):
-                bar = args[1]
-                if len(args) >= 3:
-                    reason = str(args[2])
-            else:
-                for a in args:
-                    if isinstance(a, BarEvent):
-                        bar = a
-                    elif isinstance(a, str):
-                        reason = a
-                    elif isinstance(a, PropFirmAccountTracker):
-                        account = a
 
         if bar is None:
             raise ValueError("ExecutionSimulator._liquidate_active_trade requires a valid BarEvent")
@@ -260,7 +247,13 @@ class ExecutionSimulator:
         else:
             exit_price = bar.high + slippage_pts
 
-        return self._close_trade(bar, exit_price, reason, account, adverse_slippage_ticks=adverse_slippage_ticks)
+        return self._close_trade(
+            bar=bar,
+            exit_price=exit_price,
+            exit_reason=resolved_reason,
+            account=account,
+            adverse_slippage_ticks=adverse_slippage_ticks
+        )
 
     def _process_pending_limits(self, bar: BarEvent) -> None:
         """
@@ -391,7 +384,7 @@ class ExecutionSimulator:
         exit_commission = self.fee_model.calculate_commission(contracts)
         exit_slippage_cost = (
             self.fee_model.calculate_slippage_cost(contracts, slip_ticks)
-            if ("STOP" in exit_reason or "LIQUIDATION" in exit_reason or "BREACH" in exit_reason) else 0.0
+            if ("STOP" in exit_reason or "LIQUIDATION" in exit_reason or "BREACH" in exit_reason or "CIRCUIT" in exit_reason or "TERMINATED" in exit_reason) else 0.0
         )
 
         total_commission = trade["entry_commission"] + exit_commission

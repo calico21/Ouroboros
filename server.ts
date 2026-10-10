@@ -1154,7 +1154,106 @@ async function startServer() {
     }
   });
 
-  // In development, hook up Vite middleware
+  // TEST MASIVO - BATCH 1 Endpoints
+  app.get('/api/batch1/report', async (req, res) => {
+    try {
+      const reportPath = path.join(__dirname, 'reports', 'artifacts', 'batch1_discovery_report.json');
+      if (fs.existsSync(reportPath)) {
+        const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        return res.json({ success: true, report: data });
+      }
+      // If report doesn't exist yet, run the discovery script automatically
+      const { stdout } = await execAsync('PYTHONPATH=. python3 scripts/run_batch1_discovery.py');
+      if (fs.existsSync(reportPath)) {
+        const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        return res.json({ success: true, report: data, stdout });
+      }
+      res.status(404).json({ success: false, error: 'Report not generated' });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post('/api/batch1/run', async (req, res) => {
+    try {
+      const { stdout, stderr } = await execAsync('PYTHONPATH=. python3 scripts/run_batch1_discovery.py');
+      const reportPath = path.join(__dirname, 'reports', 'artifacts', 'batch1_discovery_report.json');
+      let report = null;
+      if (fs.existsSync(reportPath)) {
+        report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+      }
+      res.json({ success: true, stdout, stderr, report });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message, stdout: err.stdout, stderr: err.stderr });
+    }
+  });
+
+  // TEST MASIVO - BATCH 2 Endpoints (High-Drift Asymmetric Alpha Discovery)
+  app.get('/api/batch2/report', async (req, res) => {
+    try {
+      const reportPath = path.join(__dirname, 'reports', 'artifacts', 'batch2_discovery_report.json');
+      if (fs.existsSync(reportPath)) {
+        const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        return res.json({ success: true, report: data });
+      }
+      const { stdout } = await execAsync('PYTHONPATH=. python3 scripts/run_batch2_discovery.py');
+      if (fs.existsSync(reportPath)) {
+        const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        return res.json({ success: true, report: data, stdout });
+      }
+      res.status(404).json({ success: false, error: 'Report not generated' });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post('/api/batch2/run', async (req, res) => {
+    try {
+      const { stdout, stderr } = await execAsync('PYTHONPATH=. python3 scripts/run_batch2_discovery.py');
+      const reportPath = path.join(__dirname, 'reports', 'artifacts', 'batch2_discovery_report.json');
+      let report = null;
+      if (fs.existsSync(reportPath)) {
+        report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+      }
+      res.json({ success: true, stdout, stderr, report });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message, stdout: err.stdout, stderr: err.stderr });
+    }
+  });
+
+  // APEX SHIELD MULTI-WINDOW STRESS RIG Endpoints
+  app.get('/api/stress-rig/report', async (req, res) => {
+    try {
+      const reportPath = path.join(__dirname, 'reports', 'artifacts', 'multi_window_stress_report.json');
+      if (fs.existsSync(reportPath)) {
+        const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        return res.json({ success: true, report: data });
+      }
+      const { stdout } = await execAsync('PYTHONPATH=. python3 scripts/run_multi_window_stress_rig.py');
+      if (fs.existsSync(reportPath)) {
+        const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        return res.json({ success: true, report: data, stdout });
+      }
+      res.status(404).json({ success: false, error: 'Report not generated' });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post('/api/stress-rig/run', async (req, res) => {
+    try {
+      const { stdout, stderr } = await execAsync('PYTHONPATH=. python3 scripts/run_multi_window_stress_rig.py');
+      const reportPath = path.join(__dirname, 'reports', 'artifacts', 'multi_window_stress_report.json');
+      let report = null;
+      if (fs.existsSync(reportPath)) {
+        report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+      }
+      res.json({ success: true, stdout, stderr, report });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message, stdout: err.stdout, stderr: err.stderr });
+    }
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     const { createServer } = await import('vite');
     const vite = await createServer({

@@ -197,11 +197,14 @@ class RegimeBucketingHarness:
         df_tr = trades_df.copy()
         if "trade_date" not in df_tr.columns:
             if "entry_time" in df_tr.columns:
-                df_tr["trade_date"] = pd.to_datetime(df_tr["entry_time"]).dt.date
+                try:
+                    df_tr["trade_date"] = pd.to_datetime(df_tr["entry_time"], utc=True).dt.tz_convert("America/New_York").dt.date
+                except Exception:
+                    df_tr["trade_date"] = [pd.Timestamp(t).date() for t in df_tr["entry_time"]]
             elif isinstance(df_tr.index, pd.DatetimeIndex):
                 df_tr["trade_date"] = df_tr.index.date
             else:
-                df_tr["trade_date"] = pd.to_datetime(df_tr.index).date
+                df_tr["trade_date"] = [pd.Timestamp(idx).date() for idx in df_tr.index]
 
         # Merge with pre-registered session features
         merged = df_tr.merge(
