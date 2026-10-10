@@ -1,0 +1,155 @@
+"""
+Ouroboros Execution Suite - Production Runner
+PDH Liquidity Sweep & Reversal Short Strategy (MNQ Futures)
+"""
+
+from pathlib import Path
+import pandas as pd
+import numpy as np
+
+def run_production():
+    data_path = Path("data/processed/mnq_5m_continuous.parquet")
+    if not data_path.exists():
+        print(f"Error: {data_path} no encontrado.")
+        return
+
+    df = pd.read_parquet(data_path)
+    if "timestamp" in df.columns:
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        df.set_index("timestamp", inplace=True)
+    if not isinstance(df.index, pd.DatetimeIndex):
+        df.index = pd.to_datetime(df.index)
+    if df.index.tz is None:
+        df.index = df.index.tz_localize("America/New_York")
+    else:
+        df.index = df.index.tz_convert("America/New_York")
+
+    df = df.sort_index()
+    df["date"] = df.index.date
+    df["hour_min"] = df.index.strftime("%H:%M")
+
+    # PDH
+    daily = df.groupby("date").agg(d_high=("high", "max"))
+    daily["pdh"] = daily["d_high"].shift(1)
+    df["pdh"] = df["date"].map(daily["pdh"])
+
+    # VWAP RTH
+    is_rth = (df["hour_min"] >= "09:30") & (df["hour_min"] <= "16:00")
+    df["tp"] = (df["high"] + df["low"] + df["close"]) / 3.0
+    df["tp_vol"] = df["tp"] * df["volume"]
+    rth_df = df[is_rth].copy()
+    rth_df["cum_tp_vol"] = rth_df.groupby("date")["tp_vol"].cumsum()
+    rth_df["cum_vol"] = rth_df.groupby("date")["volume"].cumsum()
+    df["vwap"] = rth_df["cum_tp_vol"] / rth_df["cum_vol"]
+    df["vwap"] = df.groupby("date")["vwap"].ffill()
+
+    dates = df["date"].values
+    hour_mins = df["hour_min"].values
+    opens = df["open"].values
+    highs = df["high"].values
+    lows = df["low"].values
+    closes = df["close"].values
+    vwaps = df["vwap"].values
+    pdhs = df["pdh"].values
+    timestamps = df.index
+
+    for contracts in [2, 3]:
+        balance = 50000.0
+        peak = 50000.0
+        floor = 47500.0
+        active = False
+        entry_p = stop_p = target_p = 0.0
+        trades = []
+        cushions = []
+        prev_date = None
+        traded_today = False
+
+        for i in range(len(df)):
+            c_date = dates[i]
+            c_time = hour_mins[i]
+            o, h, l, c = opens[i], highs[i], lows[i], closes[i]
+
+            if c_date != prev_date:
+                traded_today = False
+                prev_date = c_date
+
+            if active:
+                u_peak = (entry_p - l) * 2.0 * contracts
+                f_peak = balance + max(0.0, u_peak)
+                if f_peak > peak:
+                    peak = f_peak
+                    floor = max(floor, 50100.0) if peak >= 52600.0 else peak - 2500.0
+
+                closed = False
+                exit_p = 0.0
+
+                if h >= stop_p:
+                    closed = True
+                    exit_p = max(o, stop_p) + 0.25
+                elif l <= target_p:
+                    closed = True
+                    exit_p = target_p
+                elif c_time >= "15:55":
+                    closed = True
+                    exit_p = c + 0.25
+
+                if closed:
+                    pts = entry_p - exit_p
+                    net = (pts * 2.0 * contracts) - (1.24 * contracts)
+                    balance += net
+                    trades.append({
+                        "exit_time": timestamps[i],
+                        "date": c_date,
+                        "contracts": contracts,
+                        "entry_price": entry_p,
+                        "exit_price": exit_p,
+                        "net_pnl": net,
+                        "balance_after": balance,
+                        "cushion_after": balance - floor
+                    })
+                    active = False
+
+            if not active and not traded_today:
+                if "09:45" <= c_time <= "14:30":
+                    pdh_val = pdhs[i]
+                    vwap_val = vwaps[i]
+                    if not np.isnan(pdh_val):
+                        if h > pdh_val and (h - pdh_val) <= 15.0 and c < pdh_val and c < vwap_val:
+                            active = True
+                            entry_p = c - 0.25
+                            raw_stop = (h + 0.50) - entry_p
+                            stop_dist = min(max(raw_stop, 10.0), 22.0)
+                            stop_p = entry_p + stop_dist
+                            target_p = entry_p - (1.40 * stop_dist)
+                            traded_today = True
+
+            cushions.append(balance - floor)
+
+        tl = pd.DataFrame(trades)
+        pnl = tl["net_pnl"].values
+        wins = pnl[pnl > 0]
+        losses = pnl[pnl <= 0]
+        wr = len(wins) / len(pnl) * 100
+        pf = wins.sum() / abs(losses.sum())
+        min_cush = min(cushions)
+        max_dd_pct = ((2500.0 - min_cush) / 2500.0) * 100.0
+
+        out_path = Path(f"reports/artifacts/pdh_sweep_production_{contracts}mnq.csv")
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        tl.to_csv(out_path, index=False)
+
+        print("=" * 80)
+        print(f"      INFORME DE PRODUCCIÓN OUROBOROS: {contracts} CONTRATOS MNQ")
+        print("=" * 80)
+        print(f"  Total Operaciones Ejecutadas : {len(pnl)}")
+        print(f"  Tasa de Acierto (Win Rate)   : {wr:.2f}%")
+        print(f"  Profit Factor Neto           : {pf:.2f}")
+        print(f"  PnL Neto Acumulado           : ${pnl.sum():,.2f}")
+        print(f"  Esperanza Matemática / Trade : ${pnl.mean():.2f}")
+        print(f"  Colchón Mínimo Observado     : ${min_cush:,.2f}")
+        print(f"  Consumo Máximo del Colchón   : {max_dd_pct:.2f}% (Máx Permisible: 100%)")
+        print(f"  Archivo de Auditoría         : {out_path}")
+        print("=" * 80 + "\n")
+
+if __name__ == "__main__":
+    run_production()

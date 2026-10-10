@@ -1,6 +1,6 @@
 # ALPHAFORGE INSTITUTIONAL QUANTITATIVE DIGEST
 **Canonical Apex 50k Peak-Unrealized MTM Trailing Floor Evaluation Rig**
-*Generated:* `2026-10-09 14:58:36 UTC`
+*Generated:* `2026-10-09 15:15:50 UTC`
 
 - **Target Instrument:** `MNQ (Micro E-mini Nasdaq-100 Futures)` | `NQ (E-mini Nasdaq-100)`
 - **Historical Multi-Year Window:** `2022-01-03 -> 2026-09-30` (Continuous CME Globex ETH + RTH)
@@ -24,7 +24,7 @@
 | `SLEEVE D_CASH_CLOSE` | **moc_imbalance_response** | `61.1%` | `0.64/0.64R` | `0.00` | `0.960` | `78.5%` | `2.4%` | `APPROVED_FOR_INCUBATION` |
 | `SLEEVE E_BOUNDED_MR` | **midday_equilibrium_fade** | `35.2%` | `0.46/0.62R` | `0.00` | `0.960` | `78.5%` | `2.4%` | `APPROVED_FOR_INCUBATION` |
 | `SLEEVE E_BOUNDED_MR` | **positive_gamma_pin_fade** | `68.5%` | `0.24/0.69R` | `-502.88` | `0.960` | `78.5%` | `2.4%` | `APPROVED_FOR_INCUBATION` |
-| `LEGACY` | **afternoon_trend_continuation** | `24.0%` | `1.45/0.80R` | `15.70` | `0.950` | `82.0%` | `3.1%` | `APPROVED_FOR_INCUBATION` |
+| `LEGACY` | **afternoon_trend_continuation** | `24.0%` | `1.45/0.80R` | `0.33` | `0.950` | `82.0%` | `3.1%` | `APPROVED_FOR_INCUBATION` |
 | `LEGACY` | **orb_5m_binary** | `24.0%` | `1.45/0.80R` | `-10.90` | `0.950` | `82.0%` | `3.1%` | `APPROVED_FOR_INCUBATION` |
 
 ---

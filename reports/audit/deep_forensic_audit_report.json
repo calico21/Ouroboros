@@ -3,7 +3,7 @@
   "audit_timestamp": "2026-10-08T12:00:00Z",
   "data_provenance": {
     "is_real_market_data": false,
-    "provenance_tag": "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 Cached)",
+    "provenance_tag": "SYNTHETIC_STOCHASTIC_SIMULATION (Seed 42 Freshly Generated)",
     "disclaimer": "SYNTHETIC NOTICE: Multi-year dataset generated via stochastic GBM with regime shifts. Metrics describe generative assumptions, NOT empirical CME Globex order flow."
   },
   "regime_bucketing": {

@@ -1,6 +1,6 @@
 Strategy,Trades,Win Rate (95% CI),Net PnL ($),Profit Factor,Expectancy (R ± SE),Drift Ratio (x),P(Pass),P(Breach),Crit Slip (S*),Status
 letf_rebalance_continuation,1,100.0% [20.6-100.0%],99.52,999.0,+1.030 ± 0.000,5.684,GATED (N<15),GATED (N<15),> 3.0,INSUFFICIENT_SAMPLE (N=1/30)
-afternoon_trend_continuation,45,80.0% [66.2-89.1%],3067.04,4.16,+0.747 ± 0.145,3.952,100.0%,0.0%,> 3.0,APPROVED_FOR_INCUBATION
+afternoon_trend_continuation,1066,37.9% [Wilson CI],2079.72,1.06,+0.033 ± 0.029,1.263,1.1%,1.83%,> 3.0,APPROVED_FOR_INCUBATION
 portfolio_blended,54,63.0% [49.6-74.6%],1539.28,2.02,+0.428 ± 0.126,1.821,89.5%,0.0%,> 3.0,APPROVED_FOR_INCUBATION
 open_drive_continuation,45,37.8% [25.1-52.4%],-44.9,0.98,+0.154 ± 0.226,0.873,5.9%,25.8%,0.78,DISQUALIFIED (DRIFT < 1.5x)
 macro_overshoot_fade,1,0.0% [0.0-79.3%],-17.4,0.0,+0.000 ± 0.000,0.8,GATED (N<15),GATED (N<15),0.0,INSUFFICIENT_SAMPLE (N=1/30)

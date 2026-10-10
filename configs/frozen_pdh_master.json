@@ -1,0 +1,24 @@
+{
+  "strategy_name": "OUROBOROS_MNQ_PDH_SWEEP_MASTER",
+  "version": "1.0.0-FROZEN",
+  "symbol": "MNQ",
+  "timeframe": "5m",
+  "rth_window": "09:30-16:00 ET",
+  "entry_window": "09:45-12:30 ET",
+  "rules": {
+    "max_sweep_pts": 15.0,
+    "close_below_pdh": true,
+    "close_below_vwap": true,
+    "min_volume_ratio": 1.0,
+    "volume_sma_period": 20
+  },
+  "execution": {
+    "fill_timing": "Open[t+1]",
+    "slippage_pts": 0.25,
+    "min_stop_pts": 10.0,
+    "max_stop_pts": 22.0,
+    "stop_buffer_pts": 0.50,
+    "target_r": 1.50,
+    "force_eod_exit": "15:55 ET"
+  }
+}
