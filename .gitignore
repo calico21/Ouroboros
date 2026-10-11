@@ -1,8 +1,25 @@
+# Python environments & cache
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+coverage/
+*.log
+
+# Build & packaging
 node_modules/
 build/
 dist/
-coverage/
+
+# System
 .DS_Store
-*.log
+
+# Local environments & credentials
+.env
 .env*
 !.env.example
+
+# Heavy research artifacts and data
+data/processed/*.parquet
+reports/artifacts/*.json

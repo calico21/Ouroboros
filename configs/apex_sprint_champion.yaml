@@ -1,0 +1,77 @@
+# ==============================================================================
+# APEX 50K 21-SESSION SPRINT CHAMPION STRATEGY CONFIGURATION
+# ==============================================================================
+strategy:
+  name: "apex_sprint_champion"
+  architecture: "Unconstrained Pass-Frontier Optimizer & DP Adaptive Sizing"
+  timeframe: "5m"
+  asset: "MNQ"
+  version: "3.0.0"
+
+instrument:
+  symbol: "MNQ"
+  intermarket_symbol: "MES"
+  exchange: "CME_GLOBEX"
+  point_value: 2.00
+  tick_size: 0.25
+  commission_rt: 1.24
+  min_slippage_ticks_per_side: 1.0
+
+multi_sleeve_portfolio:
+  enable_multi_sleeve: true
+  sleeve_1:
+    name: "Pre-Market / London Liquidity Sweep"
+    start_time_est: "08:00:00"
+    end_time_est: "09:20:00"
+    stop_loss_pts: 18.00
+    take_profit_pts: 36.00
+    reward_risk_ratio: 2.00
+  sleeve_2:
+    name: "NY Open Value Area Traverse & Macro SMT Sweep"
+    start_time_est: "09:30:00"
+    end_time_est: "11:30:00"
+    stop_loss_pts: 20.00
+    take_profit_pts: 48.00
+    reward_risk_ratio: 2.40
+    use_adaptive_atr: true
+  sleeve_3:
+    name: "Cash Close & MOC Imbalance Reversion"
+    start_time_est: "14:00:00"
+    end_time_est: "15:35:00"
+    stop_loss_pts: 16.00
+    take_profit_pts: 32.00
+    reward_risk_ratio: 2.00
+
+risk_and_limits:
+  max_trades_per_day: 3          # Max 3 trades per day (take subsequent trades after wins)
+  daily_circuit_breaker: 220.00   # Realized daily loss stop (halts after 1 full loss)
+  order_cancellation_est: "15:50:00"
+  hard_flatten_time_est: "15:55:00"
+  allow_overnight: false
+
+smt_intermarket:
+  enable_smt_divergence: false   # Executes setups independently; boosts size to 10 contracts on confirmed SMT
+  smt_conviction_boost: true     # Boost size to 10 MNQ contracts on confirmed SMT divergence
+
+position_sizing:
+  model: "DP_V1_ADAPTIVE"        # Optimal Control Dynamic Programming Sizing (P(Pass)=40.30%)
+  base_contracts: 7              # Initial Stride: 7 MNQ ($14/pt)
+  max_contracts: 10              # Apex Max Cap: 10 MNQ ($20/pt)
+  smt_conviction_contracts: 10   # Institutional SMT Sweep: 10 MNQ
+  locked_floor_contracts: 10     # HWM >= $52,600 (freeze at $50,100): 10 MNQ
+  endgame_sprint_sessions: 7     # Horizon countdown threshold (k <= 7 sessions)
+  endgame_sprint_contracts: 10   # Endgame escalation to prevent timeout
+  floor_clamp_buffer: 1400.00    # Defensive floor guard: Clamp if buffer D_t < $1,400
+  floor_clamp_contracts: 4       # Clamped contracts: 4 MNQ ($8/pt)
+
+prop_firm_rules:
+  firm: "Apex Trader Funding"
+  account_tier: "50k"
+  starting_balance: 50000.00
+  profit_target: 3000.00
+  trailing_max_drawdown: 2500.00
+  drawdown_model: "PEAK_UNREALIZED_MTM"
+  floor_freeze_trigger: 52600.00
+  permanently_locked_floor: 50100.00
+  calendar_horizon_days: 30
+  trading_sessions_horizon: 21
